@@ -3,6 +3,9 @@ import face_recognition
 import bluetooth
 from os import path
 import threading
+from pyzbar.pyzbar import decode
+from PIL import Image
+import ast
 class SocketClient:
 
     carID = -1
@@ -87,6 +90,7 @@ class SocketClient:
             print("1.unlock car with username and password\n")
             print("2.unlock car with face recognition\n")
             print("3.return the car\n")
+            print('4.engineer sign in')
             menu = input()
 
             if menu == '1':
@@ -106,6 +110,9 @@ class SocketClient:
                 self.returnCar()
                 self.saveData()
                 break
+            if menu =="4":
+                self.engineerSignin()
+                break
             else:
                 print("invalid input")
 
@@ -114,6 +121,14 @@ class SocketClient:
             nearby_devices = bluetooth.discover_devices()
             if(self.engineerUnlock(nearby_devices)):
                 break
+
+    def QRcodeReader(self,file):
+        return ast.literal_eval(decode(Image.open(file))[0].data.decode('UTF-8'))
+    
+    def engineerSignin(self,data):
+        dataToSend = pickle.dumps(data)
+        self.sendData(dataToSend)
+        
     
 
 
@@ -126,7 +141,9 @@ def activate_job():
 
 
 s = SocketClient()
-s.setCarID(11)
-activate_job()
-s.menu()
+# s.setCarID(11)
+# activate_job()
+# s.menu()
+file = open('1.jpg','rb')
+print(s.QRcodeReader(file))
 
