@@ -45,6 +45,11 @@ class BookingDatabaseUtils:
         with self.connection.cursor() as cursor:
             cursor.execute("select BookingID, userID, CarID, duration, ongoing from Booking")
             return cursor.fetchall()
+        
+    def listCarBookingHistory(self, carID):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select BookingID, userID, duration, ongoing from Booking WHERE CarID = %s", (carID,))
+            return cursor.fetchall()
 
     def listPersonalBookingHistory(self, userID):
         with self.connection.cursor() as cursor:

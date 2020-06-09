@@ -8,7 +8,7 @@ class MainEngine:
         self.createUserTable()
         self.createCarTable()
         self.createBookingTable()
-    
+        
     def createUserTable(self):
         with UserDatabaseUtils() as db:
             db.createUserTable()
@@ -143,7 +143,11 @@ class MainEngine:
     def listPersonalBookingHistory(self, userID):
         with BookingDatabaseUtils() as db:
             return db.listPersonalBookingHistory(userID)
-     
+    
+    def listCarBookingHistory(self, carID):
+        with BookingDatabaseUtils() as db:
+            return db.listCarBookingHistory(carID)
+    
     def listPersonalOngoingBooking(self, userID):
         with BookingDatabaseUtils() as db:
             return db.listPersonalOngoingBooking(userID)

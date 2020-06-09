@@ -16,12 +16,15 @@
 				<th>Cost</th>
 				<th>Availability</th>
 				<th>Set availability</th>
+				<th>Report Car</th>
 				<th>Delete</th>
 			</tr>
 			{% for car in cars %}
 				<tr>
 					<td>{{car[0]}}</td>
-					<td>{{car[1]}}</td>
+					<form method=post action="carhistory">
+						<td><button style="border: none; padding: 0; background: none;" name="id" value="{{car[0]}}">{{car[1]}}</button></td>
+					</form>
 					<td>{{car[2]}}</td>
 					<td>{{car[3]}}</td>
 					<td>{{car[4]}}</td>
@@ -40,6 +43,7 @@
 						<td><button name="switch_to_available" value="{{car[0]}}">Switch to available</button></td>
 					</form>
 					{% endif %}
+					<td><button name="delete" value="{{car[0]}}">Report</button></td>
 					<form method=post action="deletecar">
 						<td><button name="delete" value="{{car[0]}}">Delete</button></td>
 					</form>

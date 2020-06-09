@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation"><a href="/home">Home</a></li>
+            <!--<li role="presentation"><a href="/userlist">User Lists</a></li>
+            <li role="presentation"><a href="/carlist">Car List</a></li>-->
+            <li role="presentation"><a href="/">Logout</a></li>
+          </ul>
+        </nav>
+      </div>
+      {% block body %}
+      {% endblock %}
+    </div> <!-- /container -->
+  </body>
+</html>
+
+<style>
+	body{
+		height:100vt;
+	}
+	
+	.box{
+		text-align:center;
+	}
+	
+	#carList table, #carList th, #carList tr, #carList td,
+	#userList table, #userList th, #userList tr, #userList td{
+	      border: 1px solid black;
+	}
+	
+	table, th, tr, td{
+		text-align:left;
+		padding:5px;
+		margin-left:auto;
+		margin-right:auto;
+		border-collapse:collapse;
+	}
+	
+	td input, td select{
+	  width:90%;
+	}
+	
+	#add{
+	    text-align:left;
+	}
+	
+	footer{
+		position: absolute;
+		bottom: 0;
+		padding-left:10px;
+		clear:both;
+		max-height:20%;
+		line-height:20px;
+		height: 2.5rem; 
+	}
+</style>

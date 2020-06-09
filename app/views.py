@@ -5,6 +5,7 @@ from google_calendar.authenticator_runner import run_authenticator
 from app import app, mainEngine, gCalendar, gMap, dynaConf
 from werkzeug.utils import secure_filename
 from server import SocketServer
+
 @app.route('/')
 def index():
     session.clear()
@@ -50,9 +51,13 @@ def loginPage():
 def home():
     if session['type']=='c':
         return render_template("customer/home.html", name=session.get('username'))
-    else:
+    elif session['type']=='a':
         return render_template("admin/home.html", name=session.get('username'))
-
+    elif session['type']=='e':
+        return render_template("engineer/home.html", name=session.get('username'))
+    else:
+        return render_template("manager/home.html", name=session.get('username'))
+    
 @app.route('/carlist', methods=["GET"])
 def cars():   
     if session['type']=='c':
@@ -92,6 +97,12 @@ def cars():
             style="height:300px;width:300px;margin:0;margin-left:auto;margin-right:auto;",
         )
         return render_template("admin/carlist.html",cars=cars, gmap=gmap)
+
+@app.route('/carhistory', methods=["POST"])
+def carhistory():
+    carID =  request.form['id']
+    bookings = mainEngine.listCarBookingHistory(carID)
+    return render_template("admin/carhistory.html",bookings=bookings)
 
 @app.route('/addcar', methods = ('GET', 'POST'))
 def addcar():
@@ -179,9 +190,9 @@ def upload_file():
 
 @app.route('/booking')
 def booking():
-	bookings = mainEngine.listPersonalOngoingBooking(session['userID'])
-	cars=mainEngine.listCars()
-	return render_template("customer/booking.html", cars=cars, bookings=bookings)
+    bookings = mainEngine.listPersonalOngoingBooking(session['userID'])
+    cars=mainEngine.listCars()
+    return render_template("customer/booking.html", cars=cars, bookings=bookings)
 
 @app.route('/deletebooking', methods = ['POST'])
 def deletebooking():
