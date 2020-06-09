@@ -92,5 +92,5 @@ class SocketServer:
                 mainEngine.setCarLocation(carID,location)
                 return True
         return False
-s = SocketServer()
-s.startListening()
+#s = SocketServer()
+#s.startListening()
