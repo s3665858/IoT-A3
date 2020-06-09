@@ -2,7 +2,7 @@ import MySQLdb
 
 class UserDatabaseUtils:
     # changed the host and database and functions
-    HOST = "34.87.224.11"
+    HOST = "35.244.89.13"
     USER = "root"
     PASSWORD = "1111"
     DATABASE = "Data"
