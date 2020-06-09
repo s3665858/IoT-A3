@@ -1,16 +1,14 @@
 import socket, pickle
 import face_recognition
+import bluetooth
 from os import path
+import threading
 class SocketClient:
 
     carID = -1
     userID = -1
     
     def __init__(self):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_address = ('localhost', 10000)
-        self.sock.connect(self.server_address)
-        
         if path.exists("data.dat"):
             file = open("data.dat","rb")
             info = pickle.load(file)
@@ -24,6 +22,9 @@ class SocketClient:
         self.carID = id
 
     def sendData(self,data):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_address = ('localhost', 10000)
+        self.sock.connect(self.server_address)
         self.sock.sendall(data)
         received = self.sock.recv(4096)
         data = pickle.loads(received)
@@ -42,17 +43,6 @@ class SocketClient:
         else:
             print("your face is not in database or you did not book this car")
 
-    def returnCar(self):
-        location = ("Box Hill,-37.8214992,145.1086673")
-        data = {'type':3,'carid':self.carID,'userid':self.userID,'location':location}
-        data = pickle.dumps(data)
-        if self.sendData(data):
-            print("return successfully")
-        else:
-            print("this car is not being rented")
-        
-        
-
     
     def faceunlock(self):
         unknown_image = face_recognition.load_image_file("unknow.jpg")
@@ -65,6 +55,25 @@ class SocketClient:
             
         else:
             print("invalid username and password or u did not book thiscar")
+
+    def returnCar(self):
+        location = ("Box Hill,-37.8214992,145.1086673")
+        data = {'type':3,'carid':self.carID,'userid':self.userID,'location':location}
+        data = pickle.dumps(data)
+        if self.sendData(data):
+            print("return successfully")
+        else:
+            print("this car is not being rented")
+
+    def engineerUnlock(self,nearby_devices):
+        data = {'type':4,'carid':self.carID,'nearby_devices':nearby_devices}
+        data = pickle.dumps(data)
+        if self.sendData(data):
+            print("unlock")
+            return True
+        else:
+            print("invalid engineer mantain device")
+    
 
     def saveData(self):
         file = (open("data.dat","wb"))
@@ -100,6 +109,24 @@ class SocketClient:
             else:
                 print("invalid input")
 
+    def detectBluetoothDevices(self):
+        while True:
+            nearby_devices = bluetooth.discover_devices()
+            if(self.engineerUnlock(nearby_devices)):
+                break
+    
+
+
+#new thread for detecting nearby bluetooth devices
+def activate_job():
+    def run_job():
+        s.detectBluetoothDevices()
+    thread = threading.Thread(target=run_job)
+    thread.start()
+
+
 s = SocketClient()
 s.setCarID(11)
+activate_job()
 s.menu()
+
