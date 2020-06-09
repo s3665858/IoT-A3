@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<title>Login</title>
+	</head>
+	<body>
+		<div class="box">
+			<h1>Please input your username and password</h1>
+			{% if error==True%}
+				<div>Invalid username or password, please try again</div>
+			{% endif %}
+			<form method=post action="login">
+				<table>
+					<tr>    
+						<td><label>Username</label></td>
+						<td><input type="text" name='username' required> </td>
+					</tr>
+					<tr>                    
+						<td><label>Password</label required> </td>
+						<td><input type="password" name='password' required> </td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="submit" value="Submit"></td>
+					</tr>
+				</table>
+			</form>
+			<div><a href="register">Don't have an account? Register here.</a></div>
+			<div><a href="/">Back to main menu</a></div>
+		</div>
+	</body>
+</html>
+
+<style>
+	.box{
+		text-align:center;
+	}
+	footer{
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 2.5rem; 
+	}
+	table{
+		margin-left:auto;
+		margin-right: auto;
+		text-align:center;  
+		border-spacing:5px;
+	}
+</style>

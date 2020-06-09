@@ -1,0 +1,63 @@
+{% extends "adminbase.html" %}
+{% block title %}Car List{% endblock %}
+{% block body %}
+{{ gmap.js }}
+<div class="box">
+	<div id="carList">
+		<h2> Car List</h2>
+		{% if cars%}
+		<table>
+			<tr>
+				<th>Car ID</th>
+				<th>Make</th>
+				<th>Body Type</th>
+				<th>Colour</th>
+				<th>Seats</th>
+				<th>Cost</th>
+				<th>Availability</th>
+				<th>Set availability</th>
+				<th>Delete</th>
+			</tr>
+			{% for car in cars %}
+				<tr>
+					<td>{{car[0]}}</td>
+					<td>{{car[1]}}</td>
+					<td>{{car[2]}}</td>
+					<td>{{car[3]}}</td>
+					<td>{{car[4]}}</td>
+					<td>{{car[6]}}</td>
+					{% if car[7]==1 %}
+						<td>Avalaible</td>
+					{% else %}
+						<td>Unavalaible</td>
+					{% endif %}
+					{% if car[7]==1 %}
+					<form method=post action="set_car_availability_to_unavailable">
+						<td><button name="switch_to_unavailable" value="{{car[0]}}">Switch to unavailable</button></td>
+					</form>
+					{% else %}
+					<form method=post action="set_car_availability_to_available">
+						<td><button name="switch_to_available" value="{{car[0]}}">Switch to available</button></td>
+					</form>
+					{% endif %}
+					<form method=post action="deletecar">
+						<td><button name="delete" value="{{car[0]}}">Delete</button></td>
+					</form>
+				</tr>
+			{% endfor %}
+		</table>
+		<div>
+			<p>Car Locations: </p>
+			{{ gmap.html }}
+		</div>
+		{% else %}
+			<br>
+			<td>No Cars is Registered</td>
+		{% endif %}
+		<br>
+		<div id="add">
+			<button onclick="window.location.href='addcar'">Add</button>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,471 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Unit Tests for Cars Database Utils &#8212; IoT A2 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Unit Tests for Booking Database Utils" href="test_booking_database_utils.html" />
+    <link rel="prev" title="Unit Tests for User Database Utils" href="test_user_database_utils.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="unit-tests-for-cars-database-utils">
+<h1>Unit Tests for Cars Database Utils<a class="headerlink" href="#unit-tests-for-cars-database-utils" title="Permalink to this headline">¶</a></h1>
+<p>This class contains unit test functions for <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. Instead of running the queries
+on the actual databse, we run them in <em>TestData</em> which is our database for unit testing.</p>
+<p>Functions contained in this class:</p>
+<div class="section" id="setup-self">
+<h2>setUp(self)<a class="headerlink" href="#setup-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Creates the Cars Table in our <em>TestData</em> database.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">MySQLdb</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">TestDatabaseUtils</span><span class="o">.</span><span class="n">HOST</span><span class="p">,</span> <span class="n">TestDatabaseUtils</span><span class="o">.</span><span class="n">USER</span><span class="p">,</span>
+        <span class="n">TestDatabaseUtils</span><span class="o">.</span><span class="n">PASSWORD</span><span class="p">,</span> <span class="n">TestDatabaseUtils</span><span class="o">.</span><span class="n">DATABASE</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;drop table if exists Cars&quot;</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">           create table if not exists Cars (</span>
+<span class="s2">                CarID int not null auto_increment,</span>
+<span class="s2">                make text not null,</span>
+<span class="s2">                body_type text not null,</span>
+<span class="s2">                colour text not null,</span>
+<span class="s2">                seats int not null,</span>
+<span class="s2">                location text not null,</span>
+<span class="s2">                cost_per_hour int not null,</span>
+<span class="s2">                available int not null,</span>
+<span class="s2">                constraint PK_Car primary key (CarID)</span>
+<span class="s2">            )&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into Cars (make, body_type, colour, seats, location, cost_per_hour, available) values (&#39;Lamborghini&#39;, &#39;Coupe&#39;, &#39;Orange&#39;, 2, &#39;MelbourneCBD,-37.000.142.000&#39;, 5, 1)&quot;</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into Cars (make, body_type, colour, seats, location, cost_per_hour, available) values (&#39;Pajero Sport&#39;, &#39;SUV&#39;, &#39;Black&#39;, 7, &#39;MelbourneCBD,-37.000.142.000&#39;, 15, 1)&quot;</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into Cars (make, body_type, colour, seats, location, cost_per_hour, available) values (&#39;Ferrari&#39;, &#39;Coupe&#39;, &#39;Red&#39;, 2, &#39;MelbourneCBD,-37.000.142.000&#39;, 10, 1)&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="teardown-self">
+<h2>tearDown(self)<a class="headerlink" href="#teardown-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Closes the connection to the database.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="countcar-self">
+<h2>countCar(self)<a class="headerlink" href="#countcar-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Counts the number of cars in the database for testing the functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">countCar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Cars&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="countavailablecars-self">
+<h2>countAvailableCars(self)<a class="headerlink" href="#countavailablecars-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Counts the number of cars in the database with <em>available</em> being 1 for testing the functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">countAvailableCars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Cars where available = 1&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="countcarswithmake-self-make">
+<h2>countCarsWithMake(self, make)<a class="headerlink" href="#countcarswithmake-self-make" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>make</em></p>
+<p>function: Counts the number of cars in the database with the make ‘like’ parameter <em>make</em>
+for testing the functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">countCarsWithMake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">make</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Cars where lower(make) like </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;%&#39;</span> <span class="o">+</span> <span class="n">make</span> <span class="o">+</span> <span class="s1">&#39;%&#39;</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="countcarswithbodytype-self-bodytype">
+<h2>countCarsWithBodyType(self, bodyType)<a class="headerlink" href="#countcarswithbodytype-self-bodytype" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>bodyType</em></p>
+<p>function: Counts the number of cars in the database with the body_type ‘like’ parameter <em>bodyType</em>
+for testing the functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">countCarsWithBodyType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bodyType</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Cars where lower(body_type) like </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;%&#39;</span> <span class="o">+</span> <span class="n">bodyType</span> <span class="o">+</span> <span class="s1">&#39;%&#39;</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="countcarswithcolour-self-colour">
+<h2>countCarsWithColour(self, colour)<a class="headerlink" href="#countcarswithcolour-self-colour" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>colour</em></p>
+<p>function: Counts the number of cars in the database with the colour ‘like’ parameter <em>colour</em>
+for testing the functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">countCarsWithColour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colour</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Cars where lower(colour) like </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;%&#39;</span> <span class="o">+</span> <span class="n">colour</span> <span class="o">+</span> <span class="s1">&#39;%&#39;</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="countcarswithseats-self-seats">
+<h2>countCarsWithSeats(self, seats)<a class="headerlink" href="#countcarswithseats-self-seats" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>seats</em></p>
+<p>function: Counts the number of cars in the database with the colour being parameter <em>seats</em>
+for testing the functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">countCarsWithSeats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seats</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Cars where seats = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">seats</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="countcarswithlocation-self-location">
+<h2>countCarsWithLocation(self, location)<a class="headerlink" href="#countcarswithlocation-self-location" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>location</em></p>
+<p>function: Counts the number of cars in the database with the location ‘like’ parameter <em>location</em>
+for testing the functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">countCarsWithLocation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Cars where lower(location) like </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;%&#39;</span> <span class="o">+</span> <span class="n">location</span> <span class="o">+</span> <span class="s1">&#39;%&#39;</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="countcarswithcost-self-cost">
+<h2>countCarsWithCost(self, cost)<a class="headerlink" href="#countcarswithcost-self-cost" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>cost</em></p>
+<p>function: Counts the number of cars in the database with the cost being parameter <em>cost</em>
+for testing the functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">countCarsWithCost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cost</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Cars where cost_per_hour = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">cost</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="carexists-self-carid">
+<h2>carExists(self, carID)<a class="headerlink" href="#carexists-self-carid" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>carID</em></p>
+<p>function: Checks if the user with the <em>carID</em> parameter given exist in the table.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">carExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">carID</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Cars where CarID = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">carID</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="carisavailable-self-carid">
+<h2>carIsAvailable(self, carID)<a class="headerlink" href="#carisavailable-self-carid" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>carID</em></p>
+<p>function: Checks if the user with the <em>carID</em> parameter with <em>availabile</em> being 1 given exist in the table.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">carIsAvailable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">carID</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Cars where CarID = </span><span class="si">%s</span><span class="s2"> and available = 1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">carID</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="carhaslocation-self-carid-location">
+<h2>carHasLocation(self, carID, location)<a class="headerlink" href="#carhaslocation-self-carid-location" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>carID</em>, <em>location</em></p>
+<p>function: Checks if the user with the <em>carID</em> parameter has a location ‘like’ the <em>location</em> parameter given exist in the table.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">carHasLocation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">carID</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Cars where CarID = </span><span class="si">%s</span><span class="s2"> and lower(location) like </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">carID</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span> <span class="o">+</span> <span class="n">location</span> <span class="o">+</span> <span class="s1">&#39;%&#39;</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-insertcar-self">
+<h2>test_insertCar(self)<a class="headerlink" href="#test-insertcar-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>insertCar()</em> from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. First it counts the number
+of cars with <em>countCar()</em>, then adds some users into the database and then make sure the counts increases accordingly.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_insertCar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">countCar</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">insertCar</span><span class="p">(</span><span class="s1">&#39;Lamborghini&#39;</span><span class="p">,</span> <span class="s1">&#39;Coupe&#39;</span><span class="p">,</span> <span class="s1">&#39;Orange&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;MelbourneCBD,-37.000.142.000&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">countCar</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">insertCar</span><span class="p">(</span><span class="s1">&#39;Ferrari&#39;</span><span class="p">,</span> <span class="s1">&#39;Coupe&#39;</span><span class="p">,</span> <span class="s1">&#39;Red&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;MelbourneCBD,-37.000.142.000&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">count</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">countCar</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-listcars-self">
+<h2>test_listCars(self)<a class="headerlink" href="#test-listcars-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>listCars()</em> from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. The test is made by comparing
+the number obtained from <em>countCar()</em> with it.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_listCars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">countCar</span><span class="p">()</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">listCars</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-listavailablecars-self">
+<h2>test_listAvailableCars(self)<a class="headerlink" href="#test-listavailablecars-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>listAvailableCars()</em> from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. The test is made by comparing
+the number obtained from <em>countAvailableCars()</em> with it.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_listAvailableCars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">countAvailableCars</span><span class="p">()</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">listAvailableCars</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-searchcarsbymake-self">
+<h2>test_searchCarsbyMake(self)<a class="headerlink" href="#test-searchcarsbymake-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>searchCarsbyMake()</em> from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. The test is made by comparing
+the number obtained from <em>countCarsWithColour()</em> with it using a sample variable <em>make = ‘Lamborghini’</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_searchCarsbyMake</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">make</span> <span class="o">=</span> <span class="s1">&#39;Lamborghini&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">countCarsWithMake</span><span class="p">(</span><span class="n">make</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">searchCarsbyMake</span><span class="p">(</span><span class="n">make</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-searchcarsbytype-self">
+<h2>test_searchCarsbyType(self)<a class="headerlink" href="#test-searchcarsbytype-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>searchCarsbyType()</em> from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. The test is made by comparing
+the number obtained from <em>countCarsWithBodyType()</em> with it using a sample variable <em>body_type = ‘Coupe’</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_searchCarsbyType</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">body_type</span> <span class="o">=</span> <span class="s1">&#39;Coupe&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">countCarsWithBodyType</span><span class="p">(</span><span class="n">body_type</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">searchCarsbyType</span><span class="p">(</span><span class="n">body_type</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-searchcarsbycolour-self">
+<h2>test_searchCarsbyColour(self)<a class="headerlink" href="#test-searchcarsbycolour-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>searchCarsbyColour()</em> from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. The test is made by comparing
+the number obtained from <em>countCarsWithColour()</em> with it using a sample variable <em>colour = ‘Orange’</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_searchCarsbyColour</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">colour</span> <span class="o">=</span> <span class="s1">&#39;Orange&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">countCarsWithColour</span><span class="p">(</span><span class="n">colour</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">searchCarsbyColour</span><span class="p">(</span><span class="n">colour</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-searchcarsbyseats-self">
+<h2>test_searchCarsbySeats(self)<a class="headerlink" href="#test-searchcarsbyseats-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>searchCarsbySeats()</em> from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. The test is made by comparing
+the number obtained from <em>countCarsWithSeats()</em> with it using a sample variable <em>seats = 2</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_searchCarsbySeats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">seats</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">countCarsWithSeats</span><span class="p">(</span><span class="n">seats</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">searchCarsbySeats</span><span class="p">(</span><span class="n">seats</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-searchcarsbylocation-self">
+<h2>test_searchCarsbyLocation(self)<a class="headerlink" href="#test-searchcarsbylocation-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>searchCarsbyLocation()</em> from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. The test is made by comparing
+the number obtained from <em>countCarsWithLocation()</em> with it using a sample variable <em>location = ‘MelbourneCBD,-37.000.142.000’</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_searchCarsbyLocation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="s1">&#39;MelbourneCBD,-37.000.142.000&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">countCarsWithLocation</span><span class="p">(</span><span class="n">location</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">searchCarsbyLocation</span><span class="p">(</span><span class="n">location</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-searchcarsbycost-self">
+<h2>test_searchCarsbyCost(self)<a class="headerlink" href="#test-searchcarsbycost-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>searchCarsbyCost()</em> from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. The test is made by comparing
+the number obtained from <em>countCarsWithCost()</em> with it using a sample variable <em>cost = 5</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_searchCarsbyCost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">countCarsWithCost</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">searchCarsbyCost</span><span class="p">(</span><span class="n">cost</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-deletecar-self">
+<h2>test_deleteCar(self)<a class="headerlink" href="#test-deletecar-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>deleteCar()</em> from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. First it counts the number
+of cars with <em>countCar()</em>, then deletes a car from the database and then make sure the count decreases by 1.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_deleteCar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">countCar</span><span class="p">()</span>
+        <span class="n">carID</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">carExists</span><span class="p">(</span><span class="n">carID</span><span class="p">))</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">deleteCar</span><span class="p">(</span><span class="n">carID</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">carExists</span><span class="p">(</span><span class="n">carID</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">countCar</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-setcaravailability-self">
+<h2>test_setCarAvailability(self)<a class="headerlink" href="#test-setcaravailability-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>setCarAvailability()</em> from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. Using a test variable of
+<em>carID = 1</em>, the <em>available</em> value for this car would be initially 1, then set to 0 and check if it works.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_setCarAvailability</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">carID</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">carExists</span><span class="p">(</span><span class="n">carID</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">carIsAvailable</span><span class="p">(</span><span class="n">carID</span><span class="p">))</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">setCarAvailability</span><span class="p">(</span><span class="n">carID</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">carIsAvailable</span><span class="p">(</span><span class="n">carID</span><span class="p">))</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">setCarAvailability</span><span class="p">(</span><span class="n">carID</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">carIsAvailable</span><span class="p">(</span><span class="n">carID</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-setcarlocation-self">
+<h2>test_setCarLocation(self)<a class="headerlink" href="#test-setcarlocation-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>setCarLocation()</em> from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. Using a test variable of
+<em>carID = 1</em> and <em>location = ‘Sydney,-37.000.142.000’</em>, the <em>location</em> value for this car would
+initially not equal <em>location</em>, then it would be set to the <em>location</em> value and then check if it was changed.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_setCarLocation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">carID</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="s1">&#39;Sydney,-37.000.142.000&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">carExists</span><span class="p">(</span><span class="n">carID</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">carHasLocation</span><span class="p">(</span><span class="n">carID</span><span class="p">,</span> <span class="n">location</span><span class="p">))</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">setCarLocation</span><span class="p">(</span><span class="n">carID</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">carHasLocation</span><span class="p">(</span><span class="n">carID</span><span class="p">,</span> <span class="n">location</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">IoT A2</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index_page.html">Index Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="login_page.html">Login Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="register_page.html">Register Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="customer_home_page.html">Customer Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_available_cars_page.html">Customer’s Car List page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_search_car_page.html">Customer’s Search Car page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_ongoing_booking_page.html">Customer’s Ongoing Booking page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_booking_history_page.html">Customer’s Booking History page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_google_authentication_page.html">Google Authentication page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_home_page.html">Admin Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_car_table_page.html">Admin’s Display Car Table page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_add_car_into_table_page.html">Admin’s Add Car Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_user_table_page.html">Admin’s Display User Table page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main_engine.html">mainEngine.py class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_database_utils.html">User Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="car_database_utils.html">Car Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking_database_utils.html">Booking Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google_calendar_api.html">Google Calendar Api class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authenticator_runner.html">Google Authenticator Runner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_authenticator.html">API Authenticator</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Socket Server class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Socket Client class</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="test_user_database_utils.html">Unit Tests for User Database Utils</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Unit Tests for Cars Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_booking_database_utils.html">Unit Tests for Booking Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_mainEngine.html">Unit Tests for Main Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_server.html">Unit Tests for Socket Server</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="test_user_database_utils.html" title="previous chapter">Unit Tests for User Database Utils</a></li>
+      <li>Next: <a href="test_booking_database_utils.html" title="next chapter">Unit Tests for Booking Database Utils</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sean Tan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/test_car_database_utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

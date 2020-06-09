@@ -1,0 +1,459 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Views class &#8212; IoT A2 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="mainEngine.py class" href="main_engine.html" />
+    <link rel="prev" title="Admin’s Display User Table page" href="admin_display_user_table_page.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="views-class">
+<span id="views"></span><h1>Views class<a class="headerlink" href="#views-class" title="Permalink to this headline">¶</a></h1>
+<p><em>Directory: /app/views.py</em></p>
+<p>This class contains and manages all code from our controller <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a> to the html pages which are
+viewed by the user</p>
+<p>Functions contained in this class:</p>
+<div class="section" id="registerpage">
+<h2>registerPage()<a class="headerlink" href="#registerpage" title="Permalink to this headline">¶</a></h2>
+<p>function: receives all user information from the request form submitted by the user and calls checks input
+using check_duplicate_username() and check_isalnum_username() function from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>.
+If the functions returns false, calls register() function from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/register&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">registerPage</span><span class="p">():</span>
+    <span class="n">usernameDuplicate</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">usernameInvalid</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">registered</span><span class="o">=</span><span class="kc">False</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;fname&#39;</span><span class="p">]</span>
+        <span class="n">lname</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;lname&#39;</span><span class="p">]</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">mainEngine</span><span class="o">.</span><span class="n">check_duplicate_username</span><span class="p">(</span><span class="n">username</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">mainEngine</span><span class="o">.</span><span class="n">check_isalnum_username</span><span class="p">(</span><span class="n">username</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">mainEngine</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">lname</span><span class="p">,</span> <span class="n">email</span><span class="p">)</span>
+            <span class="n">registered</span><span class="o">=</span><span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">mainEngine</span><span class="o">.</span><span class="n">check_duplicate_username</span><span class="p">(</span><span class="n">username</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">usernameDuplicate</span><span class="o">=</span><span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">mainEngine</span><span class="o">.</span><span class="n">check_isalnum_username</span><span class="p">(</span><span class="n">username</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">usernameInvalid</span><span class="o">=</span><span class="kc">True</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;register.html&quot;</span><span class="p">,</span> <span class="n">registered</span><span class="o">=</span><span class="n">registered</span><span class="p">,</span> <span class="n">usernameDuplicate</span><span class="o">=</span><span class="n">usernameDuplicate</span> <span class="p">,</span> <span class="n">usernameInvalid</span><span class="o">=</span><span class="n">usernameInvalid</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="loginpage">
+<h2>loginPage()<a class="headerlink" href="#loginpage" title="Permalink to this headline">¶</a></h2>
+<p>function: receives username and password from the request form submitted by the user and calls the
+login() function from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>. If login succeeds, redirects user to the home page, else
+returns an error.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">loginPage</span><span class="p">():</span>
+    <span class="n">error</span><span class="o">=</span><span class="kc">False</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">mainEngine</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">mainEngine</span><span class="o">.</span><span class="n">getUser</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+            <span class="n">session</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">user</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">username</span>
+            <span class="n">session</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">user</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error</span><span class="o">=</span><span class="kc">True</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;login.html&quot;</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="home">
+<h2>home()<a class="headerlink" href="#home" title="Permalink to this headline">¶</a></h2>
+<p>function: render the username of the session into the home.html template of either customer or admin,
+depending on their sessiong type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">home</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">session</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;c&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;customer/home.html&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;admin/home.html&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cars">
+<h2>cars()<a class="headerlink" href="#cars" title="Permalink to this headline">¶</a></h2>
+<p>function: render all car information including its Google Map API location into the carlist.html template
+of either customer or admin</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/carlist&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">cars</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">session</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;c&#39;</span><span class="p">:</span>
+        <span class="n">mark</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">cars</span><span class="o">=</span><span class="n">mainEngine</span><span class="o">.</span><span class="n">listAvailableCars</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">car</span> <span class="ow">in</span> <span class="n">cars</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">car</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">car</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+            <span class="n">mark</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">car</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">gmap</span> <span class="o">=</span> <span class="n">Map</span><span class="p">(</span>
+            <span class="n">identifier</span><span class="o">=</span><span class="s2">&quot;gmap&quot;</span><span class="p">,</span>
+            <span class="n">varname</span><span class="o">=</span><span class="s2">&quot;gmap&quot;</span><span class="p">,</span>
+            <span class="c1">#MELBOURNE COORDINATE</span>
+            <span class="n">lat</span><span class="o">=-</span><span class="mf">37.8136</span><span class="p">,</span>
+            <span class="n">lng</span><span class="o">=</span><span class="mf">144.9631</span><span class="p">,</span>
+            <span class="n">markers</span><span class="o">=</span><span class="p">{</span>
+                <span class="n">icons</span><span class="o">.</span><span class="n">dots</span><span class="o">.</span><span class="n">blue</span><span class="p">:</span> <span class="n">mark</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">style</span><span class="o">=</span><span class="s2">&quot;height:300px;width:300px;margin:0;margin-left:auto;margin-right:auto;&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;customer/carlist.html&quot;</span><span class="p">,</span><span class="n">cars</span><span class="o">=</span><span class="n">cars</span><span class="p">,</span> <span class="n">gmap</span><span class="o">=</span><span class="n">gmap</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mark</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">cars</span><span class="o">=</span><span class="n">mainEngine</span><span class="o">.</span><span class="n">listCars</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">car</span> <span class="ow">in</span> <span class="n">cars</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">car</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+            <span class="n">mark</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">car</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">gmap</span> <span class="o">=</span> <span class="n">Map</span><span class="p">(</span>
+            <span class="n">identifier</span><span class="o">=</span><span class="s2">&quot;gmap&quot;</span><span class="p">,</span>
+            <span class="n">varname</span><span class="o">=</span><span class="s2">&quot;gmap&quot;</span><span class="p">,</span>
+            <span class="c1">#MELBOURNE COORDINATE</span>
+            <span class="n">lat</span><span class="o">=-</span><span class="mf">37.8136</span><span class="p">,</span>
+            <span class="n">lng</span><span class="o">=</span><span class="mf">144.9631</span><span class="p">,</span>
+            <span class="n">markers</span><span class="o">=</span><span class="p">{</span>
+                <span class="n">icons</span><span class="o">.</span><span class="n">dots</span><span class="o">.</span><span class="n">blue</span><span class="p">:</span> <span class="n">mark</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">style</span><span class="o">=</span><span class="s2">&quot;height:300px;width:300px;margin:0;margin-left:auto;margin-right:auto;&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;admin/carlist.html&quot;</span><span class="p">,</span><span class="n">cars</span><span class="o">=</span><span class="n">cars</span><span class="p">,</span> <span class="n">gmap</span><span class="o">=</span><span class="n">gmap</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="addcar">
+<h2>addcar()<a class="headerlink" href="#addcar" title="Permalink to this headline">¶</a></h2>
+<p>function: adds all car information from the request form in addcar.html and adds them into the database
+using insertCar() from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/addcar&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">addcar</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="n">bodytype</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;bodytype&#39;</span><span class="p">]</span>
+        <span class="n">colour</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;colour&#39;</span><span class="p">]</span>
+        <span class="n">seats</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;seats&#39;</span><span class="p">]</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span>
+        <span class="n">mainEngine</span><span class="o">.</span><span class="n">insertCar</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bodytype</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="n">seats</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;/carlist&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;admin/addcar.html&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-car-availability-to-unavailable">
+<h2>set_car_availability_to_unavailable()<a class="headerlink" href="#set-car-availability-to-unavailable" title="Permalink to this headline">¶</a></h2>
+<p>function: sets car availability to unavailable by modifying information in the database
+using setCarAvailability() from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/set_car_availability_to_unavailable&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">set_car_availability_to_unavailable</span><span class="p">():</span>
+    <span class="n">carID</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;switch_to_unavailable&#39;</span><span class="p">]</span>
+    <span class="n">mainEngine</span><span class="o">.</span><span class="n">setCarAvailability</span><span class="p">(</span><span class="n">carID</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;/carlist&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-car-availability-to-available">
+<h2>set_car_availability_to_available()<a class="headerlink" href="#set-car-availability-to-available" title="Permalink to this headline">¶</a></h2>
+<p>function: sets car availability to available by modifying information in the database
+using setCarAvailability() from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/set_car_availability_to_available&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">set_car_availability_to_available</span><span class="p">():</span>
+    <span class="n">carID</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;switch_to_available&#39;</span><span class="p">]</span>
+    <span class="n">mainEngine</span><span class="o">.</span><span class="n">setCarAvailability</span><span class="p">(</span><span class="n">carID</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;/carlist&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deletecar">
+<h2>deletecar()<a class="headerlink" href="#deletecar" title="Permalink to this headline">¶</a></h2>
+<p>function: deletes a car from the car table in the database using deleteCar() from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/deletecar&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">deletecar</span><span class="p">():</span>
+    <span class="n">carID</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;delete&#39;</span><span class="p">]</span>
+    <span class="n">mainEngine</span><span class="o">.</span><span class="n">deleteCar</span><span class="p">(</span><span class="n">carID</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;/carlist&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="users">
+<h2>users()<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
+<p>function: lists all users in the user table in the database using listUsers() from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/userlist&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">users</span><span class="p">():</span>
+    <span class="n">users</span><span class="o">=</span><span class="n">mainEngine</span><span class="o">.</span><span class="n">listUsers</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;admin/userlist.html&quot;</span><span class="p">,</span><span class="n">users</span><span class="o">=</span><span class="n">users</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deleteuser">
+<h2>deleteuser()<a class="headerlink" href="#deleteuser" title="Permalink to this headline">¶</a></h2>
+<p>function: deletes a user from the user table in the database using deleteUser() from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/deleteuser&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">deleteuser</span><span class="p">():</span>
+    <span class="n">userID</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;delete&#39;</span><span class="p">]</span>
+    <span class="n">mainEngine</span><span class="o">.</span><span class="n">deleteUser</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;/userlist&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="searchcar">
+<h2>searchcar()<a class="headerlink" href="#searchcar" title="Permalink to this headline">¶</a></h2>
+<p>function: search for a car in the car table in the database using searchCars() from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/searchcar&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">searchcar</span><span class="p">():</span>
+    <span class="n">cars</span><span class="o">=</span><span class="p">{}</span>
+    <span class="n">search</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+    <span class="n">column</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;column&#39;</span><span class="p">]</span>
+        <span class="n">search</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;search&#39;</span><span class="p">]</span>
+        <span class="n">cars</span><span class="o">=</span><span class="n">mainEngine</span><span class="o">.</span><span class="n">searchCars</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">search</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;customer/searchcar.html&quot;</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="n">search</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">column</span><span class="p">,</span> <span class="n">cars</span><span class="o">=</span><span class="n">cars</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="history">
+<h2>history()<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<p>function: lists the booking history of the user in the current session from the database using
+listPersonalBookingHistory() and listCars() from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/bookhistory&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">history</span><span class="p">():</span>
+    <span class="n">bookings</span> <span class="o">=</span> <span class="n">mainEngine</span><span class="o">.</span><span class="n">listPersonalBookingHistory</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">])</span>
+    <span class="n">cars</span><span class="o">=</span><span class="n">mainEngine</span><span class="o">.</span><span class="n">listCars</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;customer/bookhistory.html&quot;</span><span class="p">,</span> <span class="n">cars</span><span class="o">=</span><span class="n">cars</span><span class="p">,</span> <span class="n">bookings</span><span class="o">=</span><span class="n">bookings</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="makebooking">
+<h2>makebooking()<a class="headerlink" href="#makebooking" title="Permalink to this headline">¶</a></h2>
+<p>function: receives the car information from the booking page and validate the booking first with
+insert_booking() from <a class="reference internal" href="google_calendar_api.html#google-calendar"><span class="std std-ref">Google Calendar Api class</span></a>, if validation succeeds, calls insertBooking() and setCarAvailability()
+from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/makebooking&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">makebooking</span><span class="p">():</span>
+    <span class="n">carID</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;car&#39;</span><span class="p">]</span>
+    <span class="n">make</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;make&#39;</span><span class="p">]</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span>
+    <span class="n">bookingID</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mainEngine</span><span class="o">.</span><span class="n">getLatestBookingID</span><span class="p">())</span><span class="o">+</span><span class="mi">1</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="n">gCalendar</span><span class="o">.</span><span class="n">insert_booking</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">bookingID</span><span class="p">),</span> <span class="n">session</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">],</span> <span class="n">make</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">valid</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;/googleAuthenticate&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mainEngine</span><span class="o">.</span><span class="n">insertBooking</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">],</span> <span class="n">carID</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
+        <span class="n">mainEngine</span><span class="o">.</span><span class="n">setCarAvailability</span><span class="p">(</span><span class="n">carID</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;/booking&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="upload-file">
+<h2>upload_file()<a class="headerlink" href="#upload-file" title="Permalink to this headline">¶</a></h2>
+<p>function:  from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/uploader&#39;</span><span class="p">,</span>  <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">upload_file</span><span class="p">():</span>
+    <span class="n">userID</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">])</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">files</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">SocketServer</span><span class="p">()</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">createEncoding</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">userID</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="booking">
+<h2>booking()<a class="headerlink" href="#booking" title="Permalink to this headline">¶</a></h2>
+<p>function: lists all the booking of the user of the current session using listPersonalOngoingBooking()
+and listCars() from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/booking&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">booking</span><span class="p">():</span>
+    <span class="n">bookings</span> <span class="o">=</span> <span class="n">mainEngine</span><span class="o">.</span><span class="n">listPersonalOngoingBooking</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">])</span>
+    <span class="n">cars</span><span class="o">=</span><span class="n">mainEngine</span><span class="o">.</span><span class="n">listCars</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;customer/booking.html&quot;</span><span class="p">,</span> <span class="n">cars</span><span class="o">=</span><span class="n">cars</span><span class="p">,</span> <span class="n">bookings</span><span class="o">=</span><span class="n">bookings</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deletebooking">
+<h2>deletebooking()<a class="headerlink" href="#deletebooking" title="Permalink to this headline">¶</a></h2>
+<p>function: cancels a booking speficied and owned by the user from the booking table by calling
+setCarAvailability() and setBookingOngoing() from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a>. It also calls delete_booking()
+from <a class="reference internal" href="google_calendar_api.html#google-calendar"><span class="std std-ref">Google Calendar Api class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/deletebooking&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">deletebooking</span><span class="p">():</span>
+    <span class="n">bookingID</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;delete&#39;</span><span class="p">]</span>
+    <span class="n">userID</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">]</span>
+    <span class="n">make</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;make&#39;</span><span class="p">]</span>
+    <span class="c1"># location = request.form[&#39;location&#39;]</span>
+    <span class="c1"># duration = request.form[&#39;duration&#39;]</span>
+    <span class="n">bookings</span> <span class="o">=</span> <span class="n">mainEngine</span><span class="o">.</span><span class="n">listPersonalOngoingBooking</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+    <span class="n">carID</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">booking</span> <span class="ow">in</span> <span class="n">bookings</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">booking</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="nb">int</span><span class="p">(</span><span class="n">bookingID</span><span class="p">):</span>
+            <span class="n">carID</span> <span class="o">=</span> <span class="n">booking</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">mainEngine</span><span class="o">.</span><span class="n">setCarAvailability</span><span class="p">(</span><span class="n">carID</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">mainEngine</span><span class="o">.</span><span class="n">setBookingOngoing</span><span class="p">(</span><span class="n">bookingID</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">gCalendar</span><span class="o">.</span><span class="n">delete_booking</span><span class="p">(</span><span class="n">bookingID</span><span class="p">,</span> <span class="n">userID</span><span class="p">,</span> <span class="n">make</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;/booking&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="googleauthenticate">
+<h2>googleAuthenticate()<a class="headerlink" href="#googleauthenticate" title="Permalink to this headline">¶</a></h2>
+<p>function: receives userID and the google authentication key from the user and calls run_authenticator() function
+from <a class="reference internal" href="authenticator_runner.html#google-authenticator-runner"><span class="std std-ref">Google Authenticator Runner</span></a>, if authentication succeeds, displays a success message from
+googleAuthenticationComplete() function. Else, prompts the user to try again.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/googleAuthenticate&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">)))</span>
+<span class="k">def</span> <span class="nf">googleAuthenticate</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span>
+        <span class="n">userID</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">]</span>
+        <span class="n">run_authenticator</span><span class="p">(</span><span class="n">userID</span><span class="p">,</span><span class="n">code</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/googleAuthenticationComplete&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;customer/googleAuthentication.html&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="googleauthenticationcomplete">
+<h2>googleAuthenticationComplete()<a class="headerlink" href="#googleauthenticationcomplete" title="Permalink to this headline">¶</a></h2>
+<p>function: displays a success message when the user successfully authenticates their google account.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/googleAuthenticationComplete&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">googleAuthenticationComplete</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;customer/googleAuthenticationComplete.html&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">IoT A2</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index_page.html">Index Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="login_page.html">Login Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="register_page.html">Register Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="customer_home_page.html">Customer Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_available_cars_page.html">Customer’s Car List page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_search_car_page.html">Customer’s Search Car page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_ongoing_booking_page.html">Customer’s Ongoing Booking page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_booking_history_page.html">Customer’s Booking History page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_google_authentication_page.html">Google Authentication page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_home_page.html">Admin Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_car_table_page.html">Admin’s Display Car Table page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_add_car_into_table_page.html">Admin’s Add Car Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_user_table_page.html">Admin’s Display User Table page</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Views class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main_engine.html">mainEngine.py class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_database_utils.html">User Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="car_database_utils.html">Car Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking_database_utils.html">Booking Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google_calendar_api.html">Google Calendar Api class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authenticator_runner.html">Google Authenticator Runner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_authenticator.html">API Authenticator</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Socket Server class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Socket Client class</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_user_database_utils.html">Unit Tests for User Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_car_database_utils.html">Unit Tests for Cars Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_booking_database_utils.html">Unit Tests for Booking Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_mainEngine.html">Unit Tests for Main Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_server.html">Unit Tests for Socket Server</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="admin_display_user_table_page.html" title="previous chapter">Admin’s Display User Table page</a></li>
+      <li>Next: <a href="main_engine.html" title="next chapter">mainEngine.py class</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sean Tan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/views.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

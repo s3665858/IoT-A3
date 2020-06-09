@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Socket Client class &#8212; IoT A2 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Unit Tests for User Database Utils" href="test_user_database_utils.html" />
+    <link rel="prev" title="Socket Server class" href="server.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="socket-client-class">
+<span id="client"></span><h1>Socket Client class<a class="headerlink" href="#socket-client-class" title="Permalink to this headline">¶</a></h1>
+<p><em>Directory: /client.py</em></p>
+<p>This class acts as a console interface for the customer on AP. It helps with user validation to unlock the
+car and also returning the car. All information received from AP is sent to the <a class="reference internal" href="server.html#socket-server"><span class="std std-ref">Socket Server class</span></a>
+in MP via sockets.</p>
+<p>Functions contained in this class:</p>
+<div class="section" id="menu-self">
+<h2>menu(self)<a class="headerlink" href="#menu-self" title="Permalink to this headline">¶</a></h2>
+<p>function: The main() function of this class. Gives the user the option to unlock the car with a username
+and password or usig face recognition. The user can also return the car using this function. The main()
+function will call the appropriate functions within this class depending on the user’s actions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="n">menu</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1.unlock car with username and password</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2.unlock car with face recognition</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;3.return the car&quot;</span><span class="p">)</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">menu</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unlockCar</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unlock&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;invalid username and password or u did not book thiscar&quot;</span><span class="p">)</span>
+            <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">menu</span> <span class="o">==</span> <span class="s1">&#39;2&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">faceunlock</span><span class="p">()</span>
+            <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">menu</span> <span class="o">==</span><span class="s2">&quot;3&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">returnCar</span><span class="p">()</span>
+            <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;invalid input&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="init-self">
+<h2>__init__(self)<a class="headerlink" href="#init-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Does something…..</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">server_address</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_address</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setuserid-self-id">
+<h2>setUserID(self, id)<a class="headerlink" href="#setuserid-self-id" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>id</em></p>
+<p>function: Set the <em>userID</em> of this class to the parameter <em>id</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setUserID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">userID</span> <span class="o">=</span> <span class="nb">id</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setcarid-self-id">
+<h2>setCarID(self,id)<a class="headerlink" href="#setcarid-self-id" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>id</em></p>
+<p>function: Set the <em>carID</em> of this class to the parameter <em>id</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setCarID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="nb">id</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">carID</span> <span class="o">=</span> <span class="nb">id</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="senddata-self-data">
+<h2>sendData(self,data)<a class="headerlink" href="#senddata-self-data" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>data</em></p>
+<p>function: Sends the <em>data</em> parameter received to the MP and gets a response back via the <a class="reference internal" href="server.html#socket-server"><span class="std std-ref">Socket Server class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sendData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">received</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">received</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unlockcar-self">
+<h2>unlockCar(self)<a class="headerlink" href="#unlockcar-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Takes in the <em>username</em> and <em>password</em> from the user through the console input. It then packages
+the <em>username</em>, <em>password</em> and <em>carID</em> into a data package and sends it to the <em>validation()</em> function
+in <a class="reference internal" href="server.html#socket-server"><span class="std std-ref">Socket Server class</span></a> from MP via the <em>sendData()</em> function in this class.
+If a success response is received, the car will be unlocked.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">unlockCar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;please input your user name:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;please input your password:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">account</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;username&quot;</span><span class="p">:</span><span class="n">username</span><span class="p">,</span><span class="s2">&quot;password&quot;</span><span class="p">:</span><span class="n">password</span><span class="p">,</span><span class="s2">&quot;carId&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">carID</span><span class="p">}</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">account</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sendData</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="returncar-self">
+<h2>returnCar(self)<a class="headerlink" href="#returncar-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Packages the <em>location</em> of the car into a data package and sends it to the <em>validation()</em>
+function in <a class="reference internal" href="server.html#socket-server"><span class="std std-ref">Socket Server class</span></a> from MP via the <em>sendData()</em> function in this class.
+If the response received is True , the car will be successfully returned.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">returnCar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Box Hill,-37.8214992,145.1086673&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="s1">&#39;carid&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">carID</span><span class="p">,</span><span class="s1">&#39;userid&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">userID</span><span class="p">,</span><span class="s1">&#39;location&#39;</span><span class="p">:</span><span class="n">location</span><span class="p">}</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sendData</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;return successfully&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;this car is not being rented&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="faceunlock-self">
+<h2>faceunlock(self)<a class="headerlink" href="#faceunlock-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Packages the facial recognition encodings into a data package and sends it to the <em>faceValidation()</em>
+function from MP via the <em>sendData()</em> function. If the userID returned matches the userID who booked
+the car, the car unlocks.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">faceunlock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">unknown_image</span> <span class="o">=</span> <span class="n">face_recognition</span><span class="o">.</span><span class="n">load_image_file</span><span class="p">(</span><span class="s2">&quot;unknown.jpg&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="s2">&quot;encoding&quot;</span><span class="p">:</span><span class="n">face_recognition</span><span class="o">.</span><span class="n">face_encodings</span><span class="p">(</span><span class="n">unknown_image</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span><span class="s2">&quot;carid&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">carID</span><span class="p">}</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">userID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sendData</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">userID</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unlock&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;your face is not in database or you did not book this car&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">IoT A2</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index_page.html">Index Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="login_page.html">Login Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="register_page.html">Register Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="customer_home_page.html">Customer Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_available_cars_page.html">Customer’s Car List page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_search_car_page.html">Customer’s Search Car page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_ongoing_booking_page.html">Customer’s Ongoing Booking page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_booking_history_page.html">Customer’s Booking History page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_google_authentication_page.html">Google Authentication page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_home_page.html">Admin Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_car_table_page.html">Admin’s Display Car Table page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_add_car_into_table_page.html">Admin’s Add Car Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_user_table_page.html">Admin’s Display User Table page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main_engine.html">mainEngine.py class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_database_utils.html">User Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="car_database_utils.html">Car Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking_database_utils.html">Booking Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google_calendar_api.html">Google Calendar Api class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authenticator_runner.html">Google Authenticator Runner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_authenticator.html">API Authenticator</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="server.html">Socket Server class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Socket Client class</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_user_database_utils.html">Unit Tests for User Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_car_database_utils.html">Unit Tests for Cars Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_booking_database_utils.html">Unit Tests for Booking Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_mainEngine.html">Unit Tests for Main Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_server.html">Unit Tests for Socket Server</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="server.html" title="previous chapter">Socket Server class</a></li>
+      <li>Next: <a href="test_user_database_utils.html" title="next chapter">Unit Tests for User Database Utils</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sean Tan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/client.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

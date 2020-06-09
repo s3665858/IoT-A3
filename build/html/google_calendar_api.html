@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Google Calendar Api class &#8212; IoT A2 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Google Authenticator Runner" href="authenticator_runner.html" />
+    <link rel="prev" title="Booking Database Utils class" href="booking_database_utils.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="google-calendar-api-class">
+<span id="google-calendar"></span><h1>Google Calendar Api class<a class="headerlink" href="#google-calendar-api-class" title="Permalink to this headline">¶</a></h1>
+<p>This function manages the Google Calendar event related to the car share application of the user.</p>
+<div class="section" id="insert-booking-self-bookingid-userid-make-location-duration">
+<h2>insert_booking(self, bookingID, userID, make, location, duration)<a class="headerlink" href="#insert-booking-self-bookingid-userid-make-location-duration" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>bookingID</em>, <em>userID</em>, <em>make</em>, <em>location</em>, <em>duration</em></p>
+<p>function: Creates a Google Calendar event in the user’s Google account according to the specified parameters.
+The <em>eventId</em> of this event is created by the following function: <em>str(100000 + int(bookingID))</em>. This is
+because Google Calendar requires the <em>eventId</em> to have at least 6 digits. Since the <em>bookingID</em> in our
+system is unique, it is the perfect parameter to be used as the <em>eventId</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insert_booking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bookingID</span><span class="p">,</span> <span class="n">userID</span><span class="p">,</span> <span class="n">make</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+    <span class="n">jsonFile</span> <span class="o">=</span> <span class="s2">&quot;google_calendar/tokens/&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span>
+    <span class="n">store</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">Storage</span><span class="p">(</span><span class="n">jsonFile</span><span class="p">)</span>
+    <span class="n">creds</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+    <span class="n">eventID</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="mi">100000</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">bookingID</span><span class="p">))</span>
+    <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">creds</span> <span class="ow">or</span> <span class="n">creds</span><span class="o">.</span><span class="n">invalid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">service</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="s2">&quot;calendar&quot;</span><span class="p">,</span> <span class="s2">&quot;v3&quot;</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">creds</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="n">Http</span><span class="p">()))</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="p">(</span><span class="n">date</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duration</span><span class="p">)))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="n">time_start</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">+10:00&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+        <span class="n">time_end</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">+10:00&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="s2">&quot;Car BookingID: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">bookingID</span><span class="p">),</span>
+            <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="n">location</span><span class="p">,</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">eventID</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Car booking for &quot;</span> <span class="o">+</span> <span class="n">make</span> <span class="o">+</span> <span class="s2">&quot;, bookingID: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">bookingID</span><span class="p">),</span>
+            <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;dateTime&quot;</span><span class="p">:</span> <span class="n">time_start</span><span class="p">,</span>
+                <span class="s2">&quot;timeZone&quot;</span><span class="p">:</span> <span class="s2">&quot;Australia/Melbourne&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;dateTime&quot;</span><span class="p">:</span> <span class="n">time_end</span><span class="p">,</span>
+                <span class="s2">&quot;timeZone&quot;</span><span class="p">:</span> <span class="s2">&quot;Australia/Melbourne&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;reminders&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;useDefault&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;overrides&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">{</span> <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;minutes&quot;</span><span class="p">:</span> <span class="mi">5</span> <span class="p">},</span>
+                    <span class="p">{</span> <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;popup&quot;</span><span class="p">,</span> <span class="s2">&quot;minutes&quot;</span><span class="p">:</span> <span class="mi">10</span> <span class="p">},</span>
+                <span class="p">],</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">events</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">calendarId</span> <span class="o">=</span> <span class="s2">&quot;primary&quot;</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">event</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="delete-booking-self-bookingid-userid-make">
+<h2>delete_booking(self, bookingID, userID, make)<a class="headerlink" href="#delete-booking-self-bookingid-userid-make" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>bookingID</em>, <em>userID</em>, <em>make</em></p>
+<p>function: Deletes a specified car share event from the user’s Google Calendar. The <em>eventId</em> is obtained
+the same way it was generated in the <em>insert_booking()</em> function: <em>str(100000 + int(bookingID))</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">delete_booking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bookingID</span><span class="p">,</span> <span class="n">userID</span><span class="p">,</span> <span class="n">make</span><span class="p">):</span>
+    <span class="n">jsonFile</span> <span class="o">=</span> <span class="s2">&quot;google_calendar/tokens/&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span>
+    <span class="n">store</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">Storage</span><span class="p">(</span><span class="n">jsonFile</span><span class="p">)</span>
+    <span class="n">creds</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+    <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">creds</span> <span class="ow">or</span> <span class="n">creds</span><span class="o">.</span><span class="n">invalid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">service</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="s2">&quot;calendar&quot;</span><span class="p">,</span> <span class="s2">&quot;v3&quot;</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">creds</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="n">Http</span><span class="p">()))</span>
+        <span class="n">eventID</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="mi">100000</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">bookingID</span><span class="p">))</span>
+        <span class="n">service</span><span class="o">.</span><span class="n">events</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">calendarId</span> <span class="o">=</span> <span class="s1">&#39;primary&#39;</span><span class="p">,</span> <span class="n">eventId</span> <span class="o">=</span> <span class="n">eventID</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">IoT A2</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index_page.html">Index Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="login_page.html">Login Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="register_page.html">Register Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="customer_home_page.html">Customer Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_available_cars_page.html">Customer’s Car List page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_search_car_page.html">Customer’s Search Car page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_ongoing_booking_page.html">Customer’s Ongoing Booking page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_booking_history_page.html">Customer’s Booking History page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_google_authentication_page.html">Google Authentication page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_home_page.html">Admin Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_car_table_page.html">Admin’s Display Car Table page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_add_car_into_table_page.html">Admin’s Add Car Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_user_table_page.html">Admin’s Display User Table page</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main_engine.html">mainEngine.py class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_database_utils.html">User Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="car_database_utils.html">Car Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking_database_utils.html">Booking Database Utils class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Google Calendar Api class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authenticator_runner.html">Google Authenticator Runner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_authenticator.html">API Authenticator</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Socket Server class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Socket Client class</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_user_database_utils.html">Unit Tests for User Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_car_database_utils.html">Unit Tests for Cars Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_booking_database_utils.html">Unit Tests for Booking Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_mainEngine.html">Unit Tests for Main Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_server.html">Unit Tests for Socket Server</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="booking_database_utils.html" title="previous chapter">Booking Database Utils class</a></li>
+      <li>Next: <a href="authenticator_runner.html" title="next chapter">Google Authenticator Runner</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sean Tan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/google_calendar_api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

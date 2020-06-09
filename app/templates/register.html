@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<title>Register</title>
+	</head>
+	<body>
+		<div class="box">
+			<h1>Please input a username and password to create your account</h1>
+			{% if registered==True%}
+				<div>Successful Registration!</div>
+			{% endif %}
+			{% if usernameDuplicate==True%}
+				<div>Username is already used, pick another one</div>
+			{% endif %}
+			{% if usernameInvalid==True%}
+				<div>Username can only contain letters and numbers!</div>
+			{% endif %}
+			<form method=post action="/register">
+				<table>
+					<tr>    
+						<td><label>Username</label></td>
+						<td><input type="text" name='username' required> </td>
+					</tr>
+					<tr>                    
+						<td><label>Password</label required> </td>
+						<td><input type="password" name='password'> </td>
+					</tr>
+					<tr>    
+						<td><label>Firstname</label></td>
+						<td><input type="text" name='fname' required> </td>
+					</tr>
+					<tr>                    
+						<td><label>Lastname</label required> </td>
+						<td><input type="text" name='lname'> </td>
+					</tr>
+					<tr>    
+						<td><label>Email</label></td>
+						<td><input type="email" name='email' required> </td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="submit" value="Submit"></td>
+					</tr>
+				</table>
+			</form>
+			<div><a href="login">Already have an account? Login instead.</a></div>
+			<div><a href="/">Back to main menu</a></div>
+		</div>
+	</body>
+</html>
+
+<style>
+	.box{
+		text-align:center;
+	}
+	footer{
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 2.5rem; 
+	}
+	table{
+		margin-left:auto;
+		margin-right: auto;
+		text-align:center;  
+		border-spacing:5px;
+	}
+</style>

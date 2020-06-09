@@ -1,0 +1,43 @@
+{% extends "adminbase.html" %}
+{% block title %}Add Car{% endblock %}
+{% block body %}
+<div class="box">
+	<div id="addCar">
+		<h2> Add Car</h2>
+		<form method=post action="addcar">
+			<table id="addCarTable">
+				<tr>    
+					<td><label>Make</label></td>
+					<td><input type="text" name='name' required> </td>
+				</tr>
+				<tr>                    
+					<td><label>Body Type</label required> </td>
+					<td><select name='bodytype'>
+							<option value="SUV">SUV</option>
+							<option value="Sedan">Sedan</option>
+							<option value="Coupe">Coupe</option>
+							<option value="Pickup">Pickup</option></select>
+					</td>
+				</tr>
+				<tr>    
+					<td><label>Colour</label></td>
+					<td><input type="text" name='colour' required> </td>
+				</tr>
+				<tr>                    
+					<td><label>Seats</label required> </td>
+					<td><input type="number" min="0" max="10" name='seats'> </td>
+				</tr>
+				<tr>    
+					<td><label>Location</label></td>
+					<td><input type="text" name='location' required> </td>
+				</tr>
+				<tr>                    
+					<td><label>Cost</label required> </td>
+					<td><input type="number" name='cost'> </td>
+				</tr>
+			</table>
+			<input type="submit" value="Add">
+		</form>
+	</div>
+</div>
+{% endblock %}

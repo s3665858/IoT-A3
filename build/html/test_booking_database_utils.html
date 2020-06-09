@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Unit Tests for Booking Database Utils &#8212; IoT A2 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Unit Tests for Main Engine" href="test_mainEngine.html" />
+    <link rel="prev" title="Unit Tests for Cars Database Utils" href="test_car_database_utils.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="unit-tests-for-booking-database-utils">
+<h1>Unit Tests for Booking Database Utils<a class="headerlink" href="#unit-tests-for-booking-database-utils" title="Permalink to this headline">¶</a></h1>
+<p>This class contains unit test functions for <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>. Instead of running the queries
+on the actual databse, we run them in <em>TestData</em> which is our database for unit testing.</p>
+<p>Functions contained in this class:</p>
+<div class="section" id="setup-self">
+<h2>setUp(self)<a class="headerlink" href="#setup-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Creates the Booking Table in our <em>TestData</em> database.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">MySQLdb</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">TestDatabaseUtils</span><span class="o">.</span><span class="n">HOST</span><span class="p">,</span> <span class="n">TestDatabaseUtils</span><span class="o">.</span><span class="n">USER</span><span class="p">,</span>
+        <span class="n">TestDatabaseUtils</span><span class="o">.</span><span class="n">PASSWORD</span><span class="p">,</span> <span class="n">TestDatabaseUtils</span><span class="o">.</span><span class="n">DATABASE</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;drop table if exists Booking&quot;</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            create table if not exists Booking (</span>
+<span class="s2">                bookingID int not null auto_increment,</span>
+<span class="s2">                userID int not null,</span>
+<span class="s2">                CarID int not null,</span>
+<span class="s2">                duration text not null,</span>
+<span class="s2">                ongoing int not null,</span>
+<span class="s2">                constraint PK_Car primary key (bookingID)</span>
+<span class="s2">            )&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into Booking (userID, CarID, duration, ongoing) values (1, 1, &#39;3&#39;, 1)&quot;</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into Booking (userID, CarID, duration, ongoing) values (1, 2, &#39;2&#39;, 1)&quot;</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into Booking (userID, CarID, duration, ongoing) values (2, 3, &#39;5&#39;, 1)&quot;</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into Booking (userID, CarID, duration, ongoing) values (2, 3, &#39;5&#39;, 0)&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="teardown-self">
+<h2>tearDown(self)<a class="headerlink" href="#teardown-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Closes the connection to the database.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="countbooking-self">
+<h2>countBooking(self)<a class="headerlink" href="#countbooking-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Counts the number of bookings in the database for testing the functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">countBooking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Booking&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="countbookingbyid-self-userid">
+<h2>countBookingByID(self, userID)<a class="headerlink" href="#countbookingbyid-self-userid" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>userID</em></p>
+<p>function: Counts the number of bookings with value of <em>userID</em> being the parameter <em>userID</em>
+in the database for testing the functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">countBookingByID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userID</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Booking where userID = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">userID</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="countongoingbookingbyid-self-userid">
+<h2>countOngoingBookingByID(self, userID)<a class="headerlink" href="#countongoingbookingbyid-self-userid" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>userID</em></p>
+<p>function: Counts the number of bookings with value of <em>userID</em> being the parameter <em>userID</em> and the
+value <em>ongoing</em> being 1 in the database for testing the functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">countOngoingBookingByID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userID</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Booking where userID = </span><span class="si">%s</span><span class="s2"> and ongoing = 1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">userID</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="bookingexists-self-bookingid">
+<h2>bookingExists(self, bookingID)<a class="headerlink" href="#bookingexists-self-bookingid" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>bookingID</em></p>
+<p>function: Checks if the booking with the <em>bookingID</em> parameter given exist in the table.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bookingExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bookingID</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Booking where bookingID = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">bookingID</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="bookingisongoing-self-bookingid">
+<h2>bookingIsOngoing(self, bookingID)<a class="headerlink" href="#bookingisongoing-self-bookingid" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>bookingID</em></p>
+<p>function: Checks if the booking with the <em>bookingID</em> parameter given and value <em>ongoing</em> being 1
+exist in the table.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bookingIsOngoing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bookingID</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Booking where bookingID = </span><span class="si">%s</span><span class="s2"> and ongoing = 1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">bookingID</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="bookingisdurationvalue-self-bookingid-duration">
+<h2>bookingIsDurationValue(self, bookingID, duration)<a class="headerlink" href="#bookingisdurationvalue-self-bookingid-duration" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>bookingID</em>, <em>duration</em></p>
+<p>function: Checks if the booking with the <em>bookingID</em> parameter given and value <em>duration</em> being the
+<em>duration</em> parameter given exist in the table.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bookingIsDurationValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bookingID</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from Booking where bookingID = </span><span class="si">%s</span><span class="s2"> and duration = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">bookingID</span><span class="p">,</span> <span class="n">duration</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-insertbooking-self">
+<h2>test_insertBooking(self)<a class="headerlink" href="#test-insertbooking-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>insertBooking()</em> from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>. First it counts the number
+of bookings with <em>countBooking()</em>, then adds some bookings into the database and then make sure the counts increases accordingly.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_insertBooking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">countBooking</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">insertBooking</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">countBooking</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">insertBooking</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">count</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">countBooking</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-listallbooking-self">
+<h2>test_listAllBooking(self)<a class="headerlink" href="#test-listallbooking-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>listAllBooking()</em> from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>. The test is made by
+comparing the number obtained from <em>countBooking()</em> with it.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_listAllBooking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">countBooking</span><span class="p">()</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">listAllBooking</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-listpersonalbookinghistory-self">
+<h2>test_listPersonalBookingHistory(self)<a class="headerlink" href="#test-listpersonalbookinghistory-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>listPersonalBookingHistory()</em> from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>. Using a
+test variable of <em>userID = 1</em>, the test is made by comparing the number obtained from
+<em>countBookingByID(userID)</em> with it.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_listPersonalBookingHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">userID</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">countBookingByID</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">listPersonalBookingHistory</span><span class="p">(</span><span class="n">userID</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-listpersonalongoingbooking-self">
+<h2>test_listPersonalOngoingBooking(self)<a class="headerlink" href="#test-listpersonalongoingbooking-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>listPersonalOngoingBooking()</em> from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>. Using a
+test variable of <em>userID = 1</em>, the test is made by comparing the number obtained from
+<em>countOngoingBookingByID(userID)</em> with it.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_listPersonalOngoingBooking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">userID</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">countOngoingBookingByID</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">listPersonalOngoingBooking</span><span class="p">(</span><span class="n">userID</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-cancelbooking-self">
+<h2>test_cancelBooking(self)<a class="headerlink" href="#test-cancelbooking-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>cancelBooking()</em> from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>. First it counts the number
+of bookings with <em>countUser()</em>, then deletes a booking from the database and then make sure the count decreases by 1.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_cancelBooking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">countBooking</span><span class="p">()</span>
+        <span class="n">bookingID</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bookingExists</span><span class="p">(</span><span class="n">bookingID</span><span class="p">))</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">cancelBooking</span><span class="p">(</span><span class="n">bookingID</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bookingExists</span><span class="p">(</span><span class="n">bookingID</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">countBooking</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-setbookingongoing-self">
+<h2>test_setBookingOngoing(self)<a class="headerlink" href="#test-setbookingongoing-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>setBookingOngoing()</em> from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>. Using a test
+variable of <em>bookingID = 4</em>, the <em>ongoing</em> value for this car would be initially 0, then set to 1 and check if it works.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_setBookingOngoing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">bookingID</span> <span class="o">=</span> <span class="mi">4</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bookingExists</span><span class="p">(</span><span class="n">bookingID</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bookingIsOngoing</span><span class="p">(</span><span class="n">bookingID</span><span class="p">))</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">setBookingOngoing</span><span class="p">(</span><span class="n">bookingID</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bookingIsOngoing</span><span class="p">(</span><span class="n">bookingID</span><span class="p">))</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">setBookingOngoing</span><span class="p">(</span><span class="n">bookingID</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bookingIsOngoing</span><span class="p">(</span><span class="n">bookingID</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-setbookingduration-self">
+<h2>test_setBookingDuration(self)<a class="headerlink" href="#test-setbookingduration-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Tests the function <em>setBookingDuration()</em> from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>. Using a test
+variable of <em>bookingID = 4</em> and <em>duration = 1</em>, the <em>duration</em> value for this booking would
+initially not equal <em>duration</em>, then it would be set to the <em>duration</em> value and then check if it was
+changed.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_setBookingDuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">bookingID</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bookingExists</span><span class="p">(</span><span class="n">bookingID</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bookingIsDurationValue</span><span class="p">(</span><span class="n">bookingID</span><span class="p">,</span> <span class="n">duration</span><span class="p">))</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">setBookingDuration</span><span class="p">(</span><span class="n">bookingID</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bookingIsDurationValue</span><span class="p">(</span><span class="n">bookingID</span><span class="p">,</span> <span class="n">duration</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">IoT A2</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index_page.html">Index Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="login_page.html">Login Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="register_page.html">Register Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="customer_home_page.html">Customer Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_available_cars_page.html">Customer’s Car List page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_search_car_page.html">Customer’s Search Car page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_ongoing_booking_page.html">Customer’s Ongoing Booking page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_booking_history_page.html">Customer’s Booking History page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_google_authentication_page.html">Google Authentication page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_home_page.html">Admin Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_car_table_page.html">Admin’s Display Car Table page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_add_car_into_table_page.html">Admin’s Add Car Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_user_table_page.html">Admin’s Display User Table page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main_engine.html">mainEngine.py class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_database_utils.html">User Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="car_database_utils.html">Car Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking_database_utils.html">Booking Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google_calendar_api.html">Google Calendar Api class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authenticator_runner.html">Google Authenticator Runner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_authenticator.html">API Authenticator</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Socket Server class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Socket Client class</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="test_user_database_utils.html">Unit Tests for User Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_car_database_utils.html">Unit Tests for Cars Database Utils</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Unit Tests for Booking Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_mainEngine.html">Unit Tests for Main Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_server.html">Unit Tests for Socket Server</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="test_car_database_utils.html" title="previous chapter">Unit Tests for Cars Database Utils</a></li>
+      <li>Next: <a href="test_mainEngine.html" title="next chapter">Unit Tests for Main Engine</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sean Tan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/test_booking_database_utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

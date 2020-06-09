@@ -1,0 +1,482 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>mainEngine.py class &#8212; IoT A2 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="User Database Utils class" href="user_database_utils.html" />
+    <link rel="prev" title="Views class" href="views.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="mainengine-py-class">
+<span id="main-engine"></span><h1>mainEngine.py class<a class="headerlink" href="#mainengine-py-class" title="Permalink to this headline">¶</a></h1>
+<p><em>Directory: /mainEngine.py</em></p>
+<p>This class functions as our system’s controller, the functions within this class calls functions from
+the classes below to manage information in various tables from the database:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a></p></li>
+<li><p><a class="reference internal" href="user_database_utils.html#user-database-utils"><span class="std std-ref">User Database Utils class</span></a></p></li>
+<li><p><a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a></p></li>
+</ul>
+<p>Functions contained in this class:</p>
+<div class="section" id="init-self">
+<h2>__init__(self)<a class="headerlink" href="#init-self" title="Permalink to this headline">¶</a></h2>
+<p>function: initialises the user, car and booking tables.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">createUserTable</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">createCarTable</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">createBookingTable</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="createusertable-self">
+<h2>createUserTable(self)<a class="headerlink" href="#createusertable-self" title="Permalink to this headline">¶</a></h2>
+<p>function: calls createUserTable() from <a class="reference internal" href="user_database_utils.html#user-database-utils"><span class="std std-ref">User Database Utils class</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">createUserTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">UserDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">createUserTable</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getuser-self-username">
+<h2>getUser(self, username)<a class="headerlink" href="#getuser-self-username" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>username</em></p>
+<p>function: calls getUser() from <a class="reference internal" href="user_database_utils.html#user-database-utils"><span class="std std-ref">User Database Utils class</span></a>. For each user with the same username as <em>username</em>,
+returns the user.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">getUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">UserDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">getUser</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">user</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">username</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">user</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="listusers-self">
+<h2>listUsers(self)<a class="headerlink" href="#listusers-self" title="Permalink to this headline">¶</a></h2>
+<p>function: calls getUser() from <a class="reference internal" href="user_database_utils.html#user-database-utils"><span class="std std-ref">User Database Utils class</span></a>. Returns the entire list of users.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">listUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">UserDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">getUser</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="register-self-username-password-fname-lname-email">
+<h2>register(self, username, password, fname, lname, email)<a class="headerlink" href="#register-self-username-password-fname-lname-email" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>username</em>, <em>password</em>, <em>fname</em>, <em>lname</em>, <em>email</em></p>
+<p>function: calls insertUser(<em>username</em>, self.hash_password(<em>password</em>), <em>fname</em>, <em>lname</em>, <em>email</em>, <em>‘c’</em>)
+from <a class="reference internal" href="user_database_utils.html#user-database-utils"><span class="std std-ref">User Database Utils class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">lname</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">UserDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insertUser</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hash_password</span><span class="p">(</span><span class="n">password</span><span class="p">),</span> <span class="n">fname</span><span class="p">,</span> <span class="n">lname</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deleteuser-self-userid">
+<h2>deleteUser(self, userID)<a class="headerlink" href="#deleteuser-self-userid" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>userID</em></p>
+<p>function: calls deleteUser(userID) from <a class="reference internal" href="user_database_utils.html#user-database-utils"><span class="std std-ref">User Database Utils class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">deleteUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userID</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">UserDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">deleteUser</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="login-self-username-password">
+<h2>login(self, username, password)<a class="headerlink" href="#login-self-username-password" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>username</em>, <em>password</em></p>
+<p>function: calls getUser() from <a class="reference internal" href="user_database_utils.html#user-database-utils"><span class="std std-ref">User Database Utils class</span></a>. From the list of users received, compares
+the username received to the list of users, if a matching username is found, verify the matching user’s
+hash password.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="c1"># constant name and hashed password to imitate stored username and encrypted password</span>
+    <span class="k">with</span> <span class="n">UserDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">getUser</span><span class="p">():</span>
+            <span class="n">find</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">user</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">username</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify_password</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">password</span><span class="p">):</span>
+                <span class="n">find</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">find</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">find</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="hash-password-self-password">
+<h2>hash_password(self, password)<a class="headerlink" href="#hash-password-self-password" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>password</em></p>
+<p>function: creates a salt and transform a password from its text form into a hash.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hash_password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Hash a password for storing.&quot;&quot;&quot;</span>
+    <span class="n">salt</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">60</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+    <span class="n">passwordhash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">pbkdf2_hmac</span><span class="p">(</span><span class="s1">&#39;sha512&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span> <span class="n">salt</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span>
+    <span class="n">passwordhash</span> <span class="o">=</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">passwordhash</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">salt</span> <span class="o">+</span> <span class="n">passwordhash</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="verify-password-self-stored-password-provided-password">
+<h2>verify_password(self, stored_password, provided_password)<a class="headerlink" href="#verify-password-self-stored-password-provided-password" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>stored_password</em>, <em>provided_password</em></p>
+<p>function: verifies the <em>provided_password</em> from the user by hashing it with the same salt value it was
+originally hashed and compares it with the <em>stored_password</em> which is in hash form.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">verify_password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stored_password</span><span class="p">,</span> <span class="n">provided_password</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verify a stored password against one provided by user&quot;&quot;&quot;</span>
+    <span class="n">salt</span> <span class="o">=</span> <span class="n">stored_password</span><span class="p">[:</span><span class="mi">64</span><span class="p">]</span>
+    <span class="n">stored_password</span> <span class="o">=</span> <span class="n">stored_password</span><span class="p">[</span><span class="mi">64</span><span class="p">:]</span>
+    <span class="n">pwdhash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">pbkdf2_hmac</span><span class="p">(</span><span class="s1">&#39;sha512&#39;</span><span class="p">,</span>
+                                  <span class="n">provided_password</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+                                  <span class="n">salt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">),</span>
+                                  <span class="mi">100000</span><span class="p">)</span>
+    <span class="n">pwdhash</span> <span class="o">=</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">pwdhash</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pwdhash</span> <span class="o">==</span> <span class="n">stored_password</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-duplicate-username-self-username">
+<h2>check_duplicate_username(self, username)<a class="headerlink" href="#check-duplicate-username-self-username" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>username</em></p>
+<p>function: calls getUser(<em>username</em>) from <a class="reference internal" href="user_database_utils.html#user-database-utils"><span class="std std-ref">User Database Utils class</span></a>. Checks the entire list of users
+with <em>username</em>. Returns true if a match is found, else returns false.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_duplicate_username</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
+    <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">getUser</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">user</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">username</span><span class="p">:</span>
+             <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span> <span class="c1"># for now</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-isalnum-username-self-username">
+<h2>check_isalnum_username(self, username)<a class="headerlink" href="#check-isalnum-username-self-username" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>username</em></p>
+<p>function: checks if <em>username</em> only contains alphanumeric characters using isalnum().</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_isalnum_username</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">username</span><span class="o">.</span><span class="n">isalnum</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="createcartable-self">
+<h2>createCarTable(self)<a class="headerlink" href="#createcartable-self" title="Permalink to this headline">¶</a></h2>
+<p>function: calls createCarTable() from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">createCarTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">createCarTable</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="listcars-self">
+<h2>listCars(self)<a class="headerlink" href="#listcars-self" title="Permalink to this headline">¶</a></h2>
+<p>function: calls listCars() from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. Returns the entire list of cars.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">listCars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">listCars</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="listavailablecars-self">
+<h2>listAvailableCars(self)<a class="headerlink" href="#listavailablecars-self" title="Permalink to this headline">¶</a></h2>
+<p>function: calls listAvailableCars() from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. Returns the entire list of available cars.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">listAvailableCars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">listAvailableCars</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="insertcar-self-make-body-type-colour-seats-location-cost-per-hour">
+<h2>insertCar(self, make, body_type, colour, seats, location, cost_per_hour)<a class="headerlink" href="#insertcar-self-make-body-type-colour-seats-location-cost-per-hour" title="Permalink to this headline">¶</a></h2>
+<p>paramaters: <em>make</em>, <em>body_type</em>, <em>colour</em>, <em>seats</em>, <em>location</em>, <em>cost_per_hour</em></p>
+<p>function: calls (<em>make</em>, <em>body_type</em>, <em>colour</em>, int(<em>seats</em>), <em>location</em>, int(<em>cost_per_hour</em>), 1) from
+<a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insertCar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">make</span><span class="p">,</span> <span class="n">body_type</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="n">seats</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">cost_per_hour</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insertCar</span><span class="p">(</span><span class="n">make</span><span class="p">,</span> <span class="n">body_type</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">seats</span><span class="p">),</span> <span class="n">location</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">cost_per_hour</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="searchcars-self-column-search">
+<h2>searchCars(self, column, search)<a class="headerlink" href="#searchcars-self-column-search" title="Permalink to this headline">¶</a></h2>
+<p>paramaters: <em>column</em>, <em>search</em></p>
+<p>function: depending on the string value received in <em>column</em> call the appropriate search car function in
+<a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">searchCars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">search</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">column</span><span class="o">==</span><span class="s2">&quot;make&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">searchCarsbyMake</span><span class="p">(</span><span class="n">search</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="c1">#.lower() makes it lowercase</span>
+        <span class="k">elif</span> <span class="n">column</span><span class="o">==</span><span class="s2">&quot;body_type&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">searchCarsbyType</span><span class="p">(</span><span class="n">search</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">column</span><span class="o">==</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">searchCarsbyColour</span><span class="p">(</span><span class="n">search</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">column</span><span class="o">==</span><span class="s2">&quot;seats&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">searchCarsbySeats</span><span class="p">(</span><span class="n">search</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">column</span><span class="o">==</span><span class="s2">&quot;location&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">searchCarsbyLocation</span><span class="p">(</span><span class="n">search</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">column</span><span class="o">==</span><span class="s2">&quot;cost&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">searchCarsbyCost</span><span class="p">(</span><span class="n">search</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getcar-self-carid">
+<h2>getCar(self, CarID)<a class="headerlink" href="#getcar-self-carid" title="Permalink to this headline">¶</a></h2>
+<p>paramaters: <em>CarID</em></p>
+<p>function: calls listCars() from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>. Search through the list of cars and return
+the car with the matching <em>CarID</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">getCar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CarID</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">car</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">listCars</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">car</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="n">CarID</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">car</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deletecar-self-carid">
+<h2>deleteCar(self, CarID)<a class="headerlink" href="#deletecar-self-carid" title="Permalink to this headline">¶</a></h2>
+<p>paramaters: <em>CarID</em></p>
+<p>function: calls deleteCar(int(<em>CarID</em>)) from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">deleteCar</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">CarID</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setcaravailability-self-carid-availability">
+<h2>setCarAvailability(self, CarID, Availability)<a class="headerlink" href="#setcaravailability-self-carid-availability" title="Permalink to this headline">¶</a></h2>
+<p>paramaters: <em>CarID</em>, <em>Availability</em></p>
+<p>function: calls setCarAvailability(<em>CarID</em>, <em>Availability</em>) from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setCarAvailability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CarID</span><span class="p">,</span> <span class="n">Availability</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">setCarAvailability</span><span class="p">(</span><span class="n">CarID</span><span class="p">,</span> <span class="n">Availability</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setcarlocation-self-carid-location">
+<h2>setCarLocation(self, CarID, location)<a class="headerlink" href="#setcarlocation-self-carid-location" title="Permalink to this headline">¶</a></h2>
+<p>paramaters: <em>CarID</em>, <em>location</em></p>
+<p>function: calls setCarLocation(<em>CarID</em>, <em>location</em>) from <a class="reference internal" href="car_database_utils.html#car-database-utils"><span class="std std-ref">Car Database Utils class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setCarLocation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CarID</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">CarDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">setCarLocation</span><span class="p">(</span><span class="n">CarID</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="createbookingtable-self">
+<h2>createBookingTable(self)<a class="headerlink" href="#createbookingtable-self" title="Permalink to this headline">¶</a></h2>
+<p>function: calls createBookingTable() from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">createBookingTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">createBookingTable</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="insertbooking-self-userid-carid-duration">
+<h2>insertBooking(self, userID, CarID, duration)<a class="headerlink" href="#insertbooking-self-userid-carid-duration" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>userID</em>, <em>CarID</em>, <em>duration</em></p>
+<p>function: calls insertBooking(<em>userID</em>, <em>CarID</em>, <em>duration</em>, 1) from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insertBooking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userID</span><span class="p">,</span> <span class="n">CarID</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insertBooking</span><span class="p">(</span><span class="n">userID</span><span class="p">,</span> <span class="n">CarID</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="listallbooking-self">
+<h2>listAllBooking(self)<a class="headerlink" href="#listallbooking-self" title="Permalink to this headline">¶</a></h2>
+<p>function: calls listAllBooking() from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>. Returns the entire list of bookings.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">listAllBooking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">listAllBooking</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="listpersonalbookinghistory-self-userid">
+<h2>listPersonalBookingHistory(self, userID)<a class="headerlink" href="#listpersonalbookinghistory-self-userid" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>userID</em></p>
+<p>function: calls listPersonalBookingHistory(<em>userID</em>) from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>. Returns the entire list of personal bookings.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">listPersonalBookingHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userID</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">listPersonalBookingHistory</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="listpersonalongoingbooking-self-userid">
+<h2>listPersonalOngoingBooking(self, userID)<a class="headerlink" href="#listpersonalongoingbooking-self-userid" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>userID</em></p>
+<p>function: calls listPersonalOngoingBooking(<em>userID</em>) from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>. Returns the entire list of ongoing bookings.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">listPersonalOngoingBooking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userID</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">listPersonalOngoingBooking</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cancelbooking-self-bookingid">
+<h2>cancelBooking(self, bookingID)<a class="headerlink" href="#cancelbooking-self-bookingid" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>bookingID</em></p>
+<p>function: calls cancelBooking(<em>bookingID</em>) from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cancelBooking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bookingID</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">cancelBooking</span><span class="p">(</span><span class="n">bookingID</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setbookingongoing-self-bookingid-ongoing">
+<h2>setBookingOngoing(self, bookingID, ongoing)<a class="headerlink" href="#setbookingongoing-self-bookingid-ongoing" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>bookingID</em>, <em>ongoing</em></p>
+<p>function: calls setBookingOngoing(<em>bookingID</em>, <em>ongoing</em>) from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setBookingOngoing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bookingID</span><span class="p">,</span> <span class="n">ongoing</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">setBookingOngoing</span><span class="p">(</span><span class="n">bookingID</span><span class="p">,</span> <span class="n">ongoing</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setbookingduration-self-bookingid-duration">
+<h2>setBookingDuration(self, bookingID, duration)<a class="headerlink" href="#setbookingduration-self-bookingid-duration" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>bookingID</em>, <em>duration</em></p>
+<p>function: calls setBookingDuration(<em>bookingID</em>, <em>duration</em>) from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setBookingDuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bookingID</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">setBookingDuration</span><span class="p">(</span><span class="n">bookingID</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getlatestbookingid-self">
+<h2>getLatestBookingID(self)<a class="headerlink" href="#getlatestbookingid-self" title="Permalink to this headline">¶</a></h2>
+<p>function: calls getLatestBookingId() from <a class="reference internal" href="booking_database_utils.html#booking-database-utils"><span class="std std-ref">Booking Database Utils class</span></a>. Returns the first booking ID.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">getLatestBookingID</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">BookingDatabaseUtils</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">bookingID</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">getLatestBookingId</span><span class="p">():</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">bookingID</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">IoT A2</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index_page.html">Index Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="login_page.html">Login Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="register_page.html">Register Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="customer_home_page.html">Customer Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_available_cars_page.html">Customer’s Car List page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_search_car_page.html">Customer’s Search Car page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_ongoing_booking_page.html">Customer’s Ongoing Booking page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_booking_history_page.html">Customer’s Booking History page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_google_authentication_page.html">Google Authentication page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_home_page.html">Admin Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_car_table_page.html">Admin’s Display Car Table page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_add_car_into_table_page.html">Admin’s Add Car Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_user_table_page.html">Admin’s Display User Table page</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">mainEngine.py class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_database_utils.html">User Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="car_database_utils.html">Car Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking_database_utils.html">Booking Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google_calendar_api.html">Google Calendar Api class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authenticator_runner.html">Google Authenticator Runner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_authenticator.html">API Authenticator</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Socket Server class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Socket Client class</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_user_database_utils.html">Unit Tests for User Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_car_database_utils.html">Unit Tests for Cars Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_booking_database_utils.html">Unit Tests for Booking Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_mainEngine.html">Unit Tests for Main Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_server.html">Unit Tests for Socket Server</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="views.html" title="previous chapter">Views class</a></li>
+      <li>Next: <a href="user_database_utils.html" title="next chapter">User Database Utils class</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sean Tan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/main_engine.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

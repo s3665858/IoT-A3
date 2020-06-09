@@ -1,0 +1,344 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Car Database Utils class &#8212; IoT A2 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Booking Database Utils class" href="booking_database_utils.html" />
+    <link rel="prev" title="User Database Utils class" href="user_database_utils.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="car-database-utils-class">
+<span id="car-database-utils"></span><h1>Car Database Utils class<a class="headerlink" href="#car-database-utils-class" title="Permalink to this headline">¶</a></h1>
+<p>This class manages the <em>Cars</em> Table in our database <em>Data</em> by executing MySQL the appropriate queries.</p>
+<p>Functions contained in this class:</p>
+<div class="section" id="init-self-connection-none">
+<h2>__init__(self, connection = None)<a class="headerlink" href="#init-self-connection-none" title="Permalink to this headline">¶</a></h2>
+<p>parameters: connection</p>
+<p>function: If a connection is not established, establish a connection on MySQLdb with our private credentials.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">connection</span> <span class="o">==</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">MySQLdb</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">CarDatabaseUtils</span><span class="o">.</span><span class="n">HOST</span><span class="p">,</span> <span class="n">CarDatabaseUtils</span><span class="o">.</span><span class="n">USER</span><span class="p">,</span>
+            <span class="n">CarDatabaseUtils</span><span class="o">.</span><span class="n">PASSWORD</span><span class="p">,</span> <span class="n">CarDatabaseUtils</span><span class="o">.</span><span class="n">DATABASE</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="close-self">
+<h2>close(self)<a class="headerlink" href="#close-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Closes the connection with the database.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enter-self">
+<h2>__enter__(self)<a class="headerlink" href="#enter-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Return the class itself.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exit-self-type-value-traceback">
+<h2>__exit__(self, type, value, traceback)<a class="headerlink" href="#exit-self-type-value-traceback" title="Permalink to this headline">¶</a></h2>
+<p>function: Executes close()</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="createcartable-self">
+<h2>createCarTable(self)<a class="headerlink" href="#createcartable-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Creates and initialises the Cars table</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">createCarTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            create table if not exists Cars (</span>
+<span class="s2">                CarID int not null auto_increment,</span>
+<span class="s2">                make text not null,</span>
+<span class="s2">                body_type text not null,</span>
+<span class="s2">                colour text not null,</span>
+<span class="s2">                seats int not null,</span>
+<span class="s2">                location text not null,</span>
+<span class="s2">                cost_per_hour int not null,</span>
+<span class="s2">                available int not null,</span>
+<span class="s2">                constraint PK_Car primary key (CarID)</span>
+<span class="s2">            )&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="insertcar-self-make-body-type-colour-seats-location-cost-per-hour-availability">
+<h2>insertCar(self, make, body_type, colour, seats, location, cost_per_hour, availability)<a class="headerlink" href="#insertcar-self-make-body-type-colour-seats-location-cost-per-hour-availability" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>make</em>, <em>body_type</em>, <em>colour</em>, <em>seats</em>, <em>location</em>, <em>cost_per_hour</em>, <em>availability</em></p>
+<p>function: Inserts a car with the given parameters into the Cars table</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">insertCar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">make</span><span class="p">,</span> <span class="n">body_type</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="n">seats</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">cost_per_hour</span><span class="p">,</span> <span class="n">availability</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into Cars (make, body_type, colour, seats, location, cost_per_hour, available) values (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">make</span><span class="p">,</span> <span class="n">body_type</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="n">seats</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">cost_per_hour</span><span class="p">,</span><span class="n">availability</span><span class="p">,))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="listcars-self">
+<h2>listCars(self)<a class="headerlink" href="#listcars-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Query for all the rows in the Cars table</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">listCars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select * from Cars&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="listavailablecars-self">
+<h2>listAvailableCars(self)<a class="headerlink" href="#listavailablecars-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Query for all the rows in the Cars table where the <em>avaiable</em> column contains the value 1 (1 means that the car is available)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">listAvailableCars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select * from Cars WHERE available = 1&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="searchcarsbymake-self-search">
+<h2>searchCarsbyMake(self, search)<a class="headerlink" href="#searchcarsbymake-self-search" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>search</em></p>
+<p>function: Query for all the rows in the Cars table where the <em>make</em> column has a similar value to <em>search</em>
+using the <em>LIKE</em> keyword</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">searchCarsbyMake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select * from Cars WHERE lower(make) like </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;%&#39;</span> <span class="o">+</span><span class="n">search</span> <span class="o">+</span> <span class="s1">&#39;%&#39;</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="searchcarsbytype-self-search">
+<h2>searchCarsbyType(self, search)<a class="headerlink" href="#searchcarsbytype-self-search" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>search</em></p>
+<p>function: Query for all the rows in the Cars table where the <em>body_type</em> column has a similar value to <em>search</em>
+using the <em>LIKE</em> keyword</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">searchCarsbyType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select * from Cars WHERE lower(body_type) like </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;%&#39;</span> <span class="o">+</span><span class="n">search</span> <span class="o">+</span> <span class="s1">&#39;%&#39;</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="searchcarsbycolour-self-search">
+<h2>searchCarsbyColour(self, search)<a class="headerlink" href="#searchcarsbycolour-self-search" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>search</em></p>
+<p>function: Query for all the rows in the Cars table where the <em>colour</em> column has a similar value to <em>search</em>
+using the <em>LIKE</em> keyword</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">searchCarsbyColour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select * from Cars WHERE lower(colour) like </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;%&#39;</span> <span class="o">+</span><span class="n">search</span> <span class="o">+</span> <span class="s1">&#39;%&#39;</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="searchcarsbyseats-self-search">
+<h2>searchCarsbySeats(self, search)<a class="headerlink" href="#searchcarsbyseats-self-search" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>search</em></p>
+<p>function: Query for all the rows in the Cars table where the <em>seats</em> column has the same value to <em>search</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">searchCarsbySeats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select * from Cars WHERE seats = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">search</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="searchcarsbylocation-self-search">
+<h2>searchCarsbyLocation(self, search)<a class="headerlink" href="#searchcarsbylocation-self-search" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>search</em></p>
+<p>function: Query for all the rows in the Cars table where the <em>location</em> column has a similar value to <em>search</em>
+using the <em>LIKE</em> keyword</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">searchCarsbyLocation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select * from Cars WHERE lower(location) like </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;%&#39;</span> <span class="o">+</span><span class="n">search</span> <span class="o">+</span> <span class="s1">&#39;%&#39;</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="searchcarsbycost-self-search">
+<h2>searchCarsbyCost(self, search)<a class="headerlink" href="#searchcarsbycost-self-search" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>search</em></p>
+<p>function: Query for all the rows in the Cars table where the <em>cost_per_hour</em> column has the same value to <em>search</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">searchCarsbyCost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select * from Cars WHERE cost_per_hour = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">search</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deletecar-self-carid">
+<h2>deleteCar(self, CarID)<a class="headerlink" href="#deletecar-self-carid" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>CarID</em></p>
+<p>function: Deletes the row in the Cars table where the <em>CarID</em> column has the same value to
+the parameter <em>CarID</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">deleteCar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CarID</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;delete from Cars where CarID = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">CarID</span><span class="p">,))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setcaravailability-self-carid-availability">
+<h2>setCarAvailability(self, CarID, Availability)<a class="headerlink" href="#setcaravailability-self-carid-availability" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>CarID</em>, <em>Availability</em></p>
+<p>function: Updates the <em>available</em> column of the Cars table to the parameter <em>Availability</em> on the row where
+<em>CarID</em> column equals to the parameter <em>CarID</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setCarAvailability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CarID</span><span class="p">,</span> <span class="n">Availability</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;UPDATE Cars SET available = </span><span class="si">%s</span><span class="s2"> WHERE CarID = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Availability</span><span class="p">),</span> <span class="n">CarID</span><span class="p">,))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setcarlocation-self-carid-location">
+<h2>setCarLocation(self, CarID, location)<a class="headerlink" href="#setcarlocation-self-carid-location" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>CarID</em>, <em>location</em></p>
+<p>function: Updates the <em>location</em> column of the Cars table to the parameter <em>location</em> on the row where
+<em>CarID</em> column equals to the parameter <em>CarID</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setCarLocation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CarID</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;UPDATE Cars SET location = </span><span class="si">%s</span><span class="s2"> WHERE CarID = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">CarID</span><span class="p">,))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">IoT A2</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index_page.html">Index Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="login_page.html">Login Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="register_page.html">Register Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="customer_home_page.html">Customer Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_available_cars_page.html">Customer’s Car List page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_search_car_page.html">Customer’s Search Car page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_ongoing_booking_page.html">Customer’s Ongoing Booking page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_booking_history_page.html">Customer’s Booking History page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_google_authentication_page.html">Google Authentication page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_home_page.html">Admin Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_car_table_page.html">Admin’s Display Car Table page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_add_car_into_table_page.html">Admin’s Add Car Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_user_table_page.html">Admin’s Display User Table page</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main_engine.html">mainEngine.py class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_database_utils.html">User Database Utils class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Car Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking_database_utils.html">Booking Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google_calendar_api.html">Google Calendar Api class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authenticator_runner.html">Google Authenticator Runner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_authenticator.html">API Authenticator</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Socket Server class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Socket Client class</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_user_database_utils.html">Unit Tests for User Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_car_database_utils.html">Unit Tests for Cars Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_booking_database_utils.html">Unit Tests for Booking Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_mainEngine.html">Unit Tests for Main Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_server.html">Unit Tests for Socket Server</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="user_database_utils.html" title="previous chapter">User Database Utils class</a></li>
+      <li>Next: <a href="booking_database_utils.html" title="next chapter">Booking Database Utils class</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sean Tan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/car_database_utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Search Car{% endblock %}
+{% block body %}
+
+<div class="box">
+	<h2> Search Car</h2>
+	<form action="searchcar" method=post >
+		<div style="padding:5px; width:75%;margin-left:auto;margin-right:auto;">
+			<label>Search by </label>
+			<select name='column'>
+				<option value="make">Make</option>
+				<option value="body_type">Body Type</option>
+				<option value="colour">Colour</option>
+				<option value="seats">Seats</option>
+				<option value="location">Location</option>
+				<option value="cost">Cost per hour</option>
+			</select> 			
+			<input type="text" name='search'>
+			<input type="submit" value="Search"> 
+		</div>
+	</form>
+	<div id="searchCar">
+		<br><br>
+		{% if search %}
+			<p>Showing search result {{search}} in column {{column}}</p>
+			<br>
+		{% endif %}
+		{% if cars %}
+			<table>
+				<tr>
+					<th>Make</th>
+					<th>Body Type</th>
+					<th>Colour</th>
+					<th>Seats</th>
+					<th>Location</th>
+					<th>Cost</th>
+					<th>Book</th>
+				</tr>
+				{% for car in cars %}
+				<tr>
+					<td>{{car[1]}}</td>
+					<td>{{car[2]}}</td>
+					<td>{{car[3]}}</td>
+					<td>{{car[4]}}</td>
+					<td>{{car[5]}}</td>
+					<td>{{car[6	]}}</td>
+					{% if car[7]==1 %}
+						<form method=post action="makebooking"> 
+							<td>
+								<input type="hidden" name="make" value="{{car[1]}}">
+								<input type="hidden" name="location" value="{{car[5]}}">
+								<button name="car" value="{{car[0]}}">Book</button>
+							</td>
+						</form>
+					{% else %}
+						<td>Is booked</td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+			</table>
+		{% else %}
+			<div>No result</div>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}
+

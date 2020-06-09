@@ -1,0 +1,34 @@
+
+<html>
+	<head>
+		<title>Google Authentication</title>
+	</head>
+	<body>
+		<div class="box">
+			<h1> Google Authentication</h1>
+			<p>We can't verify that your account is connected to a google email.</p>
+			<p>Please click the link below to sign in using your google account and copy the given code into the text box.</p>
+            
+            <a href="https://accounts.google.com/o/oauth2/auth?client_id=209767707083-o673qko5hecokecp2rmjp44h7bt41fre.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code" target="_blank">Get Code</a>
+            
+            <br>
+			<form method=post action="googleAuthenticate">
+				<input type="text" name="code">
+				<input type="submit" value="Submit">
+			</form>
+		</div>
+	</body>
+
+</html>
+
+<style>
+.box{
+	text-align:center;
+}
+footer{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 2.5rem; 
+}
+</style>

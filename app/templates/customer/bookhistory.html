@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Booking History{% endblock %}
+{% block body %}
+<div class="box">
+	<div id="bookHistory">
+		<h2> Booking History</h2>
+		{% if bookings%}
+		<table>
+			<tr>
+				<th>Booking ID</th>
+				<th>Car ID</th>
+				<th>Make</th>
+				<th>Duration</th>
+				<th>Status</th>
+			</tr>
+			{% for booking in bookings %}
+				{% for car in cars %}
+					{% if booking[1]==car[0] %}
+						<tr>
+							<td>{{booking[0]}}</td>
+							<td>{{booking[1]}}</td>
+							<td>{{car[1]}}</td>
+							<td>{{booking[2]}}</td>
+							{% if booking[3]==1 %}
+								<td>Ongoing</td>
+							{% elif booking[3]==2 %}
+								<td>Cancelled</td>
+							{% else %}
+								<td>Finished</td>
+							{% endif %}
+						</tr>
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+		</table>
+		{% else %}
+			<br>
+			<td>No Booking History</td>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

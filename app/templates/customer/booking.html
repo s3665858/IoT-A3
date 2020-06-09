@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Ongoing Booking{% endblock %}
+{% block body %}
+<div class="box">
+	<div id="activeBook">
+		<h2>Ongoing Booking</h2>
+		{% if bookings%}
+		<table>
+			<tr>
+				<th>Make</th>
+				<th>Duration</th>
+				<th>Cancel</th>
+			</tr>
+			{% for booking in bookings %}
+				{% for car in cars %}
+					{% if booking[1]==car[0] %}
+						<tr>
+							<td>{{car[1]}}</td>
+							<td>{{booking[2]}}</td>
+							<form method=post action="deletebooking">
+								<td>
+									<input type="hidden" name="make" value="{{car[1]}}">
+									<input type="hidden" name="location" value="{{car[5]}}">
+									<input type="hidden" name="duration" value="{{booking[2]}}">
+									<button name="delete" value="{{booking[0]}}">Cancel</button>
+								</td>
+							</form>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+		</table>
+		{% else %}
+			<br>
+			<td>No Ongoing Booking</td>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

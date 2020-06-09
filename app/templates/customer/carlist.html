@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Car List{% endblock %}
+{% block body %}
+{{ gmap.js }}
+<div class="box">
+	<div id="carList">
+		<h2> Avalaible Cars</h2>
+		{% if cars %}
+		<table>	
+			<tr>
+				<th>Make</th>
+				<th>Body Type</th>
+				<th>Colour</th>
+				<th>Seats</th>
+				<th>Cost</th>
+				<th>Book Duration</th>
+				<th>Book</th>
+			</tr>
+			{% for car in cars %}
+				<tr>
+					<td>{{car[1]}}</td>
+					<td>{{car[2]}}</td>
+					<td>{{car[3]}}</td>
+					<td>{{car[4]}}</td>
+					<td>{{car[6]}}</td>
+					<form method=post action="makebooking"> 
+					<td>
+						<input type="hidden" name="make" value="{{car[1]}}">
+						<input type="hidden" name="location" value="{{car[5]}}">
+						<input type="number" min="0" name="duration" required>
+					</td>	
+					<td>
+						<button name="car" value="{{car[0]}}">Book</button>
+					</td></form>
+				</tr>
+			{% endfor %}
+		</table>
+		<div>
+			<p>Car Locations: </p>
+			{{ gmap.html }}
+		</div>
+		{% else %}
+			<br>
+			<td>No Cars is Currently Avalaible</td>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}
