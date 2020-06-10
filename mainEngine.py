@@ -68,6 +68,28 @@ class MainEngine:
             if user[1]==username:
                  return True
         return False # for now
+    
+    def searchUsers(self, column, search):
+        with UserDatabaseUtils() as db:
+            if column=="username":
+                return db.searchUsersbyUsername(search.lower()) #.lower() makes it lowercase
+            elif column=="firstname":
+                return db.searchUsersbyFirstName(search.lower())   
+            elif column=="lastname":
+                return db.searchUsersbyLastName(search.lower())        
+            elif column=="email":
+                return db.searchUsersbyEmail(search.lower())   
+            elif column=="type":
+                account_type='z'
+                if search == "admin":
+                    account_type='a'
+                elif search == "customer":
+                    account_type='c'
+                elif search == "engineer":
+                    account_type='e'
+                elif search == "manager":
+                    account_type='m'
+                return db.searchUsersbyType(account_type)
 
     # return False if isalnum
     def check_isalnum_username(self, username):
@@ -80,6 +102,7 @@ class MainEngine:
     def createCarTable(self):
         with CarDatabaseUtils() as db:
             db.createCarTable()
+            
     #user input to be transferred to ManagerView and CustomerView when sean feels like it
     def listCars(self):
         with CarDatabaseUtils() as db:

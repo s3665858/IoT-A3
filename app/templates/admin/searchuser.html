@@ -1,0 +1,58 @@
+{% extends "adminbase.html" %}
+{% block title %}Search Car{% endblock %}
+{% block body %}
+
+<div class="box">
+	<h2> Search User</h2>
+	<form action="searchuser" method=post >
+		<div style="padding:5px; width:75%;margin-left:auto;margin-right:auto;">
+			<label>Search by </label>
+			<select name='column'>
+				<option value="username">Username</option>
+				<option value="firstname">First Name</option>
+				<option value="lastname">Last Name</option>
+				<option value="email">Email</option>
+				<option value="type">Type</option>
+			</select> 			
+			<input type="text" name='search'>
+			<input type="submit" value="Search"> 
+		</div>
+	</form>
+	<div id="searchCar">
+		<br><br>
+		{% if search %}
+			<p>Showing search result {{search}} in column {{column}}</p>
+			<br>
+		{% endif %}
+		{% if users %}
+			<table>
+			<tr>
+				<th>User ID</th>
+				<th>Username</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Email</th>
+				<th>Account Type</th>
+				<th>Delete</th>
+			</tr>
+			{% for user in users %}
+				<tr>
+					<td>{{user[0]}}</td>
+					<td>{{user[1]}}</td>
+					<td>{{user[3]}}</td>
+					<td>{{user[4]}}</td>
+					<td>{{user[5]}}</td>
+					<td>{{user[6]}}</td>
+					<form method=post action="deleteuser">
+						<td><button name="delete" value="{{user[0]}}">Delete</button></td>
+					</form>
+				</tr>
+			{% endfor %}
+		</table>
+		{% else %}
+			<div>No result</div>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}
+

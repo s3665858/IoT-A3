@@ -50,6 +50,31 @@ class UserDatabaseUtils:
             cursor.execute("select userID, username, password, firstname, lastname, email, type from User")
             return cursor.fetchall()
 
+    def searchUsersbyUsername(self, search):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE lower(username) like %s", ('%' +search + '%',))
+            return cursor.fetchall()
+
+    def searchUsersbyFirstName(self, search):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE lower(firstname) like %s", ('%' +search + '%',))
+            return cursor.fetchall()
+
+    def searchUsersbyLastName(self, search):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE lower(lastname) like %s", ('%' +search + '%',))
+            return cursor.fetchall()
+        
+    def searchUsersbyEmail(self, search):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE lower(email) like %s", ('%' +search + '%',))
+            return cursor.fetchall()
+
+    def searchUsersbyType(self, search):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE type = %s", (search,))
+            return cursor.fetchall()
+
     def deleteUser(self, userID):
         with self.connection.cursor() as cursor:
             cursor.execute("delete from User where userID = %s", (userID,))

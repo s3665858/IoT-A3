@@ -148,6 +148,17 @@ def users():
     users=mainEngine.listUsers()
     return render_template("admin/userlist.html",users=users)
 
+@app.route('/searchuser', methods = ('GET', 'POST'))
+def searchuser():
+    user={}
+    search=""
+    column=""
+    if request.method == 'POST':
+        column = request.form['column']
+        search = request.form['search']        
+        users=mainEngine.searchUsers(column, search)
+    return render_template("admin/searchuser.html", search=search, column=column, cars=cars)
+
 @app.route('/deleteuser', methods = ['POST'])
 def deleteuser():
     userID = request.form['delete']
