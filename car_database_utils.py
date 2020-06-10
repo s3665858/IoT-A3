@@ -91,14 +91,18 @@ class CarDatabaseUtils:
 
         return cursor.rowcount == 1
 
-    def setCarAvailability(self, CarID, Availability):
+    def getCarDetails(self, CarID):
         with self.connection.cursor() as cursor:
-            cursor.execute("UPDATE Cars SET available = %s WHERE CarID = %s", (int(Availability), CarID,))
-        self.connection.commit()
-        
+            cursor.execute("select * from Cars WHERE CarID = %s", (CarID,))
+            return cursor.fetchall()
+
     def setCarLocation(self, CarID, location):
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE Cars SET location = %s WHERE CarID = %s", (location, CarID,))
         self.connection.commit()
     
-
+    def updateCar(self, carID, make, body_type, colour, seats, location, cost_per_hour, availability):
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE Cars SET make = %s, body_type = %s, colour = %s, seats = %s, location = %s, cost_per_hour = %s, available = %s WHERE CarID = %s", (make, body_type, colour, seats, location, cost_per_hour,availability,carID,))
+        self.connection.commit()
+    

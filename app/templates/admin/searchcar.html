@@ -1,12 +1,32 @@
 {% extends "adminbase.html" %}
-{% block title %}Car List{% endblock %}
+{% block title %}Search Car{% endblock %}
 {% block body %}
-{{ gmap.js }}
+
 <div class="box">
-	<div id="carList">
-		<h2> Car List</h2>
-		{% if cars%}
-		<table>
+	<h2> Search Car</h2>
+	<form action="searchcar" method=post >
+		<div style="padding:5px; width:75%;margin-left:auto;margin-right:auto;">
+			<label>Search by </label>
+			<select name='column'>
+				<option value="make">Make</option>
+				<option value="body_type">Body Type</option>
+				<option value="colour">Colour</option>
+				<option value="seats">Seats</option>
+				<option value="location">Location</option>
+				<option value="cost">Cost per hour</option>
+			</select> 			
+			<input type="text" name='search'>
+			<input type="submit" value="Search"> 
+		</div>
+	</form>
+	<div id="searchCar">
+		<br><br>
+		{% if search %}
+			<p>Showing search result {{search}} in column {{column}}</p>
+			<br>
+		{% endif %}
+		{% if cars %}
+			<table>
 			<tr>
 				<th>Car ID</th>
 				<th>Make</th>
@@ -46,18 +66,10 @@
 				</tr>
 			{% endfor %}
 		</table>
-		<div>
-			<p>Car Locations: </p>
-			{{ gmap.html }}
-		</div>
 		{% else %}
-			<br>
-			<td>No Cars is Registered</td>
+			<div>No result</div>
 		{% endif %}
-		<br>
-		<div id="add">
-			<button onclick="window.location.href='addcar'">Add</button>
-		</div>
 	</div>
 </div>
 {% endblock %}
+

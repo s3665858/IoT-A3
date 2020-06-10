@@ -118,16 +118,23 @@ def addcar():
     else:
         return render_template("admin/addcar.html")
 
-@app.route('/set_car_availability_to_unavailable', methods = ['POST'])
-def set_car_availability_to_unavailable():
-    carID = request.form['switch_to_unavailable']
-    mainEngine.setCarAvailability(carID, 0)
-    return redirect('/carlist')
+@app.route('/updatecarpage', methods = ['POST'])
+def updatecarpage():
+    carID = request.form['id']
+    car = mainEngine.getCarDetails(carID)
+    return render_template('admin/updatecar.html', car=car)
 
-@app.route('/set_car_availability_to_available', methods = ['POST'])
-def set_car_availability_to_available():
-    carID = request.form['switch_to_available']
-    mainEngine.setCarAvailability(carID, 1)
+@app.route('/updatecar', methods = ['POST'])
+def updatecar():
+    carID = request.form['id']
+    name = request.form['name']
+    bodytype = request.form['bodytype']
+    colour = request.form['colour']
+    seats = request.form['seats']
+    location = request.form['location']
+    cost = request.form['cost']
+    availibility = request.form['availability']
+    mainEngine.updateCar(carID, name, bodytype, colour, seats, location, cost, availibility)
     return redirect('/carlist')
 
 @app.route('/deletecar', methods = ['POST'])
@@ -156,8 +163,11 @@ def searchcar():
         column = request.form['column']
         search = request.form['search']        
         cars=mainEngine.searchCars(column, search)
-    return render_template("customer/searchcar.html", search=search, column=column, cars=cars)
-
+    if session['type']=='c':
+        return render_template("customer/searchcar.html", search=search, column=column, cars=cars)
+    elif session['type']=='a':
+        return render_template("admin/searchcar.html", search=search, column=column, cars=cars)
+    
 @app.route('/bookhistory')
 def history():
     bookings = mainEngine.listPersonalBookingHistory(session['userID'])

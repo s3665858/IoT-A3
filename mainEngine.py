@@ -93,6 +93,10 @@ class MainEngine:
         with CarDatabaseUtils() as db:
             db.insertCar(make, body_type, colour, int(seats), location, int(cost_per_hour), 1)
     
+    def updateCar(self, carID, name, bodytype, colour, seats, location, cost, availibility):
+        with CarDatabaseUtils() as db:
+            db.updateCar(carID, name, bodytype, colour, int(seats), location, int(cost), int(availibility))
+        
     def searchCars(self, column, search):
         with CarDatabaseUtils() as db:
             if column=="make":
@@ -114,6 +118,9 @@ class MainEngine:
                 if car[0]==CarID:
                     return car            
 
+    def getCarDetails(self, CarID):
+        with CarDatabaseUtils() as db:
+            return db.getCarDetails(int(CarID))
 
     def deleteCar(self, CarID):
         with CarDatabaseUtils() as db:
