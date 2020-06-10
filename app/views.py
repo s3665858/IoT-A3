@@ -137,6 +137,25 @@ def updatecar():
     mainEngine.updateCar(carID, name, bodytype, colour, seats, location, cost, availibility)
     return redirect('/carlist')
 
+@app.route('/updateuserpage', methods = ['POST'])
+def updateuserpage():
+    userID = request.form['id']
+    user = mainEngine.getUserDetails(userID)
+    return render_template('admin/updateuser.html', user=user)
+
+@app.route('/updateuser', methods = ['POST'])
+def updateuser():
+    carID = request.form['id']
+    name = request.form['name']
+    bodytype = request.form['bodytype']
+    colour = request.form['colour']
+    seats = request.form['seats']
+    location = request.form['location']
+    cost = request.form['cost']
+    availibility = request.form['availability']
+    mainEngine.updateCar(carID, name, bodytype, colour, seats, location, cost, availibility)
+    return redirect('/userlist')
+
 @app.route('/deletecar', methods = ['POST'])
 def deletecar():
     carID = request.form['delete']

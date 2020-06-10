@@ -12,6 +12,7 @@
 				<th>Last Name</th>
 				<th>Email</th>
 				<th>Account Type</th>
+				<th>Update</th>
 				<th>Delete</th>
 			</tr>
 			{% for user in users %}
@@ -22,6 +23,9 @@
 					<td>{{user[4]}}</td>
 					<td>{{user[5]}}</td>
 					<td>{{user[6]}}</td>
+					<form method=post action="updateuserpage">
+						<td><button name="id" value="{{user[0]}}">Update</button></td>
+					</form>
 					<form method=post action="deleteuser">
 						<td><button name="delete" value="{{user[0]}}">Delete</button></td>
 					</form>

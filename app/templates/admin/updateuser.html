@@ -1,0 +1,76 @@
+{% extends "adminbase.html" %}
+{% block title %}Update User{% endblock %}
+{% block body %}
+<div class="box">
+	<div id="addCar">
+		<h2> Update User</h2>
+			{% if registered==True%}
+				<div>Successful Registration!</div>
+			{% endif %}
+			{% if usernameDuplicate==True%}
+				<div>Username is already used, pick another one</div>
+			{% endif %}
+			{% if usernameInvalid==True%}
+				<div>Username can only contain letters and numbers!</div>
+			{% endif %}
+			<form method=post action="/updateuser">
+				<table>
+					<tr>    
+						<td><label>Username</label></td>
+						<td>
+							<input type="hidden" name='id' value="{{user[0][0]}}" required> 
+							<input type="text" name='username' value="{{user[0][1]}}" required> 
+						</td>
+					</tr>
+					<tr>                    
+						<td><label>Password</label required> </td>
+						<td><input type="password" name='password'> </td>
+					</tr>
+					<tr>    
+						<td><label>Firstname</label></td>
+						<td><input type="text" name='fname' value="{{user[0][3]}}" required> </td>
+					</tr>
+					<tr>                    
+						<td><label>Lastname</label required> </td>
+						<td><input type="text" name='lname' value="{{user[0][4]}}"> </td>
+					</tr>
+					<tr>    
+						<td><label>Email</label></td>
+						<td><input type="email" name='email' value="{{user[0][5]}}" required> </td>
+					</tr>
+					<tr>    
+						<td><label>Type</label></td>
+						<td>
+							<select name='type'>
+							{% if user[0][6]=='a' %}
+								<option value="a" selected>Admin</option>
+								<option value="c">Customer</option>
+								<option value="e">Engineer</option>
+								<option value="m">Manager</option>
+							{% elif user[0][6]=='c' %}
+								<option value="a">Admin</option>
+								<option value="c" selected>Customer</option>
+								<option value="e">Engineer</option>
+								<option value="m">Manager</option>
+							{% elif user[0][6]=='e' %}
+								<option value="a">Admin</option>
+								<option value="c">Customer</option>
+								<option value="e" selected>Engineer</option>
+								<option value="m">Manager</option>
+							{% else %}
+								<option value="a">Admin</option>
+								<option value="c">Customer</option>
+								<option value="e">Engineer</option>
+								<option value="m" selected>Manager</option>
+							{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="submit" value="Update"></td>
+					</tr>
+				<table>
+		</form>
+	</div>
+</div>
+{% endblock %}

@@ -49,6 +49,11 @@ class UserDatabaseUtils:
         with self.connection.cursor() as cursor:
             cursor.execute("select userID, username, password, firstname, lastname, email, type from User")
             return cursor.fetchall()
+    
+    def getUserDetails(self, userID):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE userID = %s" , (userID,))
+            return cursor.fetchall()
 
     def searchUsersbyUsername(self, search):
         with self.connection.cursor() as cursor:

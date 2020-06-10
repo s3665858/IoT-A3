@@ -91,6 +91,10 @@ class MainEngine:
                     account_type='m'
                 return db.searchUsersbyType(account_type)
 
+    def getUserDetails(self, userID):
+        with UserDatabaseUtils() as db:
+            return db.getUserDetails(int(userID))
+
     # return False if isalnum
     def check_isalnum_username(self, username):
         if username.isalnum():
