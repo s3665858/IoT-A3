@@ -169,14 +169,14 @@ def users():
 
 @app.route('/searchuser', methods = ('GET', 'POST'))
 def searchuser():
-    user={}
+    users={}
     search=""
     column=""
     if request.method == 'POST':
         column = request.form['column']
         search = request.form['search']        
         users=mainEngine.searchUsers(column, search)
-    return render_template("admin/searchuser.html", search=search, column=column, cars=cars)
+    return render_template("admin/searchuser.html", search=search, column=column, users=users)
 
 @app.route('/deleteuser', methods = ['POST'])
 def deleteuser():
@@ -274,6 +274,8 @@ labels = [
     'SEP', 'OCT', 'NOV', 'DEC'
 ]
 
+labelsTest = mainEngine.getTop10Cars()
+valuesTest = mainEngine.getTop10BookingCount()
 values = [
     967.67, 1190.89, 1079.75, 1349.19,
     2328.91, 2504.28, 2873.83, 4764.87,
@@ -287,9 +289,9 @@ colors = [
 
 @app.route('/bar')
 def bar():
-    bar_labels=labels
-    bar_values=values
-    return render_template('bar_chart.html', title='Bitcoin Monthly Price in USD', max=17000, labels=bar_labels, values=bar_values)
+    bar_labels=labelsTest
+    bar_values=valuesTest
+    return render_template('bar_chart.html', title='Our Most popular cars', max=17000, labels=bar_labels, values=bar_values)
 
 @app.route('/line')
 def line():

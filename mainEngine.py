@@ -107,7 +107,7 @@ class MainEngine:
         with CarDatabaseUtils() as db:
             db.createCarTable()
             
-    #user input to be transferred to ManagerView and CustomerView when sean feels like it
+    #user input to be transferred to ManagerView and CustomerView
     def listCars(self):
         with CarDatabaseUtils() as db:
             return db.listCars()
@@ -203,3 +203,14 @@ class MainEngine:
         with BookingDatabaseUtils() as db:
             for bookingID in db.getLatestBookingId():
                 return int(bookingID[0])
+
+    # functions for graph data
+    def getTop10Cars(self):
+        with BookingDatabaseUtils() as db:
+            for carID in db.getTop10CarID():
+                with CarDatabaseUtils() as db2:
+                    return db2.getCarMake(carID)
+
+    def getTop10BookingCount(self):
+        with BookingDatabaseUtils() as db:
+            return db.getTop10CarIDCount()

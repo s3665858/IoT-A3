@@ -96,6 +96,11 @@ class CarDatabaseUtils:
             cursor.execute("select * from Cars WHERE CarID = %s", (CarID,))
             return cursor.fetchall()
 
+    def getCarMake(self, CarID):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select make from Cars WHERE CarID = %s", (CarID,))
+            return cursor.fetchall()
+
     def setCarLocation(self, CarID, location):
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE Cars SET location = %s WHERE CarID = %s", (location, CarID,))
