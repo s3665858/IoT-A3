@@ -49,6 +49,11 @@ class CarDatabaseUtils:
             cursor.execute("select * from Cars")
             return cursor.fetchall()
 
+    def listBrokenCars(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select * from Cars WHERE available = 2")
+            return cursor.fetchall()
+
     def listAvailableCars(self):
         with self.connection.cursor() as cursor:
             cursor.execute("select * from Cars WHERE available = 1")

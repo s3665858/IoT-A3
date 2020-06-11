@@ -18,7 +18,11 @@ class MainEngine:
             for user in db.getUser():
                 if user[1]==username:
                     return user
-
+                
+    def getOtherUser(self, userID):
+        with UserDatabaseUtils() as db:
+            return db.getOtherUser(userID)
+    
     def listUsers(self):
         with UserDatabaseUtils() as db:
             return db.getUser()
@@ -61,9 +65,16 @@ class MainEngine:
         pwdhash = binascii.hexlify(pwdhash).decode('ascii')
         return pwdhash == stored_password
 
+    def update_check_duplicate_username(self, userID, username):
+        users=self.getOtherUser(userID)
+        for user in users:
+            if user[1]==username:
+                 return True
+        return False
+
     # return False if no duplicates
-    def check_duplicate_username(self, username):
-        user=self.getUser(username)
+    def check_duplicate_username(self, userID, username):
+        user=self.getUser(userID)
         if user is not None:
             if user[1]==username:
                  return True
@@ -95,6 +106,10 @@ class MainEngine:
         with UserDatabaseUtils() as db:
             return db.getUserDetails(int(userID))
 
+    def updateUser(self, userID, name, password, fname, lname, email, acc_type):
+        with UserDatabaseUtils() as db:
+            db.updateUser(userID, name, self.hash_password(password), fname, lname, email, acc_type)
+
     # return False if isalnum
     def check_isalnum_username(self, username):
         if username.isalnum():
@@ -115,6 +130,10 @@ class MainEngine:
     def listAvailableCars(self):
         with CarDatabaseUtils() as db:
             return db.listAvailableCars()
+
+    def listBrokenCars(self):
+        with CarDatabaseUtils() as db:
+            return db.listBrokenCars()
 
     def insertCar(self, make, body_type, colour, seats, location, cost_per_hour):
         with CarDatabaseUtils() as db:
@@ -207,9 +226,11 @@ class MainEngine:
     # functions for graph data
     def getTop10Cars(self):
         with BookingDatabaseUtils() as db:
-            for carID in db.getTop10CarID():
+            array = {}
+            return array
+            """for carID in db.getTop10CarID():
                 with CarDatabaseUtils() as db2:
-                    return db2.getCarMake(carID)
+                    return db2.getCarMake(carID)"""
 
     def getTop10BookingCount(self):
         with BookingDatabaseUtils() as db:

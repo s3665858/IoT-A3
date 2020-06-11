@@ -50,6 +50,11 @@ class UserDatabaseUtils:
             cursor.execute("select userID, username, password, firstname, lastname, email, type from User")
             return cursor.fetchall()
     
+    def getOtherUser(self, userID):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE userID != %s", (userID,))
+            return cursor.fetchall()
+    
     def getUserDetails(self, userID):
         with self.connection.cursor() as cursor:
             cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE userID = %s" , (userID,))
@@ -84,3 +89,9 @@ class UserDatabaseUtils:
         with self.connection.cursor() as cursor:
             cursor.execute("delete from User where userID = %s", (userID,))
         self.connection.commit()
+        
+    def updateUser(self, userID, username, password, firstname, lastname, email, acc_type):
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE User SET username = %s, password = %s, firstname = %s, lastname = %s, email = %s, type = %s WHERE userID = %s", (username, password, firstname, lastname, email, acc_type,userID,))
+        self.connection.commit()
+    

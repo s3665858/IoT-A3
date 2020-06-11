@@ -4,9 +4,6 @@
 <div class="box">
 	<div id="addCar">
 		<h2> Update User</h2>
-			{% if registered==True%}
-				<div>Successful Registration!</div>
-			{% endif %}
 			{% if usernameDuplicate==True%}
 				<div>Username is already used, pick another one</div>
 			{% endif %}
@@ -24,7 +21,7 @@
 					</tr>
 					<tr>                    
 						<td><label>Password</label required> </td>
-						<td><input type="password" name='password'> </td>
+						<td><input type="password" name='password' required> </td>
 					</tr>
 					<tr>    
 						<td><label>Firstname</label></td>
@@ -32,7 +29,7 @@
 					</tr>
 					<tr>                    
 						<td><label>Lastname</label required> </td>
-						<td><input type="text" name='lname' value="{{user[0][4]}}"> </td>
+						<td><input type="text" name='lname' value="{{user[0][4]}}" required> </td>
 					</tr>
 					<tr>    
 						<td><label>Email</label></td>
@@ -67,7 +64,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2"><input type="submit" value="Update"></td>
+						<td><input type="submit" value="Update"></td>
 					</tr>
 				<table>
 		</form>

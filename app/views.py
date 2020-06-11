@@ -79,7 +79,7 @@ def cars():
             style="height:300px;width:300px;margin:0;margin-left:auto;margin-right:auto;",
         )
         return render_template("customer/carlist.html",cars=cars, gmap=gmap)
-    else:
+    elif session['type']=='a':
         mark=[]
         cars=mainEngine.listCars()
         for car in cars:
@@ -97,6 +97,24 @@ def cars():
             style="height:300px;width:300px;margin:0;margin-left:auto;margin-right:auto;",
         )
         return render_template("admin/carlist.html",cars=cars, gmap=gmap)
+    elif session['type']=='e':
+        mark=[]
+        cars=mainEngine.listBrokenCars()
+        for car in cars:
+            x = car[5].split(",")
+            mark.append((float(x[1]), float(x[2]), car[1]))
+        gmap = Map(
+            identifier="gmap",
+            varname="gmap",
+            #MELBOURNE COORDINATE
+            lat=-37.8136,
+            lng=144.9631,
+            markers={
+                icons.dots.blue: mark,
+            },
+            style="height:300px;width:300px;margin:0;margin-left:auto;margin-right:auto;",
+        )
+        return render_template("engineer/carlist.html",cars=cars, gmap=gmap)
 
 @app.route('/carhistory', methods=["POST"])
 def carhistory():
@@ -145,17 +163,26 @@ def updateuserpage():
 
 @app.route('/updateuser', methods = ['POST'])
 def updateuser():
-    carID = request.form['id']
-    name = request.form['name']
-    bodytype = request.form['bodytype']
-    colour = request.form['colour']
-    seats = request.form['seats']
-    location = request.form['location']
-    cost = request.form['cost']
-    availibility = request.form['availability']
-    mainEngine.updateCar(carID, name, bodytype, colour, seats, location, cost, availibility)
-    return redirect('/userlist')
+    usernameDuplicate=False
+    usernameInvalid=False
+    userID = request.form['id']
+    username = request.form['username']
+    password = request.form['password']
+    fname = request.form['fname']
+    lname = request.form['lname']
+    email = request.form['email']
+    acc_type = request.form['type']
+    user = mainEngine.getUserDetails(userID)
 
+    if mainEngine.update_check_duplicate_username(userID, username) is False and mainEngine.check_isalnum_username(username) is False:
+        mainEngine.updateUser(userID, username, password, fname, lname, email, acc_type)
+        return redirect('/userlist')
+    if mainEngine.update_check_duplicate_username(userID, username) is True:
+        usernameDuplicate=True
+    if mainEngine.check_isalnum_username(username) is True:
+        usernameInvalid=True
+    return render_template('admin/updateuser.html', user=user, usernameDuplicate=usernameDuplicate, usernameInvalid=usernameInvalid)
+    
 @app.route('/deletecar', methods = ['POST'])
 def deletecar():
     carID = request.form['delete']
