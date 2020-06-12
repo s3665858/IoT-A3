@@ -1,7 +1,9 @@
-from flask import Flask, jsonify, render_template, request, redirect, session, Markup
+from flask import Flask, jsonify, render_template, request, redirect, session, Markup,flash
 from flask_googlemaps import Map
 from flask_googlemaps import icons
 import audio
+from gtts import gTTS 
+import playsound
 from google_calendar.authenticator_runner import run_authenticator
 from app import app, mainEngine, gCalendar, gMap, dynaConf
 from werkzeug.utils import secure_filename
@@ -231,11 +233,16 @@ def searchcarbyvoice():
     cars={}
     search=""
     column=""
-    while column != "make" or column != "body type" or column != "colour" or column != "seats" or column != "location" or column != "cost":
+    while True:
+        playsound.playsound("replay.mp3")
         column = audio.speechRecognition()
         if column == "make" or column == "body type" or column == "colour" or column == "seats" or column == "location" or column == "cost":
+            playsound.playsound("replay1.mp3")
             search = audio.speechRecognition()
+            if column == 'body type':
+                column = 'body_type'
             cars=mainEngine.searchCars(column, search)
+            break
     return render_template("admin/searchcar.html", search=search, column=column, cars=cars)    
     
 @app.route('/bookhistory')
