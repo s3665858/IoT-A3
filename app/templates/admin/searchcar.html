@@ -60,8 +60,10 @@
 					{% endif %}
 					<form method=post action="updatecarpage">
 						<td><button name="id" value="{{car[0]}}">Update</button></td>
+                    </form>
+                    <form method=post action="reportcar">
+						<td><button name="report" value="{{car[0]}}">Report</button></td>
 					</form>
-					<td><button name="report" value="{{car[0]}}">Report</button></td>
 					<form method=post action="deletecar">
 						<td><button name="delete" value="{{car[0]}}">Delete</button></td>
 					</form>

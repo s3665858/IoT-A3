@@ -5,7 +5,7 @@ import audio
 from gtts import gTTS 
 import playsound
 from google_calendar.authenticator_runner import run_authenticator
-from app import app, mainEngine, gCalendar, gMap, dynaConf
+from app import app, mainEngine, gCalendar, gMap, dynaConf, pushBullet
 from werkzeug.utils import secure_filename
 from server import SocketServer
 
@@ -119,6 +119,16 @@ def cars():
         )
         return render_template("engineer/carlist.html",cars=cars, gmap=gmap)
 
+# might need help checking correctness
+@app.route('/insertmacaddress', methods = ('GET', 'POST'))
+def insertMacAddress():
+    if request.method == 'POST':
+        userID = session['userID']
+        macAddress = request.form['address']
+        mainEngine.insertEngineer(userID, macAddress)
+        success = True
+    return render_template("addmacaddress.html", success=success)
+
 @app.route('/carhistory', methods=["POST"])
 def carhistory():
     carID =  request.form['id']
@@ -190,6 +200,15 @@ def updateuser():
 def deletecar():
     carID = request.form['delete']
     mainEngine.deleteCar(carID)
+    return redirect('/carlist')
+
+# need some help
+@app.route('/reportcar', methods = ['POST'])
+def reportcar():
+    carID = request.form['report']
+    car_make = ""
+    mainEngine.setCarAvailability(carID, 2)
+    pushBullet.pushNotification(carID, car_make)
     return redirect('/carlist')
 
 @app.route('/userlist', methods=["GET"])

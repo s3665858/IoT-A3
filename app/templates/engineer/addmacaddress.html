@@ -1,0 +1,25 @@
+{% extends "engineerbase.html" %}
+<html>
+	<head>
+		<title>Add your MAC address to our system so our cars can identify you.</title>
+	</head>
+	<body>
+		<div class="box">
+			<form method=post action="insertmacaddress">
+				<table>
+					<tr>    
+						<td><label>MAC address</label></td>
+						<td><input type="text" name='address' required> </td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="submit" value="Submit"></td>
+					</tr>
+                </table>
+                {% if success==True%}
+				<div>Your MAC address has been successfully added!</div>
+			    {% endif %}
+			</form>
+		</div>
+	</body>
+</html>
+{% endblock %}

@@ -174,10 +174,9 @@ class MainEngine:
         with CarDatabaseUtils() as db:
             db.deleteCar(int(CarID))
 
-    # editor complaining no setCarAvailability() function in cardatabaseutils
-    # def setCarAvailability(self, CarID, Availability):
-    #     with CarDatabaseUtils() as db:
-    #         db.setCarAvailability(CarID, Availability)
+    def setCarAvailability(self, CarID, Availability):
+        with CarDatabaseUtils() as db:
+            db.setCarAvailability(CarID, Availability)
 
     def setCarLocation(self, CarID, location):
         with CarDatabaseUtils() as db:

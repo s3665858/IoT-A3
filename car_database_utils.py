@@ -89,6 +89,11 @@ class CarDatabaseUtils:
             cursor.execute("select * from Cars WHERE cost_per_hour = %s", (search,))
             return cursor.fetchall()
 
+    def setCarAvailability(self, carID, availability):
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE Cars SET availability = %s WHERE CarID = %s", (availability, CarID,))
+        self.connection.commit()
+
     def deleteCar(self, CarID):
         with self.connection.cursor() as cursor:
             cursor.execute("delete from Cars where CarID = %s", (CarID,))
