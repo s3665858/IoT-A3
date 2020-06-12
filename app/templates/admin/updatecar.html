@@ -63,14 +63,10 @@
 						{% if car[0][7]==1 %}
 							<option value="1" selected>Available</option>
 							<option value="0">Unavalaible</option>
-							<option value="2">Broken</option>
 						{% elif car[0][7]==0 %}
 							<option value="1">Available</option>
 							<option value="0" selected>Unavalaible</option>
-							<option value="2">Broken</option>
 						{% else %}
-							<option value="1">Available</option>
-							<option value="0">Unavalaible</option>
 							<option value="2" selected>Broken</option>
 						{% endif %}
 						</select>
