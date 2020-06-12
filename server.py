@@ -25,7 +25,11 @@ class SocketServer:
 
                 if data['type']==3:
                     sendBack = pickle.dumps(self.returnCar(data))
+
                 if data['type']==4:
+                    sendBack = pickle.dumps(self.engineerValidation(data))
+                
+                if data['type']==5:
                     sendBack = pickle.dumps(self.engineerValidation(data))
             
             connection.sendall(sendBack)
@@ -40,6 +44,15 @@ class SocketServer:
                 return True
 
         return  False
+
+    def engineerSignIn(self,data):
+        mainEngine = MainEngine()
+        #if
+        #data['name'] == main.getEngineer(something)
+        #data['id'] == main.getEngineer(something)
+
+        #     return True
+        # return False
     def validation(self,data):
         mainEngine = MainEngine()
         username = data['username']
@@ -92,5 +105,6 @@ class SocketServer:
                 mainEngine.setCarLocation(carID,location)
                 return True
         return False
-#s = SocketServer()
-#s.startListening()
+
+# s = SocketServer()
+# s.startListening()
