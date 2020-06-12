@@ -2,12 +2,14 @@ import hashlib, binascii, os
 from user_database_utils import UserDatabaseUtils
 from car_database_utils import CarDatabaseUtils
 from booking_database_utils import BookingDatabaseUtils
+from engineer_database_utils import EngineerDatabaseUtils
 
 class MainEngine:
     def __init__(self):
         self.createUserTable()
         self.createCarTable()
         self.createBookingTable()
+        self.createEnginnerTable()
         
     def createUserTable(self):
         with UserDatabaseUtils() as db:
@@ -172,9 +174,10 @@ class MainEngine:
         with CarDatabaseUtils() as db:
             db.deleteCar(int(CarID))
 
-    def setCarAvailability(self, CarID, Availability):
-        with CarDatabaseUtils() as db:
-            db.setCarAvailability(CarID, Availability)
+    # editor complaining no setCarAvailability() function in cardatabaseutils
+    # def setCarAvailability(self, CarID, Availability):
+    #     with CarDatabaseUtils() as db:
+    #         db.setCarAvailability(CarID, Availability)
 
     def setCarLocation(self, CarID, location):
         with CarDatabaseUtils() as db:
@@ -223,15 +226,53 @@ class MainEngine:
             for bookingID in db.getLatestBookingId():
                 return int(bookingID[0])
 
-    # functions for graph data
-    def getTop10Cars(self):
-        with BookingDatabaseUtils() as db:
-            array = {}
-            return array
-            """for carID in db.getTop10CarID():
-                with CarDatabaseUtils() as db2:
-                    return db2.getCarMake(carID)"""
+    ### functions for managing engineer table ###
+    def createEnginnerTable(self):
+        with EngineerDatabaseUtils() as db:
+            db.createEngineerTable()
+        
+    def listEngineers(self):
+        with EngineerDatabaseUtils() as db:
+            return db.listAllEngineers()
 
-    def getTop10BookingCount(self):
+    def insertEngineer(self, userID, address):
+        with EngineerDatabaseUtils() as db:
+            db.insertEngineer(userID, address)
+
+    def getEngineerAddress(self, userID):
+        with EngineerDatabaseUtils() as db:
+            return db.getEngineerAddress(userID)
+    
+    def getEngineerUserID(self, address):
+        with EngineerDatabaseUtils() as db:
+            return db.getEngineerUserID(address)
+
+    def getTop10Make(self):
         with BookingDatabaseUtils() as db:
-            return db.getTop10CarIDCount()
+            array = ["Toyota", "Ford", "Mercedes-Benz", "BMW", "Subaru", "Volvo", "Honda", "Porsche", "Volkswagen", "Audi"]
+            return array
+
+    def getTop10BookingCountForMake(self):
+        with BookingDatabaseUtils() as db:
+            array = [67,59,58,44,43,41,38,35,20,15]
+            return array
+    
+    def getTop10Price(self):
+        with BookingDatabaseUtils() as db:
+            array = [15, 10, 23, 14, 20, 16, 12, 18, 9, 21]
+            return array
+
+    def getTop10BookingCountForPrice(self):
+        with BookingDatabaseUtils() as db:
+            array = [45, 44, 43, 34, 32, 30, 23, 23, 19, 14]
+            return array
+
+    def getDuration(self):
+        with BookingDatabaseUtils() as db:
+            array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            return array
+    
+    def getDurationBookingCount(self):
+        with BookingDatabaseUtils() as db:
+            array = [67, 54, 33, 47, 21, 56, 34, 19, 5, 3]
+            return array

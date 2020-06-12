@@ -295,42 +295,40 @@ def googleAuthenticationComplete():
 #########################################
 # Testing area for graphs visualisation #
 #########################################
-labels = [
-    'JAN', 'FEB', 'MAR', 'APR',
-    'MAY', 'JUN', 'JUL', 'AUG',
-    'SEP', 'OCT', 'NOV', 'DEC'
-]
+# labels = [
+#     'JAN', 'FEB', 'MAR', 'APR',
+#     'MAY', 'JUN', 'JUL', 'AUG',
+#     'SEP', 'OCT', 'NOV', 'DEC'
+# ]
 
-labelsTest = mainEngine.getTop10Cars()
-valuesTest = mainEngine.getTop10BookingCount()
-values = [
-    967.67, 1190.89, 1079.75, 1349.19,
-    2328.91, 2504.28, 2873.83, 4764.87,
-    4349.29, 6458.30, 9907, 16297
-]
+# values = [
+#     967.67, 1190.89, 1079.75, 1349.19,
+#     2328.91, 2504.28, 2873.83, 4764.87,
+#     4349.29, 6458.30, 9907, 16297
+# ]
 
 colors = [
     "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
     "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
-    "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
+    "#C71585", "#FF4500"]
 
 @app.route('/bar')
 def bar():
-    bar_labels=labelsTest
-    bar_values=valuesTest
-    return render_template('bar_chart.html', title='Our Most popular cars', max=17000, labels=bar_labels, values=bar_values)
+    bar_labels= mainEngine.getTop10Price()
+    bar_values= mainEngine.getTop10BookingCountForPrice()
+    return render_template('bar_chart.html', title='Our Most popular prices', max=17000, labels=bar_labels, values=bar_values)
 
 @app.route('/line')
 def line():
-    line_labels=labels
-    line_values=values
-    return render_template('line_chart.html', title='Bitcoin Monthly Price in USD', max=17000, labels=line_labels, values=line_values)
+    line_labels=mainEngine.getDuration()
+    line_values=mainEngine.getDurationBookingCount()
+    return render_template('line_chart.html', title='Duration of bookings made by users', max=17000, labels=line_labels, values=line_values)
 
 @app.route('/pie')
 def pie():
-    pie_labels = labels
-    pie_values = values
-    return render_template('pie_chart.html', title='Bitcoin Monthly Price in USD', max=17000, set=zip(values, labels, colors))
+    pie_labels = mainEngine.getTop10Make()
+    pie_values = mainEngine.getTop10BookingCountForMake
+    return render_template('pie_chart.html', title='Bookings made for the top 10 car makes', max=17000, set=zip(pie_values, pie_labels, colors))
 
 ###############################################
 # End of Testing area for graphs visualisation#
