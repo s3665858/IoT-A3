@@ -247,32 +247,32 @@ class MainEngine:
         with EngineerDatabaseUtils() as db:
             return db.getEngineerUserID(address)
 
-    def getTop10Make(self):
-        with BookingDatabaseUtils() as db:
-            array = ["Toyota", "Ford", "Mercedes-Benz", "BMW", "Subaru", "Volvo", "Honda", "Porsche", "Volkswagen", "Audi"]
-            return array
+    # def getTop10Make(self):
+    #     with BookingDatabaseUtils() as db:
+    #         array = ["Toyota", "Ford", "Mercedes-Benz", "BMW", "Subaru", "Volvo", "Honda", "Porsche", "Volkswagen", "Audi"]
+    #         return array
 
-    def getTop10BookingCountForMake(self):
-        with BookingDatabaseUtils() as db:
-            array = [67,59,58,44,43,41,38,35,20,15]
-            return array
+    # def getTop10BookingCountForMake(self):
+    #     with BookingDatabaseUtils() as db:
+    #         array = [67,59,58,44,43,41,38,35,20,15]
+    #         return array
     
-    def getTop10Price(self):
-        with BookingDatabaseUtils() as db:
-            array = [15, 10, 23, 14, 20, 16, 12, 18, 9, 21]
-            return array
+    # def getTop10Price(self):
+    #     with BookingDatabaseUtils() as db:
+    #         array = [15, 10, 23, 14, 20, 16, 12, 18, 9, 21]
+    #         return array
 
-    def getTop10BookingCountForPrice(self):
-        with BookingDatabaseUtils() as db:
-            array = [45, 44, 43, 34, 32, 30, 23, 23, 19, 14]
-            return array
+    # def getTop10BookingCountForPrice(self):
+    #     with BookingDatabaseUtils() as db:
+    #         array = [45, 44, 43, 34, 32, 30, 23, 23, 19, 14]
+    #         return array
 
-    def getDuration(self):
-        with BookingDatabaseUtils() as db:
-            array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-            return array
+    # def getDuration(self):
+    #     with BookingDatabaseUtils() as db:
+    #         array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    #         return array
     
-    def getDurationBookingCount(self):
-        with BookingDatabaseUtils() as db:
-            array = [67, 54, 33, 47, 21, 56, 34, 19, 5, 3]
-            return array
+    # def getDurationBookingCount(self):
+    #     with BookingDatabaseUtils() as db:
+    #         array = [67, 54, 33, 47, 21, 56, 34, 19, 5, 3]
+    #         return array

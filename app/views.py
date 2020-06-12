@@ -315,40 +315,47 @@ def googleAuthenticationComplete():
 #########################################
 # Testing area for graphs visualisation #
 #########################################
-# labels = [
-#     'JAN', 'FEB', 'MAR', 'APR',
-#     'MAY', 'JUN', 'JUL', 'AUG',
-#     'SEP', 'OCT', 'NOV', 'DEC'
-# ]
-
-# values = [
-#     967.67, 1190.89, 1079.75, 1349.19,
-#     2328.91, 2504.28, 2873.83, 4764.87,
-#     4349.29, 6458.30, 9907, 16297
-# ]
 
 colors = [
     "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
     "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
     "#C71585", "#FF4500"]
-
 @app.route('/bar')
 def bar():
-    bar_labels= mainEngine.getTop10Price()
-    bar_values= mainEngine.getTop10BookingCountForPrice()
+    bar_labels = [15, 10, 23, 14, 20, 16, 12, 18, 9, 21]
+    bar_values= [45, 44, 43, 34, 32, 30, 23, 23, 19, 14]
     return render_template('bar_chart.html', title='Our Most popular prices', max=17000, labels=bar_labels, values=bar_values)
 
 @app.route('/line')
 def line():
-    line_labels=mainEngine.getDuration()
-    line_values=mainEngine.getDurationBookingCount()
+    line_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    line_values = [67, 54, 33, 47, 21, 56, 34, 19, 5, 3]
     return render_template('line_chart.html', title='Duration of bookings made by users', max=17000, labels=line_labels, values=line_values)
 
 @app.route('/pie')
 def pie():
-    pie_labels = mainEngine.getTop10Make()
-    pie_values = mainEngine.getTop10BookingCountForMake
+    pie_labels = ["Toyota", "Ford", "Mercedes-Benz", "BMW", "Subaru", "Volvo", "Honda", "Porsche", "Volkswagen", "Audi"]
+    pie_values = [67,59,58,44,43,41,38,35,20,15]
     return render_template('pie_chart.html', title='Bookings made for the top 10 car makes', max=17000, set=zip(pie_values, pie_labels, colors))
+
+
+# @app.route('/bar')
+# def bar():
+#     bar_labels= mainEngine.getTop10Price()
+#     bar_values= mainEngine.getTop10BookingCountForPrice()
+#     return render_template('bar_chart.html', title='Our Most popular prices', max=17000, labels=bar_labels, values=bar_values)
+
+# @app.route('/line')
+# def line():
+#     line_labels=mainEngine.getDuration()
+#     line_values=mainEngine.getDurationBookingCount()
+#     return render_template('line_chart.html', title='Duration of bookings made by users', max=17000, labels=line_labels, values=line_values)
+
+# @app.route('/pie')
+# def pie():
+#     pie_labels = mainEngine.getTop10Make()
+#     pie_values = mainEngine.getTop10BookingCountForMake
+#     return render_template('pie_chart.html', title='Bookings made for the top 10 car makes', max=17000, set=zip(pie_values, pie_labels, colors))
 
 ###############################################
 # End of Testing area for graphs visualisation#
