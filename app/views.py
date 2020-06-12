@@ -205,8 +205,8 @@ def deletecar():
 # need some help
 @app.route('/reportcar', methods = ['POST'])
 def reportcar():
-    carID = request.form['report']
-    car_make = ""
+    carID = request.form['id']
+    car_make = request.form['make']
     mainEngine.setCarAvailability(carID, 2)
     pushBullet.pushNotification(carID, car_make)
     return redirect('/carlist')
@@ -343,19 +343,19 @@ colors = [
 def bar():
     bar_labels = [15, 10, 23, 14, 20, 16, 12, 18, 9, 21]
     bar_values= [45, 44, 43, 34, 32, 30, 23, 23, 19, 14]
-    return render_template('bar_chart.html', title='Our Most popular prices', max=17000, labels=bar_labels, values=bar_values)
+    return render_template('bar_chart.html', title='Our Most popular prices', max=100, labels=bar_labels, values=bar_values)
 
 @app.route('/line')
 def line():
     line_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     line_values = [67, 54, 33, 47, 21, 56, 34, 19, 5, 3]
-    return render_template('line_chart.html', title='Duration of bookings made by users', max=17000, labels=line_labels, values=line_values)
+    return render_template('line_chart.html', title='Duration of bookings made by users', max=100, labels=line_labels, values=line_values)
 
 @app.route('/pie')
 def pie():
     pie_labels = ["Toyota", "Ford", "Mercedes-Benz", "BMW", "Subaru", "Volvo", "Honda", "Porsche", "Volkswagen", "Audi"]
     pie_values = [67,59,58,44,43,41,38,35,20,15]
-    return render_template('pie_chart.html', title='Bookings made for the top 10 car makes', max=17000, set=zip(pie_values, pie_labels, colors))
+    return render_template('pie_chart.html', title='Bookings made for the top 10 car makes', max=100, set=zip(pie_values, pie_labels, colors))
 
 
 # @app.route('/bar')

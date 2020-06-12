@@ -37,7 +37,7 @@
 				<th>Seats</th>
 				<th>Cost</th>
 				<th>Availability</th>
-				<th>Set availability</th>
+				<th>Update</th>
 				<th>Report Car</th>
 				<th>Delete</th>
 			</tr>
@@ -61,9 +61,14 @@
 					<form method=post action="updatecarpage">
 						<td><button name="id" value="{{car[0]}}">Update</button></td>
                     </form>
-                    <form method=post action="reportcar">
-						<td><button name="report" value="{{car[0]}}">Report</button></td>
-					</form>
+					{% if car[7]==2 %}
+						<form method=post action="reportcar">
+							<input type="hidden" name="make" value="{{car[1]}}">
+							<td><button name="id" value="{{car[0]}}">Report</button></td>
+						</form>
+					{% else %}
+						<td>Already Broken</td>
+					{% endif %}
 					<form method=post action="deletecar">
 						<td><button name="delete" value="{{car[0]}}">Delete</button></td>
 					</form>

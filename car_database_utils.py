@@ -91,7 +91,7 @@ class CarDatabaseUtils:
 
     def setCarAvailability(self, carID, availability):
         with self.connection.cursor() as cursor:
-            cursor.execute("UPDATE Cars SET availability = %s WHERE CarID = %s", (availability, CarID,))
+            cursor.execute("UPDATE Cars SET available = %s WHERE CarID = %s", (availability, carID,))
         self.connection.commit()
 
     def deleteCar(self, CarID):
