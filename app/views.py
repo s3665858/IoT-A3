@@ -123,19 +123,20 @@ pie_values = [67,59,58,44,43,41,38,35,20,15]
 @app.route('/addmacaddress', methods = ('GET', 'POST'))
 def addmacaddress():
     success = False
+    userID = session['userID']
+    addresses = mainEngine.getEngineerAddress(userID)
     if request.method == 'POST':
-        userID = session['userID']
         macAddress = request.form['address']
-        mainEngine.insertEngineer(userID, macAddress)
         success = True
-    return render_template("engineer/addmacaddress.html", success=success)
+        mainEngine.insertEngineer(userID, macAddress)
+        addresses = mainEngine.getEngineerAddress(userID)
+    return render_template("engineer/addmacaddress.html", addresses=addresses, success=success)
 
-@app.route('/deletemacaddress', methods = ('GET', 'POST'))
+@app.route('/deletemacaddress', methods = ['POST'])
 def deleteMacAddress():
-    if request.method == 'POST':
-        macAddress = request.form['address']
-        mainEngine.deleteAddress(macAddress)
-    return render_template("addmacaddress.html")
+    addressID = request.form['delete']
+    mainEngine.deleteAddress(addressID)
+    return redirect("/addmacaddress")
 
 @app.route('/carhistory', methods=["POST"])
 def carhistory():

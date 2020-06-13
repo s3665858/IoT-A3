@@ -41,7 +41,7 @@ class EngineerDatabaseUtils:
 
     def deleteAddress(self, address):
         with self.connection.cursor() as cursor:
-            cursor.execute("delete from Engineers where address = %s", (address,))
+            cursor.execute("delete from Engineers where engineerID = %s", (address,))
         self.connection.commit()
 
         return cursor.rowcount == 1
@@ -53,7 +53,7 @@ class EngineerDatabaseUtils:
         
     def getEngineerAddress(self, userID):
         with self.connection.cursor() as cursor:
-            cursor.execute("select address from Engineers WHERE userID = %s", (userID,))
+            cursor.execute("select * from Engineers WHERE userID = %s", (userID,))
             return cursor.fetchall()
 
     def getEngineerUserID(self, address):
