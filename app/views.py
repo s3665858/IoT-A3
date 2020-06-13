@@ -59,7 +59,17 @@ def home():
     elif session['type']=='e':
         return render_template("engineer/home.html", name=session.get('username'))
     else:
-        return render_template("manager/home.html", name=session.get('username'))
+        # if this works will hide them later
+        bar_title = 'Our Most popular prices'
+        line_title = 'Duration of bookings made by users'
+        pie_title = 'Bookings made for the top 10 car makes'
+        bar_labels = [15, 10, 23, 14, 20, 16, 12, 18, 9, 21]
+        bar_values = [45, 44, 43, 34, 32, 30, 23, 23, 19, 14]
+        line_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        line_values = [67, 54, 33, 47, 21, 56, 34, 19, 5, 3]
+        pie_labels = ["Toyota", "Ford", "Mercedes-Benz", "BMW", "Subaru", "Volvo", "Honda", "Porsche", "Volkswagen", "Audi"]
+        pie_values = [67,59,58,44,43,41,38,35,20,15]
+        return render_template("manager/home.html", name=session.get('username'), bar_title=bar_title, line_title=line_title, pie_title=pie_title, bar_labels=bar_labels, bar_values=bar_values, line_labels=line_labels, line_values=line_values, pie_labels=pie_labels, pie_values=pie_values, max=100)
     
 @app.route('/carlist', methods=["GET"])
 def cars():   
@@ -195,7 +205,7 @@ def updateuser():
     if mainEngine.check_isalnum_username(username) is True:
         usernameInvalid=True
     return render_template('admin/updateuser.html', user=user, usernameDuplicate=usernameDuplicate, usernameInvalid=usernameInvalid)
-    
+
 @app.route('/deletecar', methods = ['POST'])
 def deletecar():
     carID = request.form['delete']
