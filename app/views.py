@@ -384,5 +384,4 @@ def home():
         bar_title = 'Our Most popular prices'
         line_title = 'Duration of bookings made by users'
         pie_title = 'Bookings made for the top 10 car makes'
-        #return render_template("manager/home.html", pie_title=pie_title, set=zip(pie_values, pie_labels, colors), max=100)
         return render_template("manager/home.html", bar_title=bar_title, line_title=line_title, pie_title=pie_title, bar_labels=bar_labels, bar_values=bar_values, line_labels=line_labels, line_values=line_values, set=zip(pie_values, pie_labels, colors), max=100, bar_label=bar_label, bar_value=bar_value, line_label=line_label, line_value=line_value, pie_label=pie_label, pie_value=pie_value)
