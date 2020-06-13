@@ -278,6 +278,12 @@ def history():
     cars=mainEngine.listCars()
     return render_template("customer/bookhistory.html", cars=cars, bookings=bookings)
 
+@app.route('/repairhistory')
+def repairhistory():
+    repairs = mainEngine.listPersonalRepairsHistory(session['userID'])
+    cars=mainEngine.listCars()
+    return render_template("engineer/repairhistory.html", cars=cars, repairs=repairs)
+
 @app.route('/makebooking', methods = ['POST'])
 def makebooking():
     carID = request.form['car']
@@ -293,6 +299,13 @@ def makebooking():
         mainEngine.setCarAvailability(carID, 0)
     return redirect('/booking')    
 
+@app.route('/makerepair', methods = ['POST'])
+def makerepair():
+    carID = request.form['car']
+    mainEngine.insertRepair(session['userID'], carID)
+    mainEngine.setCarAvailability(carID, 3)
+    return redirect('/carlist')
+
 @app.route('/uploader',  methods = ['POST'])
 def upload_file():
     userID = session['userID']
@@ -307,6 +320,12 @@ def booking():
     bookings = mainEngine.listPersonalOngoingBooking(session['userID'])
     cars=mainEngine.listCars()
     return render_template("customer/booking.html", cars=cars, bookings=bookings)
+
+@app.route('/repair')
+def repair():
+    repairs = mainEngine.listPersonalOngoingRepairs(session['userID'])
+    cars=mainEngine.listCars()
+    return render_template("engineer/repair.html", cars=cars, repairs=repairs)
 
 @app.route('/deletebooking', methods = ['POST'])
 def deletebooking():
@@ -324,6 +343,19 @@ def deletebooking():
     mainEngine.setBookingOngoing(bookingID, 2)
     gCalendar.delete_booking(bookingID, userID, make)
     return redirect('/booking')
+
+@app.route('/cancelrepair', methods = ['POST'])
+def cancelrepair():
+    repairID = request.form['delete']
+    # userID = session['userID']
+    # repairs = mainEngine.listPersonalOngoingRepairs(userID)
+    # carID = ""
+    # for repair in repairs:
+    #     if repair[0]==int(repairID):
+    #         carID = repair[2]
+    # mainEngine.setCarAvailability(carID, 1)
+    mainEngine.cancelRepair(repairID)
+    return redirect('/repair')
 
 @app.route('/googleAuthenticate', methods = ('GET', ('POST')))
 def googleAuthenticate():

@@ -1,0 +1,40 @@
+{% extends "engineerbase.html" %}
+{% block title %}Repairs History{% endblock %}
+{% block body %}
+<div class="box">
+	<div id="repairHistory">
+		<h2> Repair History</h2>
+		{% if repairs%}
+		<table>
+			<tr>
+				<th>Repair ID</th>
+				<th>Car ID</th>
+				<th>Make</th>
+				<th>Status</th>
+			</tr>
+			{% for repair in repairs %}
+				{% for car in cars %}
+					{% if repair[2]==car[0] %}
+						<tr>
+							<td>{{repair[0]}}</td>
+							<td>{{repair[2]}}</td>
+							<td>{{car[1]}}</td>
+							{% if repair[3]==1 %}
+								<td>Ongoing</td>
+							{% elif repair[3]==2 %}
+								<td>Cancelled</td>
+							{% else %}
+								<td>Finished</td>
+							{% endif %}
+						</tr>
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+		</table>
+		{% else %}
+			<br>
+			<td>No Repair History</td>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

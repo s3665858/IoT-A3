@@ -1,0 +1,38 @@
+{% extends "engineerbase.html" %}
+{% block title %}Ongoing Repairs{% endblock %}
+{% block body %}
+<div class="box">
+	<div id="activeRepairs">
+		<h2>Ongoing Repairs</h2>
+		{% if repairs%}
+		<table>
+			<tr>
+                <th>Car ID</th>
+                <th>Car Make</th>
+				<th>Status</th>
+				<th>Cancel</th>
+			</tr>
+			{% for repair in repairs %}
+				{% for car in cars %}
+					{% if repair[1]==car[0] %}
+						<tr>
+                            <td>{{car[0]}}</td>
+							<td>{{car[1]}}</td>
+							<td>{{repair[3]}}</td>
+							<form method=post action="cancelrepair">
+								<td>
+									<button name="delete" value="{{repair[0]}}">Cancel</button>
+								</td>
+							</form>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+		</table>
+		{% else %}
+			<br>
+			<td>No Ongoing Repairs</td>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

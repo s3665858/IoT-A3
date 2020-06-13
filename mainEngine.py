@@ -3,6 +3,7 @@ from user_database_utils import UserDatabaseUtils
 from car_database_utils import CarDatabaseUtils
 from booking_database_utils import BookingDatabaseUtils
 from engineer_database_utils import EngineerDatabaseUtils
+from repair_database_utils import RepairDatabaseUtils
 
 class MainEngine:
     def __init__(self):
@@ -266,12 +267,27 @@ class MainEngine:
         with BookingDatabaseUtils() as db:
             return db.getTop10PriceCount()
 
-    def getDuration(self):
-        with BookingDatabaseUtils() as db:
-            array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-            return array
+    ## functions for repair table ##
+    def createRepairTable(self):
+        with RepairDatabaseUtils() as db:
+            db.createRepairTable()
+
+    def insertRepair(self, userID, CarID):
+        with RepairDatabaseUtils() as db:
+            db.insertRepair(userID, CarID, 1)
+
+    def listPersonalRepairsHistory(self, userID):
+        with RepairDatabaseUtils() as db:
+            return db.listPersonalRepairsHistory(userID)
+            
+    def listPersonalOngoingRepairs(self, userID):
+        with RepairDatabaseUtils() as db:
+            return db.listPersonalOngoingRepairs(userID)
     
-    def getDurationBookingCount(self):
-        with BookingDatabaseUtils() as db:
-            array = [67, 54, 33, 47, 21, 56, 34, 19, 5, 3]
-            return array
+    def cancelRepair(self, repairID):
+        with RepairDatabaseUtils() as db:
+            db.setRepairStatus(repairID, 2)
+
+    def setRepairStatus(self, repairID, status):
+        with RepairDatabaseUtils() as db:
+            db.setRepairStatus(repairID, status)

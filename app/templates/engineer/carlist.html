@@ -15,8 +15,9 @@
 				<th>Seats</th>
 				<th>Cost</th>
 				<th>Availability</th>
-				<th>Take</th>
-			</tr>
+				<th>Repair</th>
+            </tr>
+            
 			{% for car in cars %}
 				<tr>
 					<td>{{car[0]}}</td>
@@ -31,7 +32,15 @@
 						<td>Unavalaible</td>
 					{% else %}
 						<td>Broken</td>
-					{% endif %}
+                    {% endif %}
+                    <form method=post action="makerepair">
+                        <td>
+                            {% if car[7]==2 %}
+                                <button name="car" value="{{car[0]}}">Repair</button>
+                            {% elif car[7]==3 %}
+                                <td>Repairing</td>
+                            {% endif %}
+                        </td></form>
 					<td><button name="id" value="{{car[0]}}">Take</button></td>
 				</tr>
 			{% endfor %}
