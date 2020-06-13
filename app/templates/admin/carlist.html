@@ -36,16 +36,24 @@
 					{% else %}
 						<td>Broken</td>
 					{% endif %}
-					<form method=post action="updatecarpage">
-						<td><button name="id" value="{{car[0]}}">Update</button></td>
-                    </form>
-					{% if car[7]==2 %}
-						<form method=post action="reportcar">
-							<input type="hidden" name="make" value="{{car[1]}}">
-							<td><button name="id" value="{{car[0]}}">Report</button></td>
-                    	</form>
+{% if car[7]==1 %}
+                        <form method=post action="updatecarpage">
+                            <td><button name="id" value="{{car[0]}}">Update</button></td>
+                        </form>
+                    {% elif car[7]==0 %}
+						<td>Being rented</td>
 					{% else %}
-						<td>Already Broken</td>
+						<td>Broken</td>
+                    {% endif %}
+                    {% if car[7]==1 %}
+                        <form method=post action="reportcar">
+                            <input type="hidden" name="make" value="{{car[1]}}">
+                            <td><button name="id" value="{{car[0]}}">Report</button></td>
+                        </form>
+                    {% elif car[7]==0 %}
+						<td>Being rented</td>
+					{% else %}
+                        <td>Already Broken</td>
 					{% endif %}
 					<form method=post action="deletecar">
 						<td><button name="delete" value="{{car[0]}}">Delete</button></td>
