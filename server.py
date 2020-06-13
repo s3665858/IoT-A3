@@ -30,29 +30,34 @@ class SocketServer:
                     sendBack = pickle.dumps(self.engineerValidation(data))
                 
                 if data['type']==5:
-                    sendBack = pickle.dumps(self.engineerValidation(data))
+                    sendBack = pickle.dumps(self.engineerSignIn(data))
             
             connection.sendall(sendBack)
             connection.close()
 
     def engineerValidation(self,data):
         mainEngine = MainEngine()
-        for devices in data['nearby_devices']:
-            # engineer_device = mainEngine.getEngineer()[somecol]
-            engineer_device = 'DC:A6:32:62:F8:F7'
-            if(engineer_device == devices):
-                return True
-
+        alladdress = mainEngine.getAllAddress()
+        for device in data['nearby_devices']:
+            for address in alladdress:
+                if(device == address[0]):
+                    return True
         return  False
 
     def engineerSignIn(self,data):
         mainEngine = MainEngine()
-        #if
-        #data['name'] == main.getEngineer(something)
-        #data['id'] == main.getEngineer(something)
-
-        #     return True
-        # return False
+        details = mainEngine.getAllDetails()
+        for detail in details:
+            if data['id'] == detail[1]:
+                name = mainEngine.getUserDetails(detail[1])[0][1]
+                if data['name']==name:
+                    mainEngine.setCarAvailability(data['carID'],1)
+                    repairs = mainEngine.listPersonalOngoingRepairs(data['id'])
+                    for repair in repairs:
+                        if data['carID']==repair[1]:
+                            mainEngine.setRepairStatus(repair[0],0)
+                            return True
+        return False
     def validation(self,data):
         mainEngine = MainEngine()
         username = data['username']
@@ -105,6 +110,3 @@ class SocketServer:
                 mainEngine.setCarLocation(carID,location)
                 return True
         return False
-
-# s = SocketServer()
-# s.startListening()

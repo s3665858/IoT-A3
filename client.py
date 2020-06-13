@@ -74,8 +74,7 @@ class SocketClient:
         if self.sendData(data):
             print("unlock")
             return True
-        else:
-            print("invalid engineer mantain device")
+        
     
 
     def saveData(self):
@@ -111,23 +110,28 @@ class SocketClient:
                 self.saveData()
                 break
             if menu =="4":
-                self.engineerSignin()
+                self.engineerSignin('1.jpg')
                 break
             else:
                 print("invalid input")
 
     def detectBluetoothDevices(self):
-        while True:
+        count = 0
+        while count<5:
             nearby_devices = bluetooth.discover_devices()
+            count +=1
             if(self.engineerUnlock(nearby_devices)):
                 break
 
-    def QRcodeReader(self,file):
-        return ast.literal_eval(decode(Image.open(file))[0].data.decode('UTF-8'))
     
-    def engineerSignin(self,data):
+    def engineerSignin(self,file):
+        data = ast.literal_eval(decode(Image.open(file))[0].data.decode('UTF-8'))
+        data['carID'] = self.carID
         dataToSend = pickle.dumps(data)
-        self.sendData(dataToSend)
+        if self.sendData(dataToSend):
+            print('success')
+        else:
+            print("invalid QR code or car no need to repair")
         
     
 
@@ -141,9 +145,9 @@ def activate_job():
 
 
 s = SocketClient()
-# s.setCarID(11)
-# activate_job()
-# s.menu()
-file = open('1.jpg','rb')
-print(s.QRcodeReader(file))
+activate_job()
+s.setCarID(5)
+s.menu()
+
+
 

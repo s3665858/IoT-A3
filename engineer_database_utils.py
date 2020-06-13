@@ -60,3 +60,13 @@ class EngineerDatabaseUtils:
         with self.connection.cursor() as cursor:
             cursor.execute("select userID from Engineers WHERE address = %s", (address,))
             return cursor.fetchall()
+    
+    def getAllAddress(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select address from Engineers")
+            return cursor.fetchall()
+    
+    def getAllDetails(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select * from Engineers")
+            return cursor.fetchall()

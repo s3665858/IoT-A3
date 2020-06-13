@@ -2,6 +2,7 @@ from flask import Flask, jsonify, render_template, request, redirect, session, M
 from flask_googlemaps import Map
 from flask_googlemaps import icons
 import audio
+import qr
 from gtts import gTTS 
 import playsound
 from google_calendar.authenticator_runner import run_authenticator
@@ -371,7 +372,8 @@ def home():
     elif session['type']=='a':
         return render_template("admin/home.html", name=session.get('username'))
     elif session['type']=='e':
-        return render_template("engineer/home.html", name=session.get('username'))
+        qr.generateQR(session.get('userID'),session.get('username'))
+        return render_template("engineer/home.html", id=session.get('userID'))
     else:
         bar_label= mainEngine.getTop10Price()
         bar_value= mainEngine.getTop10BookingCountForPrice()

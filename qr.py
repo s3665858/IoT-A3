@@ -11,12 +11,4 @@ def generateQR(id,name):
     qr.make(fit=True)
 
     img = qr.make_image(fill_color="black", back_color="white")
-    img.save('1.jpg')
-
-generateQR(0,"rock")
-from pyzbar.pyzbar import decode
-from PIL import Image
-import ast
-data = ast.literal_eval(decode(Image.open('1.jpg'))[0].data.decode('UTF-8')) 
-
-print(data)
+    img.save(f'app\static\{id}.jpg')

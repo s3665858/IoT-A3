@@ -247,6 +247,14 @@ class MainEngine:
     def getEngineerAddress(self, userID):
         with EngineerDatabaseUtils() as db:
             return db.getEngineerAddress(userID)
+
+    def getAllAddress(self):
+        with EngineerDatabaseUtils() as db:
+            return db.getAllAddress()
+    
+    def getAllDetails(self):
+        with EngineerDatabaseUtils() as db:
+            return db.getAllDetails()
     
     def getEngineerUserID(self, address):
         with EngineerDatabaseUtils() as db:
