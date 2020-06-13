@@ -120,14 +120,15 @@ line_values = [67, 54, 33, 47, 21, 56, 34, 19, 5, 3]
 pie_labels = ["Toyota", "Ford", "Mercedes-Benz", "BMW", "Subaru", "Volvo", "Honda", "Porsche", "Volkswagen", "Audi"]
 pie_values = [67,59,58,44,43,41,38,35,20,15]
 
-@app.route('/insertmacaddress', methods = ('GET', 'POST'))
-def insertMacAddress():
+@app.route('/addmacaddress', methods = ('GET', 'POST'))
+def addmacaddress():
+    success = False
     if request.method == 'POST':
         userID = session['userID']
         macAddress = request.form['address']
         mainEngine.insertEngineer(userID, macAddress)
         success = True
-    return render_template("addmacaddress.html", success=success)
+    return render_template("engineer/addmacaddress.html", success=success)
 
 @app.route('/deletemacaddress', methods = ('GET', 'POST'))
 def deleteMacAddress():
