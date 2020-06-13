@@ -121,3 +121,9 @@ class CarDatabaseUtils:
             cursor.execute("UPDATE Cars SET make = %s, body_type = %s, colour = %s, seats = %s, location = %s, cost_per_hour = %s, available = %s WHERE CarID = %s", (make, body_type, colour, seats, location, cost_per_hour,availability,carID,))
         self.connection.commit()
     
+    def getTop10Price(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select cost_per_hour from Cars ORDER BY cost_per_hour DESC")
+            return cursor.fetchall()
+
+    

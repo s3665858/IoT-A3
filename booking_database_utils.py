@@ -85,11 +85,25 @@ class BookingDatabaseUtils:
     
     def getTop10CarIDCount(self):
         with self.connection.cursor() as cursor:
-            cursor.execute("SELECT Count(CarID) FROM Booking ORDER BY Count(CarID) ASC LIMIT 10")
+            cursor.execute("SELECT CarID FROM Booking ORDER BY CarID ASC")
             return cursor.fetchall()
 
     def getTop10CarID(self):
         with self.connection.cursor() as cursor:
-            cursor.execute("SELECT CarID FROM Booking ORDER BY Count(CarID) ASC LIMIT 10")
+            cursor.execute("SELECT CarID FROM Booking ORDER BY CarID ASC")
             return cursor.fetchall()
     
+    def getTop10PriceCount(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT CarID FROM Booking ORDER BY CarID ASC")
+            return cursor.fetchall()
+    
+    def getTop10Duration(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select duration from Booking ORDER BY duration DESC")
+            return cursor.fetchall()
+    
+    def getTop10DurationCount(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select duration from Booking ORDER BY duration DESC")
+            return cursor.fetchall()

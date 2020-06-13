@@ -39,6 +39,13 @@ class EngineerDatabaseUtils:
 
         return cursor.rowcount == 1
 
+    def deleteAddress(self, address):
+        with self.connection.cursor() as cursor:
+            cursor.execute("delete from Engineers where address = %s", (address,))
+        self.connection.commit()
+
+        return cursor.rowcount == 1
+
     def listAllEngineers(self):
         with self.connection.cursor() as cursor:
             cursor.execute("select * from Engineers")

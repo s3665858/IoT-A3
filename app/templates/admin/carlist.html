@@ -36,7 +36,7 @@
 					{% else %}
 						<td>Broken</td>
 					{% endif %}
-{% if car[7]==1 %}
+                    {% if car[7]==1 %}
                         <form method=post action="updatecarpage">
                             <td><button name="id" value="{{car[0]}}">Update</button></td>
                         </form>

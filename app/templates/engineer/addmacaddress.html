@@ -19,7 +19,32 @@
 				<div>Your MAC address has been successfully added!</div>
 			    {% endif %}
 			</form>
-		</div>
+        </div>
+        <div class="box">
+            <div id="addressList">
+                <h2>Your list of MAC addresses</h2>
+                {% if addresses%}
+                <table>
+                    <tr>
+                        <th>MAC address</th>
+                        <th>Delete</th>
+                    </tr>
+                    {% for address in addresses %}
+                        <tr>
+                            <td>{{address[2]}}</td>
+                            <form method=post action="deletemacaddress">
+                                <td><button name="delete" value="{{address[0]}}">Delete</button></td>
+                            </form>
+                        </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                    <br>
+                    <td>No MAC addresses registered</td>
+                {% endif %}
+                <br>
+            </div>
+        </div>
 	</body>
 </html>
 {% endblock %}

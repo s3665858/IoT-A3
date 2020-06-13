@@ -55,28 +55,7 @@ def loginPage():
             error=True 
     return render_template("login.html", error=error)
 
-@app.route('/home')
-def home():
-    if session['type']=='c':
-        return render_template("customer/home.html", name=session.get('username'))
-    elif session['type']=='a':
-        return render_template("admin/home.html", name=session.get('username'))
-    elif session['type']=='e':
-        return render_template("engineer/home.html", name=session.get('username'))
-    else:
-        # if this works will hide them later
-        bar_title = 'Our Most popular prices'
-        line_title = 'Duration of bookings made by users'
-        pie_title = 'Bookings made for the top 10 car makes'
-        bar_labels = [15, 10, 23, 14, 20, 16, 12, 18, 9, 21]
-        bar_values = [45, 44, 43, 34, 32, 30, 23, 23, 19, 14]
-        line_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        line_values = [67, 54, 33, 47, 21, 56, 34, 19, 5, 3]
-        pie_labels = ["Toyota", "Ford", "Mercedes-Benz", "BMW", "Subaru", "Volvo", "Honda", "Porsche", "Volkswagen", "Audi"]
-        pie_values = [67,59,58,44,43,41,38,35,20,15]
-        #return render_template("manager/home.html", pie_title=pie_title, set=zip(pie_values, pie_labels, colors), max=100)
-        return render_template("manager/home.html", bar_title=bar_title, line_title=line_title, pie_title=pie_title, bar_labels=bar_labels, bar_values=bar_values, line_labels=line_labels, line_values=line_values, set=zip(pie_values, pie_labels, colors), max=100)
-    
+
 @app.route('/carlist', methods=["GET"])
 def cars():   
     if session['type']=='c':
@@ -134,8 +113,13 @@ def cars():
             style="height:300px;width:300px;margin:0;margin-left:auto;margin-right:auto;",
         )
         return render_template("engineer/carlist.html",cars=cars, gmap=gmap)
+bar_labels = [15, 10, 23, 14, 20, 16, 12, 18, 9, 21]
+bar_values = [45, 44, 43, 34, 32, 30, 23, 23, 19, 14]
+line_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+line_values = [67, 54, 33, 47, 21, 56, 34, 19, 5, 3]
+pie_labels = ["Toyota", "Ford", "Mercedes-Benz", "BMW", "Subaru", "Volvo", "Honda", "Porsche", "Volkswagen", "Audi"]
+pie_values = [67,59,58,44,43,41,38,35,20,15]
 
-# might need help checking correctness
 @app.route('/insertmacaddress', methods = ('GET', 'POST'))
 def insertMacAddress():
     if request.method == 'POST':
@@ -144,6 +128,13 @@ def insertMacAddress():
         mainEngine.insertEngineer(userID, macAddress)
         success = True
     return render_template("addmacaddress.html", success=success)
+
+@app.route('/deletemacaddress', methods = ('GET', 'POST'))
+def deleteMacAddress():
+    if request.method == 'POST':
+        macAddress = request.form['address']
+        mainEngine.deleteAddress(macAddress)
+    return render_template("addmacaddress.html")
 
 @app.route('/carhistory', methods=["POST"])
 def carhistory():
@@ -218,7 +209,6 @@ def deletecar():
     mainEngine.deleteCar(carID)
     return redirect('/carlist')
 
-# need some help
 @app.route('/reportcar', methods = ['POST'])
 def reportcar():
     carID = request.form['id']
@@ -347,47 +337,23 @@ def googleAuthenticate():
 def googleAuthenticationComplete():
     return render_template("customer/googleAuthenticationComplete.html")
 
-#########################################
-# Testing area for graphs visualisation #
-#########################################
-
-@app.route('/bar')
-def bar():
-    bar_labels = [15, 10, 23, 14, 20, 16, 12, 18, 9, 21]
-    bar_values= [45, 44, 43, 34, 32, 30, 23, 23, 19, 14]
-    return render_template('bar_chart.html', title='Our Most popular prices', max=100, labels=bar_labels, values=bar_values)
-
-@app.route('/line')
-def line():
-    line_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    line_values = [67, 54, 33, 47, 21, 56, 34, 19, 5, 3]
-    return render_template('line_chart.html', title='Duration of bookings made by users', max=100, labels=line_labels, values=line_values)
-
-@app.route('/pie')
-def pie():
-    pie_labels = ["Toyota", "Ford", "Mercedes-Benz", "BMW", "Subaru", "Volvo", "Honda", "Porsche", "Volkswagen", "Audi"]
-    pie_values = [67,59,58,44,43,41,38,35,20,15]
-    return render_template('pie_chart.html', title='Bookings made for the top 10 car makes', max=100, set=zip(pie_values, pie_labels, colors))
-
-
-# @app.route('/bar')
-# def bar():
-#     bar_labels= mainEngine.getTop10Price()
-#     bar_values= mainEngine.getTop10BookingCountForPrice()
-#     return render_template('bar_chart.html', title='Our Most popular prices', max=17000, labels=bar_labels, values=bar_values)
-
-# @app.route('/line')
-# def line():
-#     line_labels=mainEngine.getDuration()
-#     line_values=mainEngine.getDurationBookingCount()
-#     return render_template('line_chart.html', title='Duration of bookings made by users', max=17000, labels=line_labels, values=line_values)
-
-# @app.route('/pie')
-# def pie():
-#     pie_labels = mainEngine.getTop10Make()
-#     pie_values = mainEngine.getTop10BookingCountForMake
-#     return render_template('pie_chart.html', title='Bookings made for the top 10 car makes', max=17000, set=zip(pie_values, pie_labels, colors))
-
-###############################################
-# End of Testing area for graphs visualisation#
-###############################################
+@app.route('/home')
+def home():
+    if session['type']=='c':
+        return render_template("customer/home.html", name=session.get('username'))
+    elif session['type']=='a':
+        return render_template("admin/home.html", name=session.get('username'))
+    elif session['type']=='e':
+        return render_template("engineer/home.html", name=session.get('username'))
+    else:
+        bar_label= mainEngine.getTop10Price()
+        bar_value= mainEngine.getTop10BookingCountForPrice()
+        line_label=mainEngine.getDuration()
+        line_value=mainEngine.getDurationBookingCount()
+        pie_label = mainEngine.getTop10Make()
+        pie_value = mainEngine.getTop10BookingCountForMake
+        bar_title = 'Our Most popular prices'
+        line_title = 'Duration of bookings made by users'
+        pie_title = 'Bookings made for the top 10 car makes'
+        #return render_template("manager/home.html", pie_title=pie_title, set=zip(pie_values, pie_labels, colors), max=100)
+        return render_template("manager/home.html", bar_title=bar_title, line_title=line_title, pie_title=pie_title, bar_labels=bar_labels, bar_values=bar_values, line_labels=line_labels, line_values=line_values, set=zip(pie_values, pie_labels, colors), max=100, bar_label=bar_label, bar_value=bar_value, line_label=line_label, line_value=line_value, pie_label=pie_label, pie_value=pie_value)
