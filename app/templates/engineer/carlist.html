@@ -37,11 +37,9 @@
                         <td>
                             {% if car[7]==2 %}
                                 <button name="car" value="{{car[0]}}">Repair</button>
-                            {% elif car[7]==3 %}
-                                <td>Repairing</td>
                             {% endif %}
-                        </td></form>
-					<td><button name="id" value="{{car[0]}}">Take</button></td>
+                        </td>
+					</form>
 				</tr>
 			{% endfor %}
 		</table>

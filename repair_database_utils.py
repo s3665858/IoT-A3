@@ -29,7 +29,7 @@ class RepairDatabaseUtils:
                     userID int not null,
                     CarID int not null,
                     ongoing int not null,
-                    constraint PK_Car primary key (bookingID)
+                    constraint PK_Repairs primary key (repairID)
                 )""")
         self.connection.commit()
 

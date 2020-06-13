@@ -304,7 +304,7 @@ def makerepair():
     carID = request.form['car']
     mainEngine.insertRepair(session['userID'], carID)
     mainEngine.setCarAvailability(carID, 3)
-    return redirect('/carlist')
+    return redirect('/repair')
 
 @app.route('/uploader',  methods = ['POST'])
 def upload_file():
@@ -332,8 +332,6 @@ def deletebooking():
     bookingID = request.form['delete']
     userID = session['userID']
     make = request.form['make']
-    # location = request.form['location']
-    # duration = request.form['duration']
     bookings = mainEngine.listPersonalOngoingBooking(userID)
     carID = ""
     for booking in bookings:
@@ -347,14 +345,9 @@ def deletebooking():
 @app.route('/cancelrepair', methods = ['POST'])
 def cancelrepair():
     repairID = request.form['delete']
-    # userID = session['userID']
-    # repairs = mainEngine.listPersonalOngoingRepairs(userID)
-    # carID = ""
-    # for repair in repairs:
-    #     if repair[0]==int(repairID):
-    #         carID = repair[2]
-    # mainEngine.setCarAvailability(carID, 1)
-    mainEngine.cancelRepair(repairID)
+    carID = request.form['car']
+    mainEngine.setCarAvailability(carID, 2)
+    mainEngine.setRepairStatus(repairID, 2)
     return redirect('/repair')
 
 @app.route('/googleAuthenticate', methods = ('GET', ('POST')))

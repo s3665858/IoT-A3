@@ -14,14 +14,14 @@
 			</tr>
 			{% for repair in repairs %}
 				{% for car in cars %}
-					{% if repair[2]==car[0] %}
+					{% if repair[1]==car[0] %}
 						<tr>
 							<td>{{repair[0]}}</td>
-							<td>{{repair[2]}}</td>
+							<td>{{repair[1]}}</td>
 							<td>{{car[1]}}</td>
-							{% if repair[3]==1 %}
+							{% if repair[2]==1 %}
 								<td>Ongoing</td>
-							{% elif repair[3]==2 %}
+							{% elif repair[2]==2 %}
 								<td>Cancelled</td>
 							{% else %}
 								<td>Finished</td>

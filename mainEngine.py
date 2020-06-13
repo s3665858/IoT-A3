@@ -11,6 +11,7 @@ class MainEngine:
         self.createCarTable()
         self.createBookingTable()
         self.createEnginnerTable()
+        self.createRepairTable()
         
     def createUserTable(self):
         with UserDatabaseUtils() as db:

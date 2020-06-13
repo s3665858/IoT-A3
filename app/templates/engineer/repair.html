@@ -9,7 +9,6 @@
 			<tr>
                 <th>Car ID</th>
                 <th>Car Make</th>
-				<th>Status</th>
 				<th>Cancel</th>
 			</tr>
 			{% for repair in repairs %}
@@ -18,9 +17,9 @@
 						<tr>
                             <td>{{car[0]}}</td>
 							<td>{{car[1]}}</td>
-							<td>{{repair[3]}}</td>
 							<form method=post action="cancelrepair">
 								<td>
+									<input type="hidden" name="car" value="{{car[0]}}">
 									<button name="delete" value="{{repair[0]}}">Cancel</button>
 								</td>
 							</form>
