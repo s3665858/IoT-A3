@@ -393,30 +393,90 @@ function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns
                 return int(bookingID[0])
 
 
+createEngineerTable(self)
+--------------------------------------------------
+Calls createEnginnerTable() from :ref:`engineer_database_utils`
+
+listEngineers(self)
+--------------------------------------------------
+Calls listAllEngineers() from :ref:`engineer_database_utils`
+
+insertEngineer(self, userID, address)
+--------------------------------------------------
+Calls insertEngineer() from :ref:`engineer_database_utils`
+
+deleteAddress(self, address)
+--------------------------------------------------
+Calls deleteAddress() from :ref:`engineer_database_utils`
+
+getEngineerAddress(self, userID)
+--------------------------------------------------
+Calls createEnginnerTable() from :ref:`engineer_database_utils`
+
+getAllAddress(self)
+--------------------------------------------------
+Calls getAllAddress() from :ref:`engineer_database_utils`
+
+getAllDetails(self)
+--------------------------------------------------
+Calls getAllDetails() from :ref:`engineer_database_utils`
+
+getEngineerUserID(self, address)
+--------------------------------------------------
+Calls getEngineerUserID() from :ref:`engineer_database_utils`
+
+getDurationForGraph(self)
+--------------------------------------------------
+Calls getTop10Duration() from :ref:`engineer_database_utils`
+
+getTop10Make(self)
+--------------------------------------------------
+Calls getTop10CarID() from :ref:`engineer_database_utils`
+
+getTop10BookingCountForMake(self)
+--------------------------------------------------
+Calls getTop10CarIDCount() from :ref:`engineer_database_utils`
+
+getTop10Price(self)
+--------------------------------------------------
+Calls getTop10Price() from :ref:`engineer_database_utils`
+
+getTop10BookingCountForPrice(self)
+--------------------------------------------------
+Calls getTop10PriceCount() from :ref:`engineer_database_utils`
+
+getTop10DurationCount(self)
+--------------------------------------------------
+Calls getTop10DurationCount() from :ref:`engineer_database_utils`
+
+listEngineers(self)
+--------------------------------------------------
+Calls listAllEngineers() from :ref:`engineer_database_utils`
+
 
 createRepairTable(self)
 --------------------------------------------------
-function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns the first booking ID.
+Calls createRepairTable() from :ref:`repair_database_utils`
 
 
-insertRepair(self)
+insertRepair(self, userID, CarID)
 --------------------------------------------------
-function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns the first booking ID.
+Calls insertRepair() from :ref:`repair_database_utils`.
 
-listPersonalRepairsHistory(self)
+listPersonalRepairsHistory(self, userID)
 --------------------------------------------------
-function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns the first booking ID.
+Calls listPersonalRepairsHistory() from :ref:`repair_database_utils`. Returns the entire list of personal repairs history.
 
-listPersonalOngoingRepairs(self)
+listPersonalOngoingRepairs(self, userID)
 --------------------------------------------------
-function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns the first booking ID.
+Calls listPersonalOngoingRepairs() from :ref:`repair_database_utils`. Returns the entire list of ongoing repairs for engineer.
 
 cancelRepair(self)
 --------------------------------------------------
-function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns the first booking ID.
+Calls setRepairStatus() from :ref:`repair_database_utils`. Sets repair status to 2 meaning cancelled.
 
 setRepairStatus(self)
 --------------------------------------------------
-function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns the first booking ID.
+Calls setRepairStatus() from :ref:`repair_database_utils`. Changes repair status.
 
 

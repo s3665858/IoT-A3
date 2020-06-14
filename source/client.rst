@@ -119,32 +119,28 @@ the car, the car unlocks.
             print("your face is not in database or you did not book this car")
 
 
+
+
+saveData(self, nearby_devices)
+--------------------
+
+
 engineerUnlock(self, nearby_devices)
 --------------------
 function: Packages the facial recognition encodings into a data package and sends it to the *faceValidation()* 
 function from MP via the *sendData()* 
 
 
-engineerUnlock(self, nearby_devices)
---------------------
-
-
-saveData(self, nearby_devices)
---------------------
 
 detectBluetoothDevices(self)
 --------------------
-Detecting nearby bluetooth devices
+Detecting nearby bluetooth devices using bluetooth.discover_devices().
 
-QRcodeReader(self,file)
---------------------
-Reads from the QR image file 
 
 engineerSignin(self,data)
 --------------------
+The Engineer can sign in to repair car by scanning a QR code which will call the sendData() function to sign them in.
 
 activate_job()
 --------------------
-
- run_job()
- --------------------
+Attempt to detect Bluetooth devices in the vicinity

@@ -63,8 +63,9 @@ returns an error.
 
 home()
 ---------
-function: render the username of the session into the home.html template of either customer or admin, 
-depending on their sessiong type
+function: render the username of the session into the home.html template of either customer or admin, engineer 
+depending on their session type being either  session['type']=='c', 'a', or 'e'. This will redirect the user to
+their respective home.html page.
 ::
 
     @app.route('/home')
@@ -178,6 +179,14 @@ function: deletes a car from the car table in the database using deleteCar() fro
         mainEngine.deleteCar(carID)
         return redirect('/carlist')
 
+updatecarpage()
+---------------
+Updates the car page by calling getCarDetails() from :ref:`main_engine`.
+
+updatecar()
+---------------
+Allows an admin to update a car's specifications by calling updateCar() from :ref:`main_engine`.
+
 
 users()
 ---------------
@@ -188,6 +197,10 @@ function: lists all users in the user table in the database using listUsers() fr
     def users():
         users=mainEngine.listUsers()
         return render_template("admin/userlist.html",users=users)
+
+updateuser()
+---------------
+Allows an admin to update user details by calling updateCar() from :ref:`main_engine`.
 
 
 deleteuser()
@@ -335,30 +348,71 @@ function: displays a success message when the user successfully authenticates th
         return render_template("customer/googleAuthenticationComplete.html")
 
 
+
+repair()
+----------------------------------
+Returns a list of the Ongoing Repairs for the engineer with a list of cars using listCars() which redirects the engineer to repair.html
+It Calls listCars() and listPersonalOngoingRepairs() from :ref:`main_engine`.
+
+cancelrepair()
+----------------------------------
+The engineer has the option to cancel an ongoing repair where the repair status is changed to '2' meaning it is not undergoing repair by calling 
+setCarAvailability() and setRepairStatus() from :ref:`main_engine`.
+from :ref:`google_calendar`.
+
+
+users()
+----------------------------------
+Returns a list users in the system for admins to monitor by calling 
+listUsers() from :ref:`main_engine`. This is rendered by userlist.html.
+
+
+searchuser()
+----------------------------------
+Creates the ability for admins to search for a user in the database based on username, first name, last name, email and user type.
+This will create a list and display the results returned by calling 
+searchUsers() from :ref:`main_engine`.
+
+deleteUser()
+----------------------------------
+Allow an admin to delete a user from the system by calling 
+deleteUser() from :ref:`main_engine`.
+
+
+searchcar()
+----------------------------------
+Creates the ability for customers and admins to search for a car based on make, body_type, colour, seats, location and cost by calling 
+searchCars() from :ref:`main_engine`.
+
+The results are retuned as a form and are displayed as available, unavailable, or broken. It also denotes if the car is being rented.
+This function is rendered by the searchcar.html page where they can report, update, or delete a car. This is rendered by searchcar.html.
+
+
+searchcarbyvoice()
+----------------------------------
+Allows a user to search for a car using speech recognition. This function detects speech and recognises the make, body type, colour, cost or location etc.
+Then it returns a list of the results by calling searchCars() from :ref:`main_engine`. This is rendered by searchcar.html.
+
+
+history()
+----------------------------------
+Returns a list of the booking history of a customer by calling listCars() from :ref:`main_engine`. This is rendered by bookhistory.html.
+
+repairhistory()
+----------------------------------
+Returns a list of the personal repairs history of an engineer by calling listCars() from :ref:`main_engine`. This is rendered by repairhistory.html.
+
 addmacaddress()
 ----------------------------------
- 
+An engineer is able to assign a MAC address by calling getEngineerAddress() and insertEngineer() from :ref:`main_engine`. This is rendered by addmacaddress.html.
 
 
 deleteMacAddress()
 ----------------------------------
+An engineer can delete a MAC address assigned to an engineer by calling deleteAdress() from :ref:`main_engine`.
 
 
-getEngineerAddress()
+carHistory()
 ----------------------------------
-displays a success message when the user successfully authenticates their google account.
-::
+Allows the admin to view a list of the car booking history by calling listCarBookingHistory() from :ref:`main_engine`.
 
-    @app.route('/googleAuthenticationComplete')
-    def googleAuthenticationComplete():
-        return render_template("customer/googleAuthenticationComplete.html")
-
-
-getEngineerUserID()
-----------------------------------
-displays a success message when the user successfully authenticates their google account.
-::
-
-    @app.route('/googleAuthenticationComplete')
-    def googleAuthenticationComplete():
-        return render_template("customer/googleAuthenticationComplete.html")

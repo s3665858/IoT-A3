@@ -9,6 +9,7 @@ is looking to find a specific car. This is utilized through the Google Assistant
 
 speechRecognition()
 --------------
-Initializes the Pushbullet API Access token for authentication.
+Using the speech_recognition module the raspberry pi micrphone is used as a source for the input and is put against
+the recognize_google() for voice recognition.
 
 

@@ -2,7 +2,7 @@
 
 Repair Database Utils class
 ================
-*Directory: app/templates/register.html*
+*Directory: repair_database_utils.py*
 
 This class manages the *Repair* Table in our database *Data* by executing MySQL the appropriate queries.
 
@@ -28,27 +28,23 @@ Executes close()
 
 createRepairTable(self)
 -----------------------
-Creates and initialises the User table
+Creates and initialises the repair table
 
 
 insertRepair(self, userID, CarID, status)
 ----------------------------------------------------------------------------
-Inserts a user with the given parameters into the User table
+Inserts a repair job with the given parameters into the repair table
 
             
-
 listPersonalRepairsHistory(self, userID)
 -----------------
-Query for the userID, username, password, firstname, lastname, email, type of all the rows 
-in the User table
+Lists Repairs History for an engineer 
 
 
 listPersonalOngoingRepairs(self, userID)
 ---------------------------
-Deletes the row in the User table where the *userID* column has the same value to 
-the parameter *UserID*.
+Lists the Ongoing repairs for an engineer
 
 setRepairStatus(self, bookingID, status)
 ---------------------------
-Deletes the row in the User table where the *userID* column has the same value to 
-the parameter *UserID*.
+Updates the repair status of a car by an engineer
