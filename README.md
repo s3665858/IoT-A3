@@ -13,8 +13,9 @@ Our project is a Car Rental system running on python using the microframework Fl
 - Username: rock, Password: 1234, Account Type: Engineer
 
 ## GitHub Usage
-We have been actively managing our project work using GitHub, the following are the statistics of our GitHub usage:
+We have been actively managing our project work using GitHub, due to some git issues some of our group member's contribution are not properly reflected in GitHub Insights as their account was not properly identified when pushing commits, below are the screenshots of GitHub Insights:
 ![](images/GitHubScreenShot1.png)
+![](images/GitHubScreenShot2.png)
 
 ## Trello Usage
 We manage the subtasks of our project in an orderly manner using Trello, which details all the tasks which needs to be done for the 
