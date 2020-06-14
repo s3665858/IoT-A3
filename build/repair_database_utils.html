@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repair Database Utils class &#8212; IoT A3 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Pushbullet API" href="pushbullet.html" />
+    <link rel="prev" title="Booking Database Utils class" href="booking_database_utils.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="repair-database-utils-class">
+<span id="repair-database-utils"></span><h1>Repair Database Utils class<a class="headerlink" href="#repair-database-utils-class" title="Permalink to this headline">¶</a></h1>
+<p><em>Directory: repair_database_utils.py</em></p>
+<p>This class manages the <em>Repair</em> Table in our database <em>Data</em> by executing MySQL the appropriate queries.</p>
+<div class="section" id="init-self-connection-none">
+<h2>__init__(self, connection = None)<a class="headerlink" href="#init-self-connection-none" title="Permalink to this headline">¶</a></h2>
+<p>If a connection is not established, establish a connection on MySQLdb with our private credentials.</p>
+</div>
+<div class="section" id="close-self">
+<h2>close(self)<a class="headerlink" href="#close-self" title="Permalink to this headline">¶</a></h2>
+<p>Closes the connection with the database.</p>
+</div>
+<div class="section" id="enter-self">
+<h2>__enter__(self)<a class="headerlink" href="#enter-self" title="Permalink to this headline">¶</a></h2>
+<p>Return the class itself.</p>
+</div>
+<div class="section" id="exit-self-type-value-traceback">
+<h2>__exit__(self, type, value, traceback)<a class="headerlink" href="#exit-self-type-value-traceback" title="Permalink to this headline">¶</a></h2>
+<p>Executes close()</p>
+</div>
+<div class="section" id="createrepairtable-self">
+<h2>createRepairTable(self)<a class="headerlink" href="#createrepairtable-self" title="Permalink to this headline">¶</a></h2>
+<p>Creates and initialises the repair table</p>
+</div>
+<div class="section" id="insertrepair-self-userid-carid-status">
+<h2>insertRepair(self, userID, CarID, status)<a class="headerlink" href="#insertrepair-self-userid-carid-status" title="Permalink to this headline">¶</a></h2>
+<p>Inserts a repair job with the given parameters into the repair table</p>
+</div>
+<div class="section" id="listpersonalrepairshistory-self-userid">
+<h2>listPersonalRepairsHistory(self, userID)<a class="headerlink" href="#listpersonalrepairshistory-self-userid" title="Permalink to this headline">¶</a></h2>
+<p>Query for the userID, username, password, firstname, lastname, email, type of all the rows
+in the User table</p>
+</div>
+<div class="section" id="listpersonalongoingrepairs-self-userid">
+<h2>listPersonalOngoingRepairs(self, userID)<a class="headerlink" href="#listpersonalongoingrepairs-self-userid" title="Permalink to this headline">¶</a></h2>
+<p>Deletes the row in the User table where the <em>userID</em> column has the same value to
+the parameter <em>UserID</em>.</p>
+</div>
+<div class="section" id="setrepairstatus-self-bookingid-status">
+<h2>setRepairStatus(self, bookingID, status)<a class="headerlink" href="#setrepairstatus-self-bookingid-status" title="Permalink to this headline">¶</a></h2>
+<p>Deletes the row in the User table where the <em>userID</em> column has the same value to
+the parameter <em>UserID</em>.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">IoT A3</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index_page.html">Index Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="login_page.html">Login Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="register_page.html">Register Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="customer_home_page.html">Customer Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_available_cars_page.html">Customer’s Car List page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_search_car_page.html">Customer’s Search Car page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_ongoing_booking_page.html">Customer’s Ongoing Booking page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_booking_history_page.html">Customer’s Booking History page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_google_authentication_page.html">Google Authentication page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="engineer_home_page.html">Engineer Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_repair.html">Engineers Repair Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_repair_history.html">Engineers Repair History Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_carlist.html">Engineer Broken Cars List Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_add_macaddress.html">Engineers Mac Address Page page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineerbase.html">Engineer Base Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_home_page.html">Admin Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_car_table_page.html">Admin’s Display Car Table page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_add_car_into_table_page.html">Admin’s Add Car Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_user_table_page.html">Admin’s Display User Table page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="adminbase.html">Admin Base Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="manager_home.html">Manager Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managerbase.html">Manager Base Page</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main_engine.html">mainEngine.py class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_database_utils.html">User Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_database_utils.html">Repair Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="car_database_utils.html">Car Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking_database_utils.html">Booking Database Utils class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Repair Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pushbullet.html">Pushbullet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google_calendar_api.html">Google Calendar Api class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authenticator_runner.html">Google Authenticator Runner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_authenticator.html">API Authenticator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qr.html">QR Object Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audio.html">Voice Recognition</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Socket Server class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Socket Client class</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_user_database_utils.html">Unit Tests for User Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_car_database_utils.html">Unit Tests for Cars Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_engineer_database_utils.html">Unit Tests for Engineer Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_booking_database_utils.html">Unit Tests for Booking Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_mainEngine.html">Unit Tests for Main Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_server.html">Unit Tests for Socket Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_repair_database_utils.html">Unit Tests for Repair Database Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="booking_database_utils.html" title="previous chapter">Booking Database Utils class</a></li>
+      <li>Next: <a href="pushbullet.html" title="next chapter">Pushbullet API</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sean Tan, Vincent Pranata, Rock Shan, Luke Avram.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/repair_database_utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
