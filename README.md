@@ -8,9 +8,10 @@ Our project is a Car Rental system running on python using the microframework Fl
 2. On your pi terminal in the root folder of our project, run 'python run.py'
 
 ## Accounts available
-- Username: vincent, Password: 1234, Account Type: Admin
-- Username: sean, Password: 1234, Account Type: User
-- Username: rock, Password: 1234, Account Type: Engineer
+- Username: vincent, Password: 1234, Account Type: User
+- Username: admin, Password: admin, Account Type: Admin
+- Username: engineer1, Password: 1234, Account Type: Engineer
+- Username: manager1, Password: 1234, Account Type: Manager
 
 ## GitHub Usage
 We have been actively managing our project work using GitHub, due to some git issues some of our group member's contribution are not properly reflected in GitHub Insights as their account was not properly identified when pushing commits, below are the screenshots of GitHub Insights:
