@@ -377,8 +377,8 @@ def home():
     else:
         bar_label= mainEngine.getTop10Price()
         bar_value= mainEngine.getTop10BookingCountForPrice()
-        line_label=mainEngine.getDurationForGraph())
-        line_value=mainEngine.getDurationBookingCount()
+        line_label=mainEngine.getDurationForGraph()
+        line_value=mainEngine.getTop10DurationCount()
         pie_label = mainEngine.getTop10Make()
         pie_value = mainEngine.getTop10BookingCountForMake
         bar_title = 'Our Most popular prices'
