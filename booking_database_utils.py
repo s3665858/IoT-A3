@@ -1,7 +1,7 @@
 import MySQLdb
 
 class BookingDatabaseUtils:
-    HOST = "34.87.224.11"
+    HOST = "35.244.89.13"
     USER = "root"
     PASSWORD = "1111"
     DATABASE = "Data"
@@ -45,6 +45,11 @@ class BookingDatabaseUtils:
         with self.connection.cursor() as cursor:
             cursor.execute("select BookingID, userID, CarID, duration, ongoing from Booking")
             return cursor.fetchall()
+        
+    def listCarBookingHistory(self, carID):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select BookingID, userID, duration, ongoing from Booking WHERE CarID = %s", (carID,))
+            return cursor.fetchall()
 
     def listPersonalBookingHistory(self, userID):
         with self.connection.cursor() as cursor:
@@ -78,3 +83,27 @@ class BookingDatabaseUtils:
             cursor.execute("SELECT bookingID FROM Booking ORDER BY bookingID DESC LIMIT 0, 1")
             return cursor.fetchall()
     
+    def getTop10CarIDCount(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT CarID FROM Booking ORDER BY CarID ASC")
+            return cursor.fetchall()
+
+    def getTop10CarID(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT CarID FROM Booking ORDER BY CarID ASC")
+            return cursor.fetchall()
+    
+    def getTop10PriceCount(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT CarID FROM Booking ORDER BY CarID ASC")
+            return cursor.fetchall()
+    
+    def getTop10Duration(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select duration from Booking ORDER BY duration DESC")
+            return cursor.fetchall()
+    
+    def getTop10DurationCount(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select duration from Booking ORDER BY duration DESC")
+            return cursor.fetchall()

@@ -10,6 +10,7 @@ def activate_job():
 
     thread = threading.Thread(target=run_job)
     thread.start()
+    
 if __name__ == '__main__':
     activate_job()
     app.run(use_reloader=False)

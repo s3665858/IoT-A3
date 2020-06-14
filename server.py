@@ -25,10 +25,39 @@ class SocketServer:
 
                 if data['type']==3:
                     sendBack = pickle.dumps(self.returnCar(data))
+
+                if data['type']==4:
+                    sendBack = pickle.dumps(self.engineerValidation(data))
+                
+                if data['type']==5:
+                    sendBack = pickle.dumps(self.engineerSignIn(data))
             
             connection.sendall(sendBack)
             connection.close()
-        
+
+    def engineerValidation(self,data):
+        mainEngine = MainEngine()
+        alladdress = mainEngine.getAllAddress()
+        for device in data['nearby_devices']:
+            for address in alladdress:
+                if(device == address[0]):
+                    return True
+        return  False
+
+    def engineerSignIn(self,data):
+        mainEngine = MainEngine()
+        details = mainEngine.getAllDetails()
+        for detail in details:
+            if data['id'] == detail[1]:
+                name = mainEngine.getUserDetails(detail[1])[0][1]
+                if data['name']==name:
+                    mainEngine.setCarAvailability(data['carID'],1)
+                    repairs = mainEngine.listPersonalOngoingRepairs(data['id'])
+                    for repair in repairs:
+                        if data['carID']==repair[1]:
+                            mainEngine.setRepairStatus(repair[0],0)
+                            return True
+        return False
     def validation(self,data):
         mainEngine = MainEngine()
         username = data['username']

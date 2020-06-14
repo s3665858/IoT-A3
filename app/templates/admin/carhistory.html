@@ -1,0 +1,40 @@
+{% extends "adminbase.html" %}
+{% block title %}Car History{% endblock %}
+{% block body %}
+<div class="box">
+	<div id="carList">
+		<h2> Car History</h2>
+		{% if bookings%}
+		<div>
+			<table>
+				{% for booking in bookings %}
+					<tr>
+						<th>Booking ID</th>
+						<th>User ID</th>
+						<th>Duration</th>
+						<th>Status</th>
+					</tr>
+					<tr>
+						<td>{{booking[0]}}</td>
+						<td>{{booking[1]}}</td>
+						<td>{{booking[2]}}</td>
+						{% if booking[3]==1 %}
+							<td>Ongoing</td>
+						{% elif booking[3]==2 %}
+							<td>Cancelled</td>
+						{% else %}
+							<td>Finished</td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+		{% else %}
+			<br>
+			<td>This car has never been booked yet</td>
+		{% endif %}
+		<br>
+	</div>
+</div>
+{% endblock %}

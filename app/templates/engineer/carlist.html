@@ -1,0 +1,57 @@
+{% extends "engineerbase.html" %}
+{% block title %}Broken Car List{% endblock %}
+{% block body %}
+{{ gmap.js }}
+<div class="box">
+	<div id="carList">
+		<h2>Broken Car List</h2>
+		{% if cars%}
+		<table>
+			<tr>
+				<th>Car ID</th>
+				<th>Make</th>
+				<th>Body Type</th>
+				<th>Colour</th>
+				<th>Seats</th>
+				<th>Cost</th>
+				<th>Availability</th>
+				<th>Repair</th>
+            </tr>
+            
+			{% for car in cars %}
+				<tr>
+					<td>{{car[0]}}</td>
+					<td>{{car[1]}}</td>
+					<td>{{car[2]}}</td>
+					<td>{{car[3]}}</td>
+					<td>{{car[4]}}</td>
+					<td>{{car[6]}}</td>
+					{% if car[7]==1 %}
+						<td>Avalaible</td>
+					{% elif car[7]==0 %}
+						<td>Unavalaible</td>
+					{% else %}
+						<td>Broken</td>
+                    {% endif %}
+                    <form method=post action="makerepair">
+                        <td>
+                            {% if car[7]==2 %}
+                                <button name="car" value="{{car[0]}}">Repair</button>
+                            {% endif %}
+                        </td>
+					</form>
+				</tr>
+			{% endfor %}
+		</table>
+		<div>
+			<p>Car Locations: </p>
+			{{ gmap.html }}
+		</div>
+		{% else %}
+			<br>
+			<td>No Broke Car is Reported</td>
+		{% endif %}
+		<br>
+	</div>
+</div>
+{% endblock %}

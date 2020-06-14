@@ -1,0 +1,45 @@
+{% extends "engineerbase.html" %}
+{% block title %}MAC Addresses{% endblock %}
+{% block body %}
+<div class="box">
+	<form method=post action="addmacaddress">
+		<table>
+			<tr>    
+				<td><label>MAC address</label></td>
+				<td><input type="text" name='address' required> </td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="submit" value="Submit"></td>
+			</tr>
+		</table>
+		{% if success==True%}
+			<div>Your MAC address has been successfully added!</div>
+		{% endif %}
+	</form>
+</div>
+<div class="box">
+    <div id="addressList">
+	<h2>Your list of MAC addresses</h2>
+	{% if addresses%}
+	<table>
+	    <tr>
+		<th>MAC address</th>
+		<th>Delete</th>
+	    </tr>
+	    {% for address in addresses %}
+		<tr>
+		    <td>{{address[2]}}</td>
+		    <form method=post action="deletemacaddress">
+			<td><button name="delete" value="{{address[0]}}">Delete</button></td>
+		    </form>
+		</tr>
+	    {% endfor %}
+	</table>
+	{% else %}
+	    <br>
+	    <td>No MAC addresses registered</td>
+	{% endif %}
+	<br>
+    </div>
+</div>
+{% endblock %}

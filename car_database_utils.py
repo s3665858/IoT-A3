@@ -1,7 +1,7 @@
 import MySQLdb
 
 class CarDatabaseUtils:
-    HOST = "34.87.224.11"
+    HOST = "35.244.89.13"
     USER = "root"
     PASSWORD = "1111"
     DATABASE = "Data"
@@ -49,6 +49,11 @@ class CarDatabaseUtils:
             cursor.execute("select * from Cars")
             return cursor.fetchall()
 
+    def listBrokenCars(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select * from Cars WHERE available = 2")
+            return cursor.fetchall()
+
     def listAvailableCars(self):
         with self.connection.cursor() as cursor:
             cursor.execute("select * from Cars WHERE available = 1")
@@ -84,6 +89,11 @@ class CarDatabaseUtils:
             cursor.execute("select * from Cars WHERE cost_per_hour = %s", (search,))
             return cursor.fetchall()
 
+    def setCarAvailability(self, carID, availability):
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE Cars SET available = %s WHERE CarID = %s", (availability, carID,))
+        self.connection.commit()
+
     def deleteCar(self, CarID):
         with self.connection.cursor() as cursor:
             cursor.execute("delete from Cars where CarID = %s", (CarID,))
@@ -91,14 +101,29 @@ class CarDatabaseUtils:
 
         return cursor.rowcount == 1
 
-    def setCarAvailability(self, CarID, Availability):
+    def getCarDetails(self, CarID):
         with self.connection.cursor() as cursor:
-            cursor.execute("UPDATE Cars SET available = %s WHERE CarID = %s", (int(Availability), CarID,))
-        self.connection.commit()
-        
+            cursor.execute("select * from Cars WHERE CarID = %s", (CarID,))
+            return cursor.fetchall()
+
+    def getCarMake(self, CarID):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select make from Cars WHERE CarID = %s", (CarID,))
+            return cursor.fetchall()
+
     def setCarLocation(self, CarID, location):
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE Cars SET location = %s WHERE CarID = %s", (location, CarID,))
         self.connection.commit()
     
+    def updateCar(self, carID, make, body_type, colour, seats, location, cost_per_hour, availability):
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE Cars SET make = %s, body_type = %s, colour = %s, seats = %s, location = %s, cost_per_hour = %s, available = %s WHERE CarID = %s", (make, body_type, colour, seats, location, cost_per_hour,availability,carID,))
+        self.connection.commit()
+    
+    def getTop10Price(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select cost_per_hour from Cars ORDER BY cost_per_hour DESC")
+            return cursor.fetchall()
 
+    

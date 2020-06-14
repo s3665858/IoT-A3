@@ -2,7 +2,7 @@ import MySQLdb
 
 class UserDatabaseUtils:
     # changed the host and database and functions
-    HOST = "34.87.224.11"
+    HOST = "35.244.89.13"
     USER = "root"
     PASSWORD = "1111"
     DATABASE = "Data"
@@ -49,8 +49,49 @@ class UserDatabaseUtils:
         with self.connection.cursor() as cursor:
             cursor.execute("select userID, username, password, firstname, lastname, email, type from User")
             return cursor.fetchall()
+    
+    def getOtherUser(self, userID):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE userID != %s", (userID,))
+            return cursor.fetchall()
+    
+    def getUserDetails(self, userID):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE userID = %s" , (userID,))
+            return cursor.fetchall()
+
+    def searchUsersbyUsername(self, search):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE lower(username) like %s", ('%' +search + '%',))
+            return cursor.fetchall()
+
+    def searchUsersbyFirstName(self, search):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE lower(firstname) like %s", ('%' +search + '%',))
+            return cursor.fetchall()
+
+    def searchUsersbyLastName(self, search):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE lower(lastname) like %s", ('%' +search + '%',))
+            return cursor.fetchall()
+        
+    def searchUsersbyEmail(self, search):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE lower(email) like %s", ('%' +search + '%',))
+            return cursor.fetchall()
+
+    def searchUsersbyType(self, search):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select userID, username, password, firstname, lastname, email, type from User WHERE type = %s", (search,))
+            return cursor.fetchall()
 
     def deleteUser(self, userID):
         with self.connection.cursor() as cursor:
             cursor.execute("delete from User where userID = %s", (userID,))
         self.connection.commit()
+        
+    def updateUser(self, userID, username, password, firstname, lastname, email, acc_type):
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE User SET username = %s, password = %s, firstname = %s, lastname = %s, email = %s, type = %s WHERE userID = %s", (username, password, firstname, lastname, email, acc_type,userID,))
+        self.connection.commit()
+    

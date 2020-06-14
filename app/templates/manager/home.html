@@ -1,0 +1,136 @@
+{% extends "managerbase.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<meta charset="utf-8" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+<div class="jumbotron">
+  <h1>This is the manager home page</h1>
+</div>
+<body>
+    <center>
+      <h1>{{ pie_title }}</h1>
+      <canvas id="pie_chart" width="600" height="400"></canvas>
+      <script>
+        var pieData = [
+          {% for pie_item, pie_label, colors in set %}
+            {
+              value: {{pie_item}},
+              label: "{{pie_label}}",
+              color : "{{colors}}"
+            },
+          {% endfor %}
+        ];
+
+        // get bar chart canvas
+        var mychart = document.getElementById("pie_chart").getContext("2d");
+        steps = 10
+        max = {{ max }}
+
+        // draw pie chart
+        new Chart(document.getElementById("pie_chart").getContext("2d")).Pie(pieData);
+
+      </script>
+
+      <h1>{{ line_title }}</h1>
+      <canvas id="line_chart" width="600" height="400"></canvas>
+      <script>
+        // line chart data
+        var lineData = {
+        labels : [
+          {% for line_item in line_labels %}
+            "{{ line_item }}",
+          {% endfor %}
+        ],
+          
+        datasets : [{
+          fillColor: "rgba(151,187,205,0.2)",
+          strokeColor: "rgba(151,187,205,1)",
+          pointColor: "rgba(151,187,205,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(151,187,205,1)",
+          bezierCurve : false,
+          data : [
+            {% for line_item in line_values %}
+              {{ line_item }},
+            {% endfor %}]
+            }
+        ]
+          }
+    
+          Chart.defaults.global.animationSteps = 50;
+          Chart.defaults.global.tooltipYPadding = 16;
+          Chart.defaults.global.tooltipCornerRadius = 0;
+          Chart.defaults.global.tooltipTitleFontStyle = "normal";
+          Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+          Chart.defaults.global.animationEasing = "easeOutBounce";
+          Chart.defaults.global.responsive = false;
+          Chart.defaults.global.scaleLineColor = "black";
+          Chart.defaults.global.scaleFontSize = 16;
+    
+          // get line chart canvas
+          var mychart = document.getElementById("line_chart").getContext("2d");
+    
+          steps = 10
+          max = {{ max }}
+          // draw bar chart
+          var LineChartDemo = new Chart(mychart).Line(lineData, {
+            scaleOverride: true,
+            scaleSteps: steps,
+            scaleStepWidth: Math.ceil(max / steps),
+            scaleStartValue: 0,
+            scaleShowVerticalLines: true,
+            scaleShowGridLines : true,
+            barShowStroke : true,
+            scaleShowLabels: true,
+            bezierCurve: false,
+          });
+    
+        </script>
+        <h1>{{ bar_title }}</h1>
+        <canvas id="bar_chart" width="600" height="400"></canvas>
+        <script>
+          // bar chart data
+          var barData = {
+            labels : [
+              {% for bar_item in bar_labels %}
+               "{{ bar_item }}",
+              {% endfor %}
+          ],
+    
+            datasets : [{
+              fillColor: "rgba(151,187,205,0.2)",
+              strokeColor: "rgba(151,187,205,1)",
+              pointColor: "rgba(151,187,205,1)",
+              data : [
+                {% for bar_item in bar_values %}
+                   "{{ bar_item }}",
+                  {% endfor %}
+            ]
+              }
+            ]
+          }
+    
+         // get bar chart canvas
+         var mychart = document.getElementById("bar_chart").getContext("2d");
+    
+           steps = 10
+           max = {{max}}
+    
+         // draw bar chart
+         new Chart(mychart).Bar(barData, {
+           scaleOverride: true,
+           scaleSteps: steps,
+           scaleStepWidth: Math.ceil(max / steps),
+           scaleStartValue: 0,
+           scaleShowVerticalLines: true,
+           scaleShowGridLines : true,
+           barShowStroke : true,
+           scaleShowLabels: true
+           }
+         );
+    
+        </script>
+      </center>
+</body>
+{% endblock %}

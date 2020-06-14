@@ -1,0 +1,80 @@
+{% extends "adminbase.html" %}
+{% block title %}Update Car{% endblock %}
+{% block body %}
+<div class="box">
+	<div id="addCar">
+		<h2> Update Car</h2>
+		<form method=post action="updatecar">
+			<table id="addCarTable">
+				<tr>    
+					<td><label>Make</label></td>
+					<td>
+						<input type="text" name='name' value="{{car[0][1]}}" required> 
+						<input type="hidden" name='id' value="{{car[0][0]}}" required>
+					</td>
+				</tr>
+				<tr>                    
+					<td><label>Body Type</label required> </td>
+					<td><select name='bodytype'>
+							{% if car[0][2]=='SUV' %}
+								<option value="SUV" selected>SUV</option>
+								<option value="Sedan">Sedan</option>
+								<option value="Coupe">Coupe</option>
+								<option value="Pickup">Pickup</option></select>
+							{% elif car[0][2]=='Sedan' %}
+								<option value="SUV">SUV</option>
+								<option value="Sedan" selected>Sedan</option>
+								<option value="Coupe">Coupe</option>
+								<option value="Pickup">Pickup</option></select>
+							{% elif car[0][2]=='Coupe' %}
+								<option value="SUV">SUV</option>
+								<option value="Sedan">Sedan</option>
+								<option value="Coupe" selected>Coupe</option>
+								<option value="Pickup">Pickup</option></select>
+							{% else %}
+								<option value="SUV">SUV</option>
+								<option value="Sedan">Sedan</option>
+								<option value="Coupe">Coupe</option>
+								<option value="Pickup" selected>Pickup</option></select>							
+							{% endif %}
+
+					</td>
+				</tr>
+				<tr>    
+					<td><label>Colour</label></td>
+					<td><input type="text" name='colour' value="{{car[0][3]}}"required> </td>
+				</tr>
+				<tr>                    
+					<td><label>Seats</label required> </td>
+					<td><input type="number" min="0" max="10" name='seats' value="{{car[0][4]}}"> </td>
+				</tr>
+				<tr>    
+					<td><label>Location</label></td>
+					<td><input type="text" name='location' value="{{car[0][5]}}" required> </td>
+				</tr>
+				<tr>                    
+					<td><label>Cost</label required> </td>
+					<td><input type="number" value="{{car[0][6]}}" name='cost'> </td>
+				</tr>
+				<tr>                    
+					<td><label>Avalibility</label required> </td>
+					<td>
+						<select name='availability'>
+						{% if car[0][7]==1 %}
+							<option value="1" selected>Available</option>
+							<option value="0">Unavalaible</option>
+						{% elif car[0][7]==0 %}
+							<option value="1">Available</option>
+							<option value="0" selected>Unavalaible</option>
+						{% else %}
+							<option value="2" selected>Broken</option>
+						{% endif %}
+						</select>
+					</td>
+				</tr>
+			</table>
+			<input type="submit" value="Update">
+		</form>
+	</div>
+</div>
+{% endblock %}
