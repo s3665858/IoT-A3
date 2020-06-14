@@ -109,3 +109,6 @@ the parameter *UserID*.
             cursor.execute("delete from User where userID = %s", (userID,))
         self.connection.commit()
 
+updateUser(self, userID)
+---------------------------
+parameters: *UserID*

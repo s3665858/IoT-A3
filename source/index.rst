@@ -55,6 +55,7 @@ Our controller functions and classes for Part A
    user_database_utils
    car_database_utils
    booking_database_utils
+   repair_database_utils
    google_calendar_api
    authenticator_runner
    api_authenticator
@@ -99,6 +100,19 @@ For part D of our project, we implemented unit tests for parts A, B, C of our pr
    test_server
    
 
+Assignment 3
+-------
+For the 3rd installment of our project
+
+.. toctree::
+   :maxdepth: 1
+
+   pushbullet
+   qr
+   audio
+   
+   
+ 
 
 
 
