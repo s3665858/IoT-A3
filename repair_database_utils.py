@@ -50,9 +50,9 @@ class RepairDatabaseUtils:
             cursor.execute("select repairID, CarID, ongoing from Repairs WHERE userID = %s and ongoing = 1", (userID,))
             return cursor.fetchall()
 
-    def setRepairStatus(self, bookingID, status):
+    def setRepairStatus(self, repairID, status):
         with self.connection.cursor() as cursor:
-            cursor.execute("UPDATE Repairs SET ongoing = %s where repairID = %s", (int(status), bookingID,))
+            cursor.execute("UPDATE Repairs SET ongoing = %s where repairID = %s", (int(status), repairID,))
         self.connection.commit()
     
     
