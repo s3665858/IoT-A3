@@ -392,3 +392,31 @@ function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns
             for bookingID in db.getLatestBookingId():
                 return int(bookingID[0])
 
+
+
+createRepairTable(self)
+--------------------------------------------------
+function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns the first booking ID.
+
+
+insertRepair(self)
+--------------------------------------------------
+function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns the first booking ID.
+
+listPersonalRepairsHistory(self)
+--------------------------------------------------
+function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns the first booking ID.
+
+listPersonalOngoingRepairs(self)
+--------------------------------------------------
+function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns the first booking ID.
+
+cancelRepair(self)
+--------------------------------------------------
+function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns the first booking ID.
+
+setRepairStatus(self)
+--------------------------------------------------
+function: calls getLatestBookingId() from :ref:`booking_database_utils`. Returns the first booking ID.
+
+

@@ -18,8 +18,8 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'IoT A2'
-copyright = '2020, Sean Tan'
-author = 'Sean Tan'
+copyright = '2020, Sean Tan, Luke Avram'
+author = 'Sean Tan, Luke Avram'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'

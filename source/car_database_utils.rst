@@ -95,6 +95,12 @@ function: Query for all the rows in the Cars table
             return cursor.fetchall()
 
 
+
+listBrokenCars(self)
+-----------------
+Query for all the rows in the Cars table where the *avaiable* column contains the value 2 (2 means that the car is broken)
+
+
 listAvailableCars(self)
 --------------------------
 function: Query for all the rows in the Cars table where the *avaiable* column contains the value 1 (1 means that the car is available)
@@ -230,3 +236,13 @@ function: Updates the *location* column of the Cars table to the parameter *loca
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE Cars SET location = %s WHERE CarID = %s", (location, CarID,))
         self.connection.commit()
+
+
+updateCar(self, carID, make, body_type, colour, seats, location, cost_per_hour, availability)
+-----------------------------------------
+Updates the *duration* column of the Cars table to the parameter *duration* on the row where 
+
+
+getTop10Price(self)
+-----------------------------------------
+parameters: *CarID*, *location*

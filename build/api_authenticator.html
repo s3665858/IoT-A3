@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Authenticator &#8212; IoT A3 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="QR Object Detection" href="qr.html" />
+    <link rel="prev" title="Google Authenticator Runner" href="authenticator_runner.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="api-authenticator">
+<span id="id1"></span><h1>API Authenticator<a class="headerlink" href="#api-authenticator" title="Permalink to this headline">¶</a></h1>
+<p>This function will take in 2 inputs from console input. First being the <em>userID</em> and second being the
+<em>key</em>. With the correct <em>key</em> given this function will be able to create a token file to save
+the user’s google calendar account credentials for future use.</p>
+<div class="section" id="main-self">
+<h2>main(self)<a class="headerlink" href="#main-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Takes in an input from the user and passing it to <em>userID</em>, then calls <em>authenticate(userID)</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">userID</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="authenticate-self-userid">
+<h2>authenticate(self, userID)<a class="headerlink" href="#authenticate-self-userid" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>userID</em></p>
+<p>function: Takes in an authentication key as an input from the user, then verifies it with Google Calendar.
+If the authentication key is correct, creates a token file which stores the user’s Google Calendar credentials
+for future use.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userID</span><span class="p">):</span>
+    <span class="n">SCOPES</span> <span class="o">=</span> <span class="s2">&quot;https://www.googleapis.com/auth/calendar&quot;</span>
+    <span class="n">jsonFile</span> <span class="o">=</span> <span class="s2">&quot;google_calendar/&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span>
+    <span class="n">store</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">Storage</span><span class="p">(</span><span class="n">jsonFile</span><span class="p">)</span>
+    <span class="n">creds</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+    <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">creds</span> <span class="ow">or</span> <span class="n">creds</span><span class="o">.</span><span class="n">invalid</span><span class="p">):</span>
+        <span class="n">flow</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">flow_from_clientsecrets</span><span class="p">(</span><span class="s2">&quot;google_calendar/credentials.json&quot;</span><span class="p">,</span> <span class="n">SCOPES</span><span class="p">)</span>
+        <span class="n">creds</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">run_flow</span><span class="p">(</span><span class="n">flow</span><span class="p">,</span> <span class="n">store</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">IoT A3</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index_page.html">Index Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="login_page.html">Login Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="register_page.html">Register Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="customer_home_page.html">Customer Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_available_cars_page.html">Customer’s Car List page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_search_car_page.html">Customer’s Search Car page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_ongoing_booking_page.html">Customer’s Ongoing Booking page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_booking_history_page.html">Customer’s Booking History page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_google_authentication_page.html">Google Authentication page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="engineer_home_page.html">Engineer Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_repair.html">Engineers Repair Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_repair_history.html">Engineers Repair History Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_carlist.html">Engineer Broken Cars List Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_add_macaddress.html">Engineers Mac Address Page page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineerbase.html">Engineer Base Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_home_page.html">Admin Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_car_table_page.html">Admin’s Display Car Table page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_add_car_into_table_page.html">Admin’s Add Car Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_user_table_page.html">Admin’s Display User Table page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="adminbase.html">Admin Base Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="manager_home.html">Manager Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managerbase.html">Manager Base Page</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main_engine.html">mainEngine.py class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_database_utils.html">User Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_database_utils.html">Repair Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="car_database_utils.html">Car Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking_database_utils.html">Booking Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="repair_database_utils.html">Repair Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pushbullet.html">Pushbullet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google_calendar_api.html">Google Calendar Api class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authenticator_runner.html">Google Authenticator Runner</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Authenticator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qr.html">QR Object Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audio.html">Voice Recognition</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Socket Server class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Socket Client class</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_user_database_utils.html">Unit Tests for User Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_car_database_utils.html">Unit Tests for Cars Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_engineer_database_utils.html">Unit Tests for Engineer Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_booking_database_utils.html">Unit Tests for Booking Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_mainEngine.html">Unit Tests for Main Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_server.html">Unit Tests for Socket Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_repair_database_utils.html">Unit Tests for Repair Database Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="authenticator_runner.html" title="previous chapter">Google Authenticator Runner</a></li>
+      <li>Next: <a href="qr.html" title="next chapter">QR Object Detection</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sean Tan, Vincent Pranata, Rock Shan, Luke Avram.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/api_authenticator.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

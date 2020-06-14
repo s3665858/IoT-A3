@@ -333,3 +333,32 @@ function: displays a success message when the user successfully authenticates th
     @app.route('/googleAuthenticationComplete')
     def googleAuthenticationComplete():
         return render_template("customer/googleAuthenticationComplete.html")
+
+
+addmacaddress()
+----------------------------------
+ 
+
+
+deleteMacAddress()
+----------------------------------
+
+
+getEngineerAddress()
+----------------------------------
+displays a success message when the user successfully authenticates their google account.
+::
+
+    @app.route('/googleAuthenticationComplete')
+    def googleAuthenticationComplete():
+        return render_template("customer/googleAuthenticationComplete.html")
+
+
+getEngineerUserID()
+----------------------------------
+displays a success message when the user successfully authenticates their google account.
+::
+
+    @app.route('/googleAuthenticationComplete')
+    def googleAuthenticationComplete():
+        return render_template("customer/googleAuthenticationComplete.html")

@@ -15,33 +15,8 @@ menu(self)
 function: The main() function of this class. Gives the user the option to unlock the car with a username 
 and password or usig face recognition. The user can also return the car using this function. The main() 
 function will call the appropriate functions within this class depending on the user's actions.
-::
+An engineer can also sign in using the menu.
 
-    def menu(self):
-        
-        menu = True
-        while True:
-            print("1.unlock car with username and password\n")
-            print("2.unlock car with face recognition\n")
-            print("3.return the car")
-            menu = input()
-
-            if menu == '1':
-                if self.unlockCar():
-                    print("unlock")
-                else:
-                    print("invalid username and password or u did not book thiscar")
-                break
-            
-            if menu == '2':
-                self.faceunlock()
-                break
-
-            if menu =="3":
-                self.returnCar()
-                break
-            else:
-                print("invalid input")
 
 
 __init__(self)
@@ -144,4 +119,32 @@ the car, the car unlocks.
             print("your face is not in database or you did not book this car")
 
 
+engineerUnlock(self, nearby_devices)
+--------------------
+function: Packages the facial recognition encodings into a data package and sends it to the *faceValidation()* 
+function from MP via the *sendData()* 
 
+
+engineerUnlock(self, nearby_devices)
+--------------------
+
+
+saveData(self, nearby_devices)
+--------------------
+
+detectBluetoothDevices(self)
+--------------------
+Detecting nearby bluetooth devices
+
+QRcodeReader(self,file)
+--------------------
+Reads from the QR image file 
+
+engineerSignin(self,data)
+--------------------
+
+activate_job()
+--------------------
+
+ run_job()
+ --------------------

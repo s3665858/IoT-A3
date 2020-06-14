@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket Server class &#8212; IoT A3 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Socket Client class" href="client.html" />
+    <link rel="prev" title="Voice Recognition" href="audio.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="socket-server-class">
+<span id="socket-server"></span><h1>Socket Server class<a class="headerlink" href="#socket-server-class" title="Permalink to this headline">¶</a></h1>
+<p><em>Directory: /server.py</em></p>
+<p>The Socket Server class is location on MP and manages all information received from the
+<a class="reference internal" href="client.html#client"><span class="std std-ref">Socket Client class</span></a> in AP via sockets. The information is processed accordingly and sent back again to the
+<a class="reference internal" href="client.html#client"><span class="std std-ref">Socket Client class</span></a> in AP via sockets.</p>
+<p>Functions contained in this class:</p>
+<div class="section" id="startlistening-self">
+<h2>startListening(self)<a class="headerlink" href="#startlistening-self" title="Permalink to this headline">¶</a></h2>
+<p>function: Allows the socket server to listen to the <a class="reference internal" href="client.html#client"><span class="std std-ref">Socket Client class</span></a> when the user interacts
+with its console UI.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">startListening</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">serverSocket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">server_address</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span> <span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">serverSocket</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_address</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">serverSocket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;waiting for a connection&#39;</span><span class="p">)</span>
+        <span class="n">connection</span><span class="p">,</span> <span class="n">client_address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serverSocket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="n">received</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">received</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">received</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">sendBack</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">sendBack</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faceValidation</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span>
+                <span class="n">sendBack</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">returnCar</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+        <span class="n">connection</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">sendBack</span><span class="p">)</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="validation-self-data">
+<h2>validation(self,data)<a class="headerlink" href="#validation-self-data" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>data</em></p>
+<p>function: Receives username and password from the client through the <a class="reference internal" href="client.html#client"><span class="std std-ref">Socket Client class</span></a> from the <em>data</em> parameter.
+It then calls the <em>login()</em> function from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a> to validate the user, then it calls
+<em>listPersonalOngoingBooking()</em> from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a> to validate that this user has made a booking
+with this specific car.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">validation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">mainEngine</span> <span class="o">=</span> <span class="n">MainEngine</span><span class="p">()</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span>
+    <span class="n">carId</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;carId&#39;</span><span class="p">]</span>
+    <span class="n">isVaild</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">mainEngine</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="n">password</span><span class="p">):</span>
+        <span class="n">userID</span> <span class="o">=</span> <span class="n">mainEngine</span><span class="o">.</span><span class="n">getUser</span><span class="p">(</span><span class="n">username</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ongoingbookings</span> <span class="o">=</span> <span class="n">mainEngine</span><span class="o">.</span><span class="n">listPersonalOngoingBooking</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">booking</span> <span class="ow">in</span> <span class="n">ongoingbookings</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">booking</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">carId</span><span class="p">:</span>
+                <span class="n">isVaild</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+    <span class="k">return</span> <span class="n">isVaild</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="createencoding-self-known-image-userid">
+<h2>createEncoding(self,known_image,userID)<a class="headerlink" href="#createencoding-self-known-image-userid" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>known_image</em>, <em>userID</em></p>
+<p>function: Creates a facial recognition encoding with the image given from the <em>known_image</em> parameter
+and saves this encoding under the <em>userID</em> parameter given.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">createEncoding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">known_image</span><span class="p">,</span><span class="n">userID</span><span class="p">):</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;encodings.dat&#39;</span><span class="p">,</span><span class="s1">&#39;wb+&#39;</span><span class="p">)</span>
+    <span class="n">encodings</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="s1">&#39;encodings.dat&#39;</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">encodings</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">face_recognition</span><span class="o">.</span><span class="n">load_image_file</span><span class="p">(</span><span class="n">known_image</span><span class="p">)</span>
+    <span class="n">encodings</span><span class="p">[</span><span class="n">userID</span><span class="p">]</span> <span class="o">=</span> <span class="n">face_recognition</span><span class="o">.</span><span class="n">face_encodings</span><span class="p">(</span><span class="n">image</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">encodings</span><span class="p">,</span><span class="n">file</span><span class="p">,</span><span class="n">pickle</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="facevalidation-self-data">
+<h2>faceValidation(self,data)<a class="headerlink" href="#facevalidation-self-data" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>data</em></p>
+<p>function: Compares the facial recognition encoding provided in the <em>data</em> parameter and compares it
+with all the facial recognition encodings stored in the server. If a matching userID is found, compares
+it with the userID who booked the car.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">faceValidation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">mainEngine</span> <span class="o">=</span> <span class="n">MainEngine</span><span class="p">()</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;encodings.dat&#39;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+    <span class="n">encodings</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span><span class="n">encoding</span> <span class="ow">in</span> <span class="n">encodings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">face_recognition</span><span class="o">.</span><span class="n">compare_faces</span><span class="p">([</span><span class="n">encoding</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;encoding&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">userID</span> <span class="o">=</span> <span class="n">index</span>
+            <span class="n">ongoingbookings</span> <span class="o">=</span> <span class="n">mainEngine</span><span class="o">.</span><span class="n">listPersonalOngoingBooking</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">booking</span> <span class="ow">in</span> <span class="n">ongoingbookings</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">booking</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;carid&#39;</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="n">index</span>
+
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="returncar-self-data">
+<h2>returnCar(self,data)<a class="headerlink" href="#returncar-self-data" title="Permalink to this headline">¶</a></h2>
+<p>parameters: <em>data</em></p>
+<p>function: Receives the <em>userID</em>, <em>carID</em> and <em>location</em> of the returned car using the <em>data</em> parameter given.</p>
+<p>Completes the booking by:
+* Calling <em>setBookingOngoing(booking[0],0)</em> from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a> to set the booking as no longer ongoing.
+* Calling <em>setCarAvailability(carID,1)</em> from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a> to set the car to available for booking.
+* Calling <em>setCarLocation(carID,location)</em> from <a class="reference internal" href="main_engine.html#main-engine"><span class="std std-ref">mainEngine.py class</span></a> to set the car location to its current location.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">returnCar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">mainEngine</span> <span class="o">=</span> <span class="n">MainEngine</span><span class="p">()</span>
+    <span class="n">userID</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;userid&#39;</span><span class="p">]</span>
+    <span class="n">carID</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;carid&#39;</span><span class="p">]</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span>
+    <span class="n">ongoingbookings</span> <span class="o">=</span> <span class="n">mainEngine</span><span class="o">.</span><span class="n">listPersonalOngoingBooking</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">booking</span> <span class="ow">in</span> <span class="n">ongoingbookings</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">booking</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">carID</span><span class="p">:</span>
+            <span class="n">mainEngine</span><span class="o">.</span><span class="n">setBookingOngoing</span><span class="p">(</span><span class="n">booking</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">mainEngine</span><span class="o">.</span><span class="n">setCarAvailability</span><span class="p">(</span><span class="n">carID</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">mainEngine</span><span class="o">.</span><span class="n">setCarLocation</span><span class="p">(</span><span class="n">carID</span><span class="p">,</span><span class="n">location</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">IoT A3</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index_page.html">Index Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="login_page.html">Login Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="register_page.html">Register Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="customer_home_page.html">Customer Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_available_cars_page.html">Customer’s Car List page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_search_car_page.html">Customer’s Search Car page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_ongoing_booking_page.html">Customer’s Ongoing Booking page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_booking_history_page.html">Customer’s Booking History page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer_google_authentication_page.html">Google Authentication page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="engineer_home_page.html">Engineer Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_repair.html">Engineers Repair Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_repair_history.html">Engineers Repair History Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_carlist.html">Engineer Broken Cars List Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_add_macaddress.html">Engineers Mac Address Page page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineerbase.html">Engineer Base Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_home_page.html">Admin Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_car_table_page.html">Admin’s Display Car Table page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_add_car_into_table_page.html">Admin’s Add Car Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_display_user_table_page.html">Admin’s Display User Table page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="adminbase.html">Admin Base Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="manager_home.html">Manager Home Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managerbase.html">Manager Base Page</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main_engine.html">mainEngine.py class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_database_utils.html">User Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineer_database_utils.html">Repair Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="car_database_utils.html">Car Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking_database_utils.html">Booking Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="repair_database_utils.html">Repair Database Utils class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pushbullet.html">Pushbullet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google_calendar_api.html">Google Calendar Api class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authenticator_runner.html">Google Authenticator Runner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_authenticator.html">API Authenticator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qr.html">QR Object Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audio.html">Voice Recognition</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Socket Server class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Socket Client class</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_user_database_utils.html">Unit Tests for User Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_car_database_utils.html">Unit Tests for Cars Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_engineer_database_utils.html">Unit Tests for Engineer Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_booking_database_utils.html">Unit Tests for Booking Database Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_mainEngine.html">Unit Tests for Main Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_server.html">Unit Tests for Socket Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_repair_database_utils.html">Unit Tests for Repair Database Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="audio.html" title="previous chapter">Voice Recognition</a></li>
+      <li>Next: <a href="client.html" title="next chapter">Socket Client class</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sean Tan, Vincent Pranata, Rock Shan, Luke Avram.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/server.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
