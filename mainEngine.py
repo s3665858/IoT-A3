@@ -280,6 +280,10 @@ class MainEngine:
         with BookingDatabaseUtils() as db:
             return db.getTop10PriceCount()
 
+    def getTop10DurationCount(self):
+        with BookingDatabaseUtils() as db:
+            return db.getTop10DurationCount()
+
     ## functions for repair table ##
     def createRepairTable(self):
         with RepairDatabaseUtils() as db:
