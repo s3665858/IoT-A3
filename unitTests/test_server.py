@@ -34,6 +34,14 @@ class MainEngineTest(unittest.TestCase):
         location = ("Box Hill,-37.8214992,145.1086673")
         data = {'type':3,'carid':1,'userid':3,'location':location}
         self.assertTrue(self.s.returnCar(data))
+    def testEngineerValidate(self):
+        nearby_devices = ['FC:87:43:70:65:07']
+        data = {'type':4,'carid':self.carID,'nearby_devices':nearby_devices}
+        self.assertTrue(self.s.engineerValidation(data))
+
+    def testEnginnerSignUp(self):
+        data = {'id': 2,'name':'engineer1','type':5,'carID':5}
+        self.assertTrue(self.s.engineerSignIn(data))
 
 
 if __name__ == "__main__":
