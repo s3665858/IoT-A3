@@ -260,6 +260,10 @@ class MainEngine:
         with EngineerDatabaseUtils() as db:
             return db.getEngineerUserID(address)
 
+    def getDurationForGraph(self):
+        with BookingDatabaseUtils() as db:
+            return db.getTop10Duration()
+
     def getTop10Make(self):
         with BookingDatabaseUtils() as db:
             return db.getTop10CarID()
