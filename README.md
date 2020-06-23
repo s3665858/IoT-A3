@@ -1,8 +1,8 @@
 # IoT-A3
-Sean Tan s3806690
-Vincent Pranata s3665858
-Guoxin Shan s3641701
-Luke Avram s3580557
+1. Sean Tan s3806690
+2. Vincent Pranata s3665858
+3. Guoxin Shan s3641701
+4. Luke Avram s3580557
 
 ## Introduction
 Our project is a Car Rental system running on python using the microframework Flask. Our main method which is used to run the entire system is called 'run.py', located in the root folder of our project. Our html and API scripts are all seperated neatly in subfolders for better management.
